@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper.impl.common.item;
 
+import io.github.jason13official.more_useful_copper.api.common.block.IOxidizableBlock;
 import io.github.jason13official.more_useful_copper.api.common.block.WaxableRegistry;
 import java.util.Optional;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -16,6 +17,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LevelEvent;
+import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 
@@ -41,25 +43,45 @@ public class WaxScraperItem extends Item {
           .map(block -> block.withPropertiesOf(blockState));
     }
 
-    // cancel action if still no result
-    if (unwaxedState.isEmpty()) {
-      return InteractionResult.PASS;
-    }
-
     Player player = context.getPlayer();
     ItemStack itemStack = context.getItemInHand();
 
-    if (!level.isClientSide) {
-      if (player instanceof ServerPlayer) {
-        CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockPos, itemStack);
+    if (unwaxedState.isPresent()) {
+      if (!level.isClientSide) {
+        if (player instanceof ServerPlayer) {
+          CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockPos, itemStack);
+        }
+        BlockState result = unwaxedState.get();
+        level.playSound(null, blockPos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.levelEvent(null, LevelEvent.PARTICLES_WAX_OFF, blockPos, 0);
+        level.setBlock(blockPos, result, Block.UPDATE_ALL_IMMEDIATE);
+        level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, result));
+        if (player != null) itemStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
       }
-      BlockState result = unwaxedState.get();
-      level.playSound(null, blockPos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
-      level.levelEvent(null, LevelEvent.PARTICLES_WAX_OFF, blockPos, 0);
-      level.setBlock(blockPos, result, Block.UPDATE_ALL_IMMEDIATE);
-      level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, result));
+      return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
-    return InteractionResult.sidedSuccess(level.isClientSide);
+    // check our oxidation registry, then vanilla
+    Optional<BlockState> scrapedState = IOxidizableBlock.getPrevious(blockState);
+    if (scrapedState.isEmpty()) {
+      scrapedState = WeatheringCopper.getPrevious(blockState);
+    }
+
+    if (scrapedState.isPresent()) {
+      if (!level.isClientSide) {
+        if (player instanceof ServerPlayer) {
+          CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockPos, itemStack);
+        }
+        BlockState result = scrapedState.get();
+        level.playSound(null, blockPos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.levelEvent(null, LevelEvent.PARTICLES_SCRAPE, blockPos, 0);
+        level.setBlock(blockPos, result, Block.UPDATE_ALL_IMMEDIATE);
+        level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, result));
+        if (player != null) itemStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+      }
+      return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    return InteractionResult.PASS;
   }
 }

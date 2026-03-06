@@ -112,25 +112,34 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
   @Override
   public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 
+    // ignore all interactions if already pressed/powering redstone
+    if (state.getValue(POWERED)) {
+      return InteractionResult.CONSUME;
+    }
+
     ItemStack stackInHand = player.getItemInHand(hand);
 
+    // oxidize
     if (stackInHand.is(ModItemTags.MANUAL_OXIDIZER) && this.weatherState != WeatherState.OXIDIZED) {
       return InteractionResult.PASS;
     }
 
+    // remove wax
+    if (stackInHand.is(ModItemTags.WAX_SCRAPER) && this.weatherState != WeatherState.UNAFFECTED) {
+      return InteractionResult.PASS;
+    }
+
+    // apply wax
     InteractionResult waxedState = tryWaxing(state, level, pos, player, stackInHand);
     if (waxedState != null) {
       return waxedState;
     }
 
-    if (state.getValue(POWERED)) {
-      return InteractionResult.CONSUME;
-    } else {
-      this.press(state, level, pos);
-      this.playSound(player, level, pos, true);
-      level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
-      return InteractionResult.sidedSuccess(level.isClientSide);
-    }
+    // vanilla logic for pressing/activation redstone
+    this.press(state, level, pos);
+    this.playSound(player, level, pos, true);
+    level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
+    return InteractionResult.sidedSuccess(level.isClientSide);
   }
 
   public void press(BlockState state, Level level, BlockPos pos) {
