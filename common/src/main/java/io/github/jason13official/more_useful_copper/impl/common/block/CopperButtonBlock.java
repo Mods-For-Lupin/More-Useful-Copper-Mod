@@ -3,6 +3,7 @@ package io.github.jason13official.more_useful_copper.impl.common.block;
 import io.github.jason13official.more_useful_copper.api.common.block.IOxidizableBlock;
 import io.github.jason13official.more_useful_copper.api.common.block.WaxableRegistry;
 import io.github.jason13official.more_useful_copper.api.common.util.ButtonShapes;
+import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
 import java.util.Optional;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -111,9 +112,13 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
   @Override
   public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 
-    ItemStack itemStack = player.getItemInHand(hand);
+    ItemStack stackInHand = player.getItemInHand(hand);
 
-    InteractionResult waxedState = tryWaxing(state, level, pos, player, itemStack);
+    if (stackInHand.is(ModItemTags.MANUAL_OXIDIZER) && this.weatherState != WeatherState.OXIDIZED) {
+      return InteractionResult.PASS;
+    }
+
+    InteractionResult waxedState = tryWaxing(state, level, pos, player, stackInHand);
     if (waxedState != null) {
       return waxedState;
     }
