@@ -4,6 +4,7 @@ import io.github.jason13official.more_useful_copper.impl.common.registry.ModBloc
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTabs;
+import io.github.jason13official.more_useful_copper.impl.common.registry.ModTiles;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import net.minecraft.core.Registry;
@@ -28,6 +29,7 @@ public class MoreUsefulCopperForge {
     EVENT_BUS = context.getModEventBus();
 
     bind(Registries.BLOCK, ModBlocks::register);
+    bind(Registries.BLOCK_ENTITY_TYPE, ModTiles::register);
     bind(Registries.ITEM, ModItems::register);
     bind(Registries.CREATIVE_MODE_TAB, ModTabs::register);
     bind(Registries.ENTITY_TYPE, ModEntities::register);

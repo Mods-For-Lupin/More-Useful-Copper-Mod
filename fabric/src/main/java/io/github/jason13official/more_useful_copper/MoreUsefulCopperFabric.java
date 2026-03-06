@@ -4,6 +4,7 @@ import io.github.jason13official.more_useful_copper.impl.common.registry.ModBloc
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTabs;
+import io.github.jason13official.more_useful_copper.impl.common.registry.ModTiles;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import net.fabricmc.api.ModInitializer;
@@ -17,6 +18,7 @@ public class MoreUsefulCopperFabric implements ModInitializer {
   public void onInitialize() {
 
     bind(BuiltInRegistries.BLOCK, ModBlocks::register);
+    bind(BuiltInRegistries.BLOCK_ENTITY_TYPE, ModTiles::register);
     bind(BuiltInRegistries.ITEM, ModItems::register);
     bind(BuiltInRegistries.CREATIVE_MODE_TAB, ModTabs::register);
     bind(BuiltInRegistries.ENTITY_TYPE, ModEntities::register);
