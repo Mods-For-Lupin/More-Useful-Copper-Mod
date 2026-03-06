@@ -2,6 +2,7 @@ package io.github.jason13official.more_useful_copper.api.common.block;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import io.github.jason13official.more_useful_copper.impl.common.registry.ModBlocks;
 import java.util.Optional;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChangeOverTimeBlock;
@@ -17,6 +18,12 @@ public interface IOxidizableBlock extends ChangeOverTimeBlock<WeatherState> {
   static void addMapping(Block initialState, Block nextState) {
     NEXT_BY_BLOCK.forcePut(initialState, nextState);
     PREVIOUS_BY_BLOCK.forcePut(nextState, initialState);
+  }
+
+  static void init() {
+    addMapping(ModBlocks.COPPER_BUTTON, ModBlocks.EXPOSED_COPPER_BUTTON);
+    addMapping(ModBlocks.EXPOSED_COPPER_BUTTON, ModBlocks.WEATHERED_COPPER_BUTTON);
+    addMapping(ModBlocks.WEATHERED_COPPER_BUTTON, ModBlocks.OXIDIZED_COPPER_BUTTON);
   }
 
   static Optional<Block> getPrevious(Block block) {
