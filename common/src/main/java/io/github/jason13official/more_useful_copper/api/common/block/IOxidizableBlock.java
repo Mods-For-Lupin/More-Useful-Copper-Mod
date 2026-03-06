@@ -5,9 +5,9 @@ import com.google.common.collect.HashBiMap;
 import java.util.Optional;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChangeOverTimeBlock;
-import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public interface IOxidizableBlock extends ChangeOverTimeBlock<WeatherState> {
 
@@ -20,36 +20,43 @@ public interface IOxidizableBlock extends ChangeOverTimeBlock<WeatherState> {
   }
 
   static Optional<Block> getPrevious(Block block) {
-    return Optional.ofNullable((Block) ((BiMap) PREVIOUS_BY_BLOCK).get(block));
+
+    return Optional.ofNullable(PREVIOUS_BY_BLOCK.get(block));
   }
 
-  static Block getFirst(Block p_block) {
-    Block block = p_block;
+  static Block getFirst(Block initialBlock) {
 
-    for (Block block1 = (Block) ((BiMap) PREVIOUS_BY_BLOCK).get(p_block); block1 != null; block1 = PREVIOUS_BY_BLOCK.get(block1)) {
-      block = block1;
+    Block reference = initialBlock;
+
+    for (Block found = PREVIOUS_BY_BLOCK.get(initialBlock); found != null; found = PREVIOUS_BY_BLOCK.get(found)) {
+      reference = found;
     }
 
-    return block;
+    return reference;
   }
 
   static Optional<BlockState> getPrevious(BlockState state) {
+
     return getPrevious(state.getBlock()).map((block) -> block.withPropertiesOf(state));
   }
 
   static Optional<Block> getNext(Block block) {
-    return Optional.ofNullable((Block) ((BiMap) NEXT_BY_BLOCK).get(block));
+
+    return Optional.ofNullable(NEXT_BY_BLOCK.get(block));
   }
 
   static BlockState getFirst(BlockState state) {
+
     return getFirst(state.getBlock()).withPropertiesOf(state);
   }
 
-  default Optional<BlockState> getNext(BlockState state) {
+  default @NotNull Optional<BlockState> getNext(BlockState state) {
+
     return getNext(state.getBlock()).map((block) -> block.withPropertiesOf(state));
   }
 
   default float getChanceModifier() {
-    return this.getAge() == WeatheringCopper.WeatherState.UNAFFECTED ? 0.75F : 1.0F;
+
+    return this.getAge() == WeatherState.UNAFFECTED ? 0.75F : 1.0F;
   }
 }
