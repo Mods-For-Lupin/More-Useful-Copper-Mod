@@ -1,8 +1,8 @@
-package io.github.jason13official.examplemod;
+package io.github.jason13official.more_useful_copper;
 
 import net.minecraft.resources.ResourceLocation;
 
-public class ExampleMod {
+public class MoreUsefulCopper {
 
   public static void init() {
   }

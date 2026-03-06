@@ -1,10 +1,9 @@
-package io.github.jason13official.examplemod.platform;
+package io.github.jason13official.more_useful_copper.platform;
 
-import io.github.jason13official.examplemod.platform.services.IPlatformHelper;
+import io.github.jason13official.more_useful_copper.platform.services.IPlatformHelper;
 import java.nio.file.Path;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
 
 public class ForgePlatformHelper implements IPlatformHelper {

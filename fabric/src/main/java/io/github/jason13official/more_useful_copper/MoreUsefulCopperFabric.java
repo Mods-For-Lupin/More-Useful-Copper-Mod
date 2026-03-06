@@ -1,4 +1,4 @@
-package io.github.jason13official.examplemod;
+package io.github.jason13official.more_useful_copper;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -6,13 +6,13 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 
-public class ExampleModFabric implements ModInitializer {
+public class MoreUsefulCopperFabric implements ModInitializer {
 
   @Override
   public void onInitialize() {
 
     // after game object registration
-    ExampleMod.init();
+    MoreUsefulCopper.init();
 
     // on to client init
   }
