@@ -1,8 +1,14 @@
 package io.github.jason13official.more_useful_copper;
 
+import io.github.jason13official.more_useful_copper.impl.common.registry.ModBlocks;
+import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
+import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
+import io.github.jason13official.more_useful_copper.impl.common.registry.ModTabs;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -20,6 +26,11 @@ public class MoreUsefulCopperForge {
   public MoreUsefulCopperForge(final FMLJavaModLoadingContext context) {
 
     EVENT_BUS = context.getModEventBus();
+
+    bind(Registries.BLOCK, ModBlocks::register);
+    bind(Registries.ITEM, ModItems::register);
+    bind(Registries.CREATIVE_MODE_TAB, ModTabs::register);
+    bind(Registries.ENTITY_TYPE, ModEntities::register);
 
     // after game object registration
     MoreUsefulCopper.init();

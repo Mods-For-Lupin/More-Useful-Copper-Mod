@@ -1,6 +1,7 @@
 package io.github.jason13official.more_useful_copper.platform.services;
 
 import java.nio.file.Path;
+import net.minecraft.world.item.CreativeModeTab;
 
 public interface IPlatformHelper {
 
@@ -54,4 +55,6 @@ public interface IPlatformHelper {
   }
 
   boolean isClient();
+
+  CreativeModeTab.Builder tabBuilder();
 }

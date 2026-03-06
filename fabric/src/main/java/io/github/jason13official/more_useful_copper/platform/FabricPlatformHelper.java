@@ -3,7 +3,9 @@ package io.github.jason13official.more_useful_copper.platform;
 import io.github.jason13official.more_useful_copper.platform.services.IPlatformHelper;
 import java.nio.file.Path;
 import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.world.item.CreativeModeTab.Builder;
 
 public class FabricPlatformHelper implements IPlatformHelper {
 
@@ -41,5 +43,11 @@ public class FabricPlatformHelper implements IPlatformHelper {
   public boolean isClient() {
 
     return FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT;
+  }
+
+  @Override
+  public Builder tabBuilder() {
+
+    return FabricItemGroup.builder();
   }
 }

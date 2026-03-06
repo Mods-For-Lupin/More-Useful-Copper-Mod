@@ -2,6 +2,8 @@ package io.github.jason13official.more_useful_copper.platform;
 
 import io.github.jason13official.more_useful_copper.platform.services.IPlatformHelper;
 import java.nio.file.Path;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTab.Builder;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
@@ -36,5 +38,11 @@ public class ForgePlatformHelper implements IPlatformHelper {
   public boolean isClient() {
 
     return FMLLoader.getDist() == Dist.CLIENT;
+  }
+
+  @Override
+  public Builder tabBuilder() {
+
+    return CreativeModeTab.builder();
   }
 }
