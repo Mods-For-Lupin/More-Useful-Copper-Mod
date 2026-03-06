@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.HoneycombItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -30,9 +31,17 @@ public class WaxScraperItem extends Item {
     BlockPos blockPos = context.getClickedPos();
     BlockState blockState = level.getBlockState(blockPos);
 
+    // check against our own registry first
     Optional<BlockState> unwaxedState = Optional.ofNullable(WaxableRegistry.WAX_OFF_BY_BLOCK.get(blockState.getBlock()))
         .map(block -> block.withPropertiesOf(blockState));
 
+    // check against vanilla registry if no result
+    if (unwaxedState.isEmpty()) {
+      unwaxedState = Optional.ofNullable(HoneycombItem.WAX_OFF_BY_BLOCK.get().get(blockState.getBlock()))
+          .map(block -> block.withPropertiesOf(blockState));
+    }
+
+    // cancel action if still no result
     if (unwaxedState.isEmpty()) {
       return InteractionResult.PASS;
     }
