@@ -28,6 +28,7 @@ public class ModTabs {
           output.accept(ModBlocks.WAXED_EXPOSED_COPPER_BUTTON);
           output.accept(ModBlocks.WAXED_WEATHERED_COPPER_BUTTON);
           output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_BUTTON);
+          output.accept(ModItems.WAX_SCRAPER);
         })
         .build();
 
