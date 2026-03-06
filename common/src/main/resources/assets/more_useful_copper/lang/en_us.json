@@ -1,3 +1,23 @@
 {
-  "itemGroup.moreUsefulCopper": "More Useful Copper"
+  "itemGroup.moreUsefulCopper": "More Useful Copper",
+
+  "block.more_useful_copper.copper_button": "Copper Button",
+  "block.more_useful_copper.exposed_copper_button": "Exposed Copper Button",
+  "block.more_useful_copper.weathered_copper_button": "Weathered Copper Button",
+  "block.more_useful_copper.oxidized_copper_button": "Oxidized Copper Button",
+
+  "block.more_useful_copper.waxed_copper_button": "Waxed Copper Button",
+  "block.more_useful_copper.waxed_exposed_copper_button": "Waxed Exposed Copper Button",
+  "block.more_useful_copper.waxed_weathered_copper_button": "Waxed Weathered Copper Button",
+  "block.more_useful_copper.waxed_oxidized_copper_button": "Waxed Oxidized Copper Button",
+
+  "item.more_useful_copper.copper_button": "Copper Button",
+  "item.more_useful_copper.exposed_copper_button": "Exposed Copper Button",
+  "item.more_useful_copper.weathered_copper_button": "Weathered Copper Button",
+  "item.more_useful_copper.oxidized_copper_button": "Oxidized Copper Button",
+
+  "item.more_useful_copper.waxed_copper_button": "Waxed Copper Button",
+  "item.more_useful_copper.waxed_exposed_copper_button": "Waxed Exposed Copper Button",
+  "item.more_useful_copper.waxed_weathered_copper_button": "Waxed Weathered Copper Button",
+  "item.more_useful_copper.waxed_oxidized_copper_button": "Waxed Oxidized Copper Button"
 }

@@ -19,7 +19,16 @@ public class ModTabs {
     MORE_USEFUL_COPPER = Services.PLATFORM.tabBuilder()
         .icon(() -> new ItemStack(Items.COPPER_BLOCK))
         .title(Component.translatable("itemGroup.moreUsefulCopper"))
-        .displayItems((itemDisplayParameters, output) -> {})
+        .displayItems((itemDisplayParameters, output) -> {
+          output.accept(ModBlocks.COPPER_BUTTON);
+          output.accept(ModBlocks.EXPOSED_COPPER_BUTTON);
+          output.accept(ModBlocks.WEATHERED_COPPER_BUTTON);
+          output.accept(ModBlocks.OXIDIZED_COPPER_BUTTON);
+          output.accept(ModBlocks.WAXED_COPPER_BUTTON);
+          output.accept(ModBlocks.WAXED_EXPOSED_COPPER_BUTTON);
+          output.accept(ModBlocks.WAXED_WEATHERED_COPPER_BUTTON);
+          output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_BUTTON);
+        })
         .build();
 
     consumer.accept(MORE_USEFUL_COPPER, MoreUsefulCopper.identifier(Constants.MOD_ID));
