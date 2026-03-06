@@ -35,6 +35,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock implements IOxidizableBlock {
 
+  public static final int UNAFFECTED_PRESSED_TICKS = 30;
+  public static final int EXPOSED_PRESSED_TICKS = 45;
+  public static final int WEATHERED_PRESSED_TICKS = 60;
+  public static final int OXIDIZED_PRESSED_TICKS = 90;
+
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
   private final WeatheringCopper.WeatherState weatherState;

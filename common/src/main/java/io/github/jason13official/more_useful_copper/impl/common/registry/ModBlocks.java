@@ -26,15 +26,15 @@ public class ModBlocks {
 
   public static void register(BiConsumer<Block, ResourceLocation> consumer) {
 
-    COPPER_BUTTON = weatheringCopperButton(WeatherState.UNAFFECTED);
-    EXPOSED_COPPER_BUTTON = weatheringCopperButton(WeatherState.EXPOSED);
-    WEATHERED_COPPER_BUTTON = weatheringCopperButton(WeatherState.WEATHERED);
-    OXIDIZED_COPPER_BUTTON = weatheringCopperButton(WeatherState.OXIDIZED);
+    COPPER_BUTTON = weatheringCopperButton(WeatherState.UNAFFECTED, CopperButtonBlock.UNAFFECTED_PRESSED_TICKS);
+    EXPOSED_COPPER_BUTTON = weatheringCopperButton(WeatherState.EXPOSED, CopperButtonBlock.EXPOSED_PRESSED_TICKS);
+    WEATHERED_COPPER_BUTTON = weatheringCopperButton(WeatherState.WEATHERED, CopperButtonBlock.WEATHERED_PRESSED_TICKS);
+    OXIDIZED_COPPER_BUTTON = weatheringCopperButton(WeatherState.OXIDIZED, CopperButtonBlock.OXIDIZED_PRESSED_TICKS);
 
-    WAXED_COPPER_BUTTON = waxedCopperButton();
-    WAXED_EXPOSED_COPPER_BUTTON = waxedCopperButton();
-    WAXED_WEATHERED_COPPER_BUTTON = waxedCopperButton();
-    WAXED_OXIDIZED_COPPER_BUTTON = waxedCopperButton();
+    WAXED_COPPER_BUTTON = waxedCopperButton(CopperButtonBlock.UNAFFECTED_PRESSED_TICKS);
+    WAXED_EXPOSED_COPPER_BUTTON = waxedCopperButton(CopperButtonBlock.EXPOSED_PRESSED_TICKS);
+    WAXED_WEATHERED_COPPER_BUTTON = waxedCopperButton(CopperButtonBlock.WEATHERED_PRESSED_TICKS);
+    WAXED_OXIDIZED_COPPER_BUTTON = waxedCopperButton(CopperButtonBlock.OXIDIZED_PRESSED_TICKS);
 
     consumer.accept(COPPER_BUTTON, MoreUsefulCopper.identifier("copper_button"));
     consumer.accept(EXPOSED_COPPER_BUTTON, MoreUsefulCopper.identifier("exposed_copper_button"));
@@ -46,11 +46,11 @@ public class ModBlocks {
     consumer.accept(WAXED_OXIDIZED_COPPER_BUTTON, MoreUsefulCopper.identifier("waxed_oxidized_copper_button"));
   }
 
-  private static CopperButtonBlock weatheringCopperButton(WeatherState weatherState) {
-    return new CopperButtonBlock(Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY), weatherState, BlockSetType.STONE, 30, true);
+  private static CopperButtonBlock weatheringCopperButton(WeatherState weatherState, int ticksToStayPressed) {
+    return new CopperButtonBlock(Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY), weatherState, BlockSetType.STONE, ticksToStayPressed, true);
   }
 
-  private static ButtonBlock waxedCopperButton() {
-    return new BasicButtonBlock(Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY), BlockSetType.STONE, 30, true);
+  private static ButtonBlock waxedCopperButton(int ticksToStayPressed) {
+    return new BasicButtonBlock(Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY), BlockSetType.STONE, ticksToStayPressed, true);
   }
 }
