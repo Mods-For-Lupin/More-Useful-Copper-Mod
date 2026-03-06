@@ -77,7 +77,7 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
           itemStack.shrink(1);
           level.setBlock(pos, blockstate, Block.UPDATE_ALL_IMMEDIATE);
           level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockstate));
-          level.levelEvent(player, LevelEvent.PARTICLES_AND_SOUND_WAX_ON, pos, 0);
+          level.levelEvent(null, LevelEvent.PARTICLES_AND_SOUND_WAX_ON, pos, 0);
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
       }
