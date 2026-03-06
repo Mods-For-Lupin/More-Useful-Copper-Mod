@@ -1,7 +1,7 @@
 package io.github.jason13official.more_useful_copper.impl.common.registry;
 
 import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
-import io.github.jason13official.more_useful_copper.impl.common.block.BasicButtonBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.WaxedButtonBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperButtonBlock;
 import java.util.function.BiConsumer;
 import net.minecraft.resources.ResourceLocation;
@@ -51,6 +51,6 @@ public class ModBlocks {
   }
 
   private static ButtonBlock waxedCopperButton(int ticksToStayPressed) {
-    return new BasicButtonBlock(Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY), BlockSetType.STONE, ticksToStayPressed, true);
+    return new WaxedButtonBlock(Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY), BlockSetType.STONE, ticksToStayPressed, true);
   }
 }
