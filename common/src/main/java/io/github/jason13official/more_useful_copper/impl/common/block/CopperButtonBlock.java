@@ -1,12 +1,15 @@
 package io.github.jason13official.more_useful_copper.impl.common.block;
 
 import io.github.jason13official.more_useful_copper.api.common.block.IOxidizableBlock;
+import io.github.jason13official.more_useful_copper.api.common.block.WaxableRegistry;
 import io.github.jason13official.more_useful_copper.api.common.util.ButtonShapes;
-import javax.annotation.Nullable;
+import java.util.Optional;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -15,11 +18,14 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.HoneycombItem;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,6 +38,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock implements IOxidizableBlock {
 
@@ -58,6 +65,27 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
     this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(FACE, AttachFace.WALL));
   }
 
+  private static @Nullable InteractionResult tryWaxing(BlockState state, Level level, BlockPos pos, Player player, ItemStack itemStack) {
+    if (itemStack.getItem() instanceof HoneycombItem) {
+      Optional<BlockState> waxedState = WaxableRegistry.getWaxed(state);
+      if (waxedState.isPresent()) {
+        if (!level.isClientSide) {
+          BlockState blockstate = waxedState.get();
+          if (player instanceof ServerPlayer) {
+            CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, pos, itemStack);
+          }
+          itemStack.shrink(1);
+          level.setBlock(pos, blockstate, Block.UPDATE_ALL_IMMEDIATE);
+          level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockstate));
+          level.levelEvent(player, LevelEvent.PARTICLES_AND_SOUND_WAX_ON, pos, 0);
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
+      }
+      return InteractionResult.PASS;
+    }
+    return null;
+  }
+
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     builder.add(FACING, POWERED, FACE);
@@ -78,8 +106,18 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
     return this.weatherState;
   }
 
+
+
   @Override
   public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+
+    ItemStack itemStack = player.getItemInHand(hand);
+
+    InteractionResult waxedState = tryWaxing(state, level, pos, player, itemStack);
+    if (waxedState != null) {
+      return waxedState;
+    }
+
     if (state.getValue(POWERED)) {
       return InteractionResult.CONSUME;
     } else {
