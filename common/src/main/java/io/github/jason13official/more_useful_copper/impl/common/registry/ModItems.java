@@ -19,6 +19,7 @@ public class ModItems {
     SPRAY_BOTTLE = new SprayBottleItem(new Properties().durability(64));
     consumer.accept(SPRAY_BOTTLE, MoreUsefulCopper.identifier("spray_bottle"));
     consumer.accept(WAX_SCRAPER, MoreUsefulCopper.identifier("wax_scraper"));
+    
     consumer.accept(new BlockItem(ModBlocks.COPPER_BUTTON, new Properties()), MoreUsefulCopper.identifier("copper_button"));
     consumer.accept(new BlockItem(ModBlocks.EXPOSED_COPPER_BUTTON, new Properties()), MoreUsefulCopper.identifier("exposed_copper_button"));
     consumer.accept(new BlockItem(ModBlocks.WEATHERED_COPPER_BUTTON, new Properties()), MoreUsefulCopper.identifier("weathered_copper_button"));
@@ -27,5 +28,15 @@ public class ModItems {
     consumer.accept(new BlockItem(ModBlocks.WAXED_EXPOSED_COPPER_BUTTON, new Properties()), MoreUsefulCopper.identifier("waxed_exposed_copper_button"));
     consumer.accept(new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_BUTTON, new Properties()), MoreUsefulCopper.identifier("waxed_weathered_copper_button"));
     consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_BUTTON, new Properties()), MoreUsefulCopper.identifier("waxed_oxidized_copper_button"));
+
+
+    consumer.accept(new BlockItem(ModBlocks.COPPER_COMPARATOR, new Properties()), MoreUsefulCopper.identifier("copper_comparator"));
+    consumer.accept(new BlockItem(ModBlocks.EXPOSED_COPPER_COMPARATOR, new Properties()), MoreUsefulCopper.identifier("exposed_copper_comparator"));
+    consumer.accept(new BlockItem(ModBlocks.WEATHERED_COPPER_COMPARATOR, new Properties()), MoreUsefulCopper.identifier("weathered_copper_comparator"));
+    consumer.accept(new BlockItem(ModBlocks.OXIDIZED_COPPER_COMPARATOR, new Properties()), MoreUsefulCopper.identifier("oxidized_copper_comparator"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_COPPER_COMPARATOR, new Properties()), MoreUsefulCopper.identifier("waxed_copper_comparator"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_EXPOSED_COPPER_COMPARATOR, new Properties()), MoreUsefulCopper.identifier("waxed_exposed_copper_comparator"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_COMPARATOR, new Properties()), MoreUsefulCopper.identifier("waxed_weathered_copper_comparator"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_COMPARATOR, new Properties()), MoreUsefulCopper.identifier("waxed_oxidized_copper_comparator"));
   }
 }

@@ -20,6 +20,9 @@ public class ModTabs {
         .icon(() -> new ItemStack(Items.COPPER_BLOCK))
         .title(Component.translatable("itemGroup.moreUsefulCopper"))
         .displayItems((itemDisplayParameters, output) -> {
+          output.accept(ModItems.WAX_SCRAPER);
+          output.accept(ModItems.SPRAY_BOTTLE);
+
           output.accept(ModBlocks.COPPER_BUTTON);
           output.accept(ModBlocks.EXPOSED_COPPER_BUTTON);
           output.accept(ModBlocks.WEATHERED_COPPER_BUTTON);
@@ -28,8 +31,15 @@ public class ModTabs {
           output.accept(ModBlocks.WAXED_EXPOSED_COPPER_BUTTON);
           output.accept(ModBlocks.WAXED_WEATHERED_COPPER_BUTTON);
           output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_BUTTON);
-          output.accept(ModItems.WAX_SCRAPER);
-          output.accept(ModItems.SPRAY_BOTTLE);
+
+          output.accept(ModBlocks.COPPER_COMPARATOR);
+          output.accept(ModBlocks.EXPOSED_COPPER_COMPARATOR);
+          output.accept(ModBlocks.WEATHERED_COPPER_COMPARATOR);
+          output.accept(ModBlocks.OXIDIZED_COPPER_COMPARATOR);
+          output.accept(ModBlocks.WAXED_COPPER_COMPARATOR);
+          output.accept(ModBlocks.WAXED_EXPOSED_COPPER_COMPARATOR);
+          output.accept(ModBlocks.WAXED_WEATHERED_COPPER_COMPARATOR);
+          output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_COMPARATOR);
         })
         .build();
 
