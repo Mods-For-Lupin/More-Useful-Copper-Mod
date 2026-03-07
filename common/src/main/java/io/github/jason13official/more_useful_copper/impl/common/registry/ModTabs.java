@@ -7,6 +7,7 @@ import java.util.function.BiConsumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTab.Output;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -20,29 +21,33 @@ public class ModTabs {
         .icon(() -> new ItemStack(Items.COPPER_BLOCK))
         .title(Component.translatable("itemGroup.moreUsefulCopper"))
         .displayItems((itemDisplayParameters, output) -> {
-          output.accept(ModItems.WAX_SCRAPER);
-          output.accept(ModItems.SPRAY_BOTTLE);
-
-          output.accept(ModBlocks.COPPER_BUTTON);
-          output.accept(ModBlocks.EXPOSED_COPPER_BUTTON);
-          output.accept(ModBlocks.WEATHERED_COPPER_BUTTON);
-          output.accept(ModBlocks.OXIDIZED_COPPER_BUTTON);
-          output.accept(ModBlocks.WAXED_COPPER_BUTTON);
-          output.accept(ModBlocks.WAXED_EXPOSED_COPPER_BUTTON);
-          output.accept(ModBlocks.WAXED_WEATHERED_COPPER_BUTTON);
-          output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_BUTTON);
-
-          output.accept(ModBlocks.COPPER_COMPARATOR);
-          output.accept(ModBlocks.EXPOSED_COPPER_COMPARATOR);
-          output.accept(ModBlocks.WEATHERED_COPPER_COMPARATOR);
-          output.accept(ModBlocks.OXIDIZED_COPPER_COMPARATOR);
-          output.accept(ModBlocks.WAXED_COPPER_COMPARATOR);
-          output.accept(ModBlocks.WAXED_EXPOSED_COPPER_COMPARATOR);
-          output.accept(ModBlocks.WAXED_WEATHERED_COPPER_COMPARATOR);
-          output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_COMPARATOR);
+          addItemsToTabOutput(output);
         })
         .build();
 
     consumer.accept(MORE_USEFUL_COPPER, MoreUsefulCopper.identifier(Constants.MOD_ID));
+  }
+
+  private static void addItemsToTabOutput(Output output) {
+    output.accept(ModItems.WAX_SCRAPER);
+    output.accept(ModItems.SPRAY_BOTTLE);
+
+    output.accept(ModBlocks.COPPER_BUTTON);
+    output.accept(ModBlocks.EXPOSED_COPPER_BUTTON);
+    output.accept(ModBlocks.WEATHERED_COPPER_BUTTON);
+    output.accept(ModBlocks.OXIDIZED_COPPER_BUTTON);
+    output.accept(ModBlocks.WAXED_COPPER_BUTTON);
+    output.accept(ModBlocks.WAXED_EXPOSED_COPPER_BUTTON);
+    output.accept(ModBlocks.WAXED_WEATHERED_COPPER_BUTTON);
+    output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_BUTTON);
+
+    output.accept(ModBlocks.COPPER_COMPARATOR);
+    output.accept(ModBlocks.EXPOSED_COPPER_COMPARATOR);
+    output.accept(ModBlocks.WEATHERED_COPPER_COMPARATOR);
+    output.accept(ModBlocks.OXIDIZED_COPPER_COMPARATOR);
+    output.accept(ModBlocks.WAXED_COPPER_COMPARATOR);
+    output.accept(ModBlocks.WAXED_EXPOSED_COPPER_COMPARATOR);
+    output.accept(ModBlocks.WAXED_WEATHERED_COPPER_COMPARATOR);
+    output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_COMPARATOR);
   }
 }
