@@ -1,1 +1,1 @@
-{ "parent": "minecraft:block/comparator_subtract", "textures": { "slab": "minecraft:block/copper_block" } }
+{ "render_type": "cutout", "parent": "minecraft:block/comparator_subtract", "textures": { "slab": "minecraft:block/copper_block", "top": "more_useful_copper:block/copper_comparator", "particle": "more_useful_copper:block/copper_comparator" } }
