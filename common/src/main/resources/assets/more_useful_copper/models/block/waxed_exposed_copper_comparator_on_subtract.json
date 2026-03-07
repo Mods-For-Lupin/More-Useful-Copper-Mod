@@ -1,0 +1,1 @@
+{ "parent": "minecraft:block/comparator_on_subtract", "textures": { "slab": "minecraft:block/exposed_copper" } }

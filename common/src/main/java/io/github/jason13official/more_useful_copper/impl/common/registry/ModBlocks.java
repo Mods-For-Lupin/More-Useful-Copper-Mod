@@ -1,8 +1,10 @@
 package io.github.jason13official.more_useful_copper.impl.common.registry;
 
 import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
-import io.github.jason13official.more_useful_copper.impl.common.block.WaxedButtonBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperButtonBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.CopperComparatorBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.WaxedButtonBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.WaxedComparatorBlock;
 import java.util.function.BiConsumer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -24,6 +26,16 @@ public class ModBlocks {
   public static Block WAXED_WEATHERED_COPPER_BUTTON;
   public static Block WAXED_OXIDIZED_COPPER_BUTTON;
 
+  public static Block COPPER_COMPARATOR;
+  public static Block EXPOSED_COPPER_COMPARATOR;
+  public static Block WEATHERED_COPPER_COMPARATOR;
+  public static Block OXIDIZED_COPPER_COMPARATOR;
+
+  public static Block WAXED_COPPER_COMPARATOR;
+  public static Block WAXED_EXPOSED_COPPER_COMPARATOR;
+  public static Block WAXED_WEATHERED_COPPER_COMPARATOR;
+  public static Block WAXED_OXIDIZED_COPPER_COMPARATOR;
+
   public static void register(BiConsumer<Block, ResourceLocation> consumer) {
 
     COPPER_BUTTON = weatheringCopperButton(WeatherState.UNAFFECTED, CopperButtonBlock.UNAFFECTED_PRESSED_TICKS);
@@ -36,6 +48,16 @@ public class ModBlocks {
     WAXED_WEATHERED_COPPER_BUTTON = waxedCopperButton(CopperButtonBlock.WEATHERED_PRESSED_TICKS);
     WAXED_OXIDIZED_COPPER_BUTTON = waxedCopperButton(CopperButtonBlock.OXIDIZED_PRESSED_TICKS);
 
+    COPPER_COMPARATOR = weatheringCopperComparator(WeatherState.UNAFFECTED);
+    EXPOSED_COPPER_COMPARATOR = weatheringCopperComparator(WeatherState.EXPOSED);
+    WEATHERED_COPPER_COMPARATOR = weatheringCopperComparator(WeatherState.WEATHERED);
+    OXIDIZED_COPPER_COMPARATOR = weatheringCopperComparator(WeatherState.OXIDIZED);
+
+    WAXED_COPPER_COMPARATOR = waxedCopperComparator();
+    WAXED_EXPOSED_COPPER_COMPARATOR = waxedCopperComparator();
+    WAXED_WEATHERED_COPPER_COMPARATOR = waxedCopperComparator();
+    WAXED_OXIDIZED_COPPER_COMPARATOR = waxedCopperComparator();
+
     consumer.accept(COPPER_BUTTON, MoreUsefulCopper.identifier("copper_button"));
     consumer.accept(EXPOSED_COPPER_BUTTON, MoreUsefulCopper.identifier("exposed_copper_button"));
     consumer.accept(WEATHERED_COPPER_BUTTON, MoreUsefulCopper.identifier("weathered_copper_button"));
@@ -44,6 +66,15 @@ public class ModBlocks {
     consumer.accept(WAXED_EXPOSED_COPPER_BUTTON, MoreUsefulCopper.identifier("waxed_exposed_copper_button"));
     consumer.accept(WAXED_WEATHERED_COPPER_BUTTON, MoreUsefulCopper.identifier("waxed_weathered_copper_button"));
     consumer.accept(WAXED_OXIDIZED_COPPER_BUTTON, MoreUsefulCopper.identifier("waxed_oxidized_copper_button"));
+
+    consumer.accept(COPPER_COMPARATOR, MoreUsefulCopper.identifier("copper_comparator"));
+    consumer.accept(EXPOSED_COPPER_COMPARATOR, MoreUsefulCopper.identifier("exposed_copper_comparator"));
+    consumer.accept(WEATHERED_COPPER_COMPARATOR, MoreUsefulCopper.identifier("weathered_copper_comparator"));
+    consumer.accept(OXIDIZED_COPPER_COMPARATOR, MoreUsefulCopper.identifier("oxidized_copper_comparator"));
+    consumer.accept(WAXED_COPPER_COMPARATOR, MoreUsefulCopper.identifier("waxed_copper_comparator"));
+    consumer.accept(WAXED_EXPOSED_COPPER_COMPARATOR, MoreUsefulCopper.identifier("waxed_exposed_copper_comparator"));
+    consumer.accept(WAXED_WEATHERED_COPPER_COMPARATOR, MoreUsefulCopper.identifier("waxed_weathered_copper_comparator"));
+    consumer.accept(WAXED_OXIDIZED_COPPER_COMPARATOR, MoreUsefulCopper.identifier("waxed_oxidized_copper_comparator"));
   }
 
   private static CopperButtonBlock weatheringCopperButton(WeatherState weatherState, int ticksToStayPressed) {
@@ -52,5 +83,13 @@ public class ModBlocks {
 
   private static ButtonBlock waxedCopperButton(int ticksToStayPressed) {
     return new WaxedButtonBlock(Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY), BlockSetType.STONE, ticksToStayPressed, true);
+  }
+
+  private static CopperComparatorBlock weatheringCopperComparator(WeatherState weatherState) {
+    return new CopperComparatorBlock(Properties.of().instabreak().pushReaction(PushReaction.DESTROY), weatherState);
+  }
+
+  private static WaxedComparatorBlock waxedCopperComparator() {
+    return new WaxedComparatorBlock(Properties.of().instabreak().pushReaction(PushReaction.DESTROY));
   }
 }

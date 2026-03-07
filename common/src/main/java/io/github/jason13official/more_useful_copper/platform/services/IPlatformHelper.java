@@ -1,7 +1,13 @@
 package io.github.jason13official.more_useful_copper.platform.services;
 
 import java.nio.file.Path;
+import java.util.function.BiFunction;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 public interface IPlatformHelper {
 
@@ -57,4 +63,7 @@ public interface IPlatformHelper {
   boolean isClient();
 
   CreativeModeTab.Builder tabBuilder();
+
+  /// Mimicking {@link BlockEntityType}'s private `BlockEntitySupplier`
+  <T extends BlockEntity> BlockEntityType.Builder<T> tileBuilder(BiFunction<BlockPos, BlockState, T> constructor, Block... validBlocks);
 }
