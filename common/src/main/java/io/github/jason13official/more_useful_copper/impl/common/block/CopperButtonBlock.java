@@ -21,12 +21,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.HoneycombItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.world.level.block.LevelEvent;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,12 +38,14 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock implements IOxidizableBlock {
+public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock implements IOxidizableBlock, SimpleWaterloggedBlock {
 
   public static final int UNAFFECTED_PRESSED_TICKS = 30;
   public static final int EXPOSED_PRESSED_TICKS = 45;
@@ -49,6 +53,7 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
   public static final int OXIDIZED_PRESSED_TICKS = 90;
 
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+  public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
   private final WeatheringCopper.WeatherState weatherState;
 
@@ -63,7 +68,7 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
     this.ticksToStayPressed = ticksToStayPressed;
     this.arrowsCanPress = arrowsCanPress;
 
-    this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(FACE, AttachFace.WALL));
+    this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(FACE, AttachFace.WALL).setValue(WATERLOGGED, false));
   }
 
   private static @Nullable InteractionResult tryWaxing(BlockState state, Level level, BlockPos pos, Player player, ItemStack itemStack) {
@@ -89,7 +94,26 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
 
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-    builder.add(FACING, POWERED, FACE);
+    builder.add(FACING, POWERED, FACE, WATERLOGGED);
+  }
+
+  @Override
+  public BlockState getStateForPlacement(BlockPlaceContext context) {
+    FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
+    return super.getStateForPlacement(context).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+  }
+
+  @Override
+  public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    if (state.getValue(WATERLOGGED)) {
+      level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+    }
+    return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+  }
+
+  @Override
+  public FluidState getFluidState(BlockState state) {
+    return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
   }
 
   @Override
