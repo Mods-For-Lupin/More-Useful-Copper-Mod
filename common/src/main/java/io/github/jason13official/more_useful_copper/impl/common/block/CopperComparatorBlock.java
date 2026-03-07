@@ -67,6 +67,27 @@ public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBloc
 
   // --- IOxidizableBlock ---
 
+  private static @Nullable InteractionResult tryWaxing(BlockState state, Level level, BlockPos pos, Player player, ItemStack itemStack) {
+    if (itemStack.getItem() instanceof HoneycombItem) {
+      Optional<BlockState> waxedState = WaxableRegistry.getWaxed(state);
+      if (waxedState.isPresent()) {
+        if (!level.isClientSide) {
+          BlockState blockstate = waxedState.get();
+          if (player instanceof ServerPlayer sp) {
+            CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(sp, pos, itemStack);
+          }
+          itemStack.shrink(1);
+          level.setBlock(pos, blockstate, Block.UPDATE_ALL_IMMEDIATE);
+          level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockstate));
+          level.levelEvent(null, LevelEvent.PARTICLES_AND_SOUND_WAX_ON, pos, 0);
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
+      }
+      return InteractionResult.PASS;
+    }
+    return null;
+  }
+
   @Override
   public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
     this.onRandomTick(state, level, pos, random);
@@ -77,12 +98,12 @@ public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBloc
     return IOxidizableBlock.getNext(state.getBlock()).isPresent();
   }
 
+  // --- Waterlogging ---
+
   @Override
   public WeatherState getAge() {
     return this.weatherState;
   }
-
-  // --- Waterlogging ---
 
   @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -98,19 +119,19 @@ public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBloc
     return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
   }
 
+  // --- EntityBlock ---
+
   @Override
   public FluidState getFluidState(BlockState state) {
     return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
   }
 
-  // --- EntityBlock ---
+  // --- Comparator logic (adapted from ComparatorBlock for CopperComparatorBlockEntity) ---
 
   @Override
   public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
     return new CopperComparatorBlockEntity(pos, state);
   }
-
-  // --- Comparator logic (adapted from ComparatorBlock for CopperComparatorBlockEntity) ---
 
   @Override
   protected int getDelay(BlockState state) {
@@ -125,16 +146,22 @@ public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBloc
 
   private int calculateOutputSignal(Level level, BlockPos pos, BlockState state) {
     int i = this.getInputSignal(level, pos, state);
-    if (i == 0) return 0;
+    if (i == 0) {
+      return 0;
+    }
     int j = this.getAlternateSignal(level, pos, state);
-    if (j > i) return 0;
+    if (j > i) {
+      return 0;
+    }
     return state.getValue(MODE) == ComparatorMode.SUBTRACT ? i - j : i;
   }
 
   @Override
   protected boolean shouldTurnOn(Level level, BlockPos pos, BlockState state) {
     int i = this.getInputSignal(level, pos, state);
-    if (i == 0) return false;
+    if (i == 0) {
+      return false;
+    }
     int j = this.getAlternateSignal(level, pos, state);
     return i > j || (i == j && state.getValue(MODE) == ComparatorMode.COMPARE);
   }
@@ -155,7 +182,9 @@ public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBloc
           itemFrame == null ? Integer.MIN_VALUE : itemFrame.getAnalogOutput(),
           blockState.hasAnalogOutputSignal() ? blockState.getAnalogOutputSignal(level, blockPos) : Integer.MIN_VALUE
       );
-      if (j != Integer.MIN_VALUE) i = j;
+      if (j != Integer.MIN_VALUE) {
+        i = j;
+      }
     }
     return i;
   }
@@ -215,32 +244,11 @@ public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBloc
     return blockEntity != null && blockEntity.triggerEvent(id, param);
   }
 
+  // --- Interaction ---
+
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     builder.add(FACING, MODE, POWERED, WATERLOGGED);
-  }
-
-  // --- Interaction ---
-
-  private static @Nullable InteractionResult tryWaxing(BlockState state, Level level, BlockPos pos, Player player, ItemStack itemStack) {
-    if (itemStack.getItem() instanceof HoneycombItem) {
-      Optional<BlockState> waxedState = WaxableRegistry.getWaxed(state);
-      if (waxedState.isPresent()) {
-        if (!level.isClientSide) {
-          BlockState blockstate = waxedState.get();
-          if (player instanceof ServerPlayer sp) {
-            CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(sp, pos, itemStack);
-          }
-          itemStack.shrink(1);
-          level.setBlock(pos, blockstate, Block.UPDATE_ALL_IMMEDIATE);
-          level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockstate));
-          level.levelEvent(null, LevelEvent.PARTICLES_AND_SOUND_WAX_ON, pos, 0);
-        }
-        return InteractionResult.sidedSuccess(level.isClientSide);
-      }
-      return InteractionResult.PASS;
-    }
-    return null;
   }
 
   @Override

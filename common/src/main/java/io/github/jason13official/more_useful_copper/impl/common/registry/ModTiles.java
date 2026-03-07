@@ -12,7 +12,7 @@ public class ModTiles {
   public static BlockEntityType<CopperComparatorBlockEntity> COPPER_COMPARATOR;
 
   public static void register(BiConsumer<BlockEntityType<?>, ResourceLocation> consumer) {
-    COPPER_COMPARATOR = Services.PLATFORM.<CopperComparatorBlockEntity>tileBuilder(
+    COPPER_COMPARATOR = Services.PLATFORM.tileBuilder(
         CopperComparatorBlockEntity::new,
         ModBlocks.COPPER_COMPARATOR,
         ModBlocks.EXPOSED_COPPER_COMPARATOR,

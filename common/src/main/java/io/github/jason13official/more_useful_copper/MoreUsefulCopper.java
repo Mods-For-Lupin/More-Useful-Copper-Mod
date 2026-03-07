@@ -15,7 +15,7 @@ public class MoreUsefulCopper {
   }
 
   public static ResourceLocation identifier(String path) {
-    
+
     return new ResourceLocation(Constants.MOD_ID, path);
   }
 }

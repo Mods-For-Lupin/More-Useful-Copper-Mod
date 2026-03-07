@@ -1,1 +1,9 @@
-{ "render_type": "cutout", "parent": "minecraft:block/comparator_on", "textures": { "slab": "minecraft:block/exposed_copper", "top": "more_useful_copper:block/exposed_copper_comparator_on", "particle": "more_useful_copper:block/exposed_copper_comparator_on" } }
+{
+  "render_type": "cutout",
+  "parent": "minecraft:block/comparator_on",
+  "textures": {
+    "slab": "minecraft:block/exposed_copper",
+    "top": "more_useful_copper:block/exposed_copper_comparator_on",
+    "particle": "more_useful_copper:block/exposed_copper_comparator_on"
+  }
+}

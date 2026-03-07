@@ -1,1 +1,6 @@
-{ "parent": "minecraft:item/generated", "textures": { "layer0": "more_useful_copper:item/weathered_copper_comparator" } }
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "more_useful_copper:item/weathered_copper_comparator"
+  }
+}

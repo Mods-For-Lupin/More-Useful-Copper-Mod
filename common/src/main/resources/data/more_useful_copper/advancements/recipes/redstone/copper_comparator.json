@@ -3,7 +3,13 @@
   "criteria": {
     "has_copper": {
       "conditions": {
-        "items": [{ "items": ["minecraft:copper_ingot"] }]
+        "items": [
+          {
+            "items": [
+              "minecraft:copper_ingot"
+            ]
+          }
+        ]
       },
       "trigger": "minecraft:inventory_changed"
     },
@@ -14,9 +20,16 @@
       "trigger": "minecraft:recipe_unlocked"
     }
   },
-  "requirements": [["has_copper", "has_the_recipe"]],
+  "requirements": [
+    [
+      "has_copper",
+      "has_the_recipe"
+    ]
+  ],
   "rewards": {
-    "recipes": ["more_useful_copper:copper_comparator"]
+    "recipes": [
+      "more_useful_copper:copper_comparator"
+    ]
   },
   "sends_telemetry_event": false
 }

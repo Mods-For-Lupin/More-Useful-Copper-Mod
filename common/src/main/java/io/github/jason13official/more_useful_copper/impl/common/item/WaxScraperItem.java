@@ -56,7 +56,9 @@ public class WaxScraperItem extends Item {
         level.levelEvent(null, LevelEvent.PARTICLES_WAX_OFF, blockPos, 0);
         level.setBlock(blockPos, result, Block.UPDATE_ALL_IMMEDIATE);
         level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, result));
-        if (player != null) itemStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+        if (player != null) {
+          itemStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+        }
       }
       return InteractionResult.sidedSuccess(level.isClientSide);
     }
@@ -77,7 +79,9 @@ public class WaxScraperItem extends Item {
         level.levelEvent(null, LevelEvent.PARTICLES_SCRAPE, blockPos, 0);
         level.setBlock(blockPos, result, Block.UPDATE_ALL_IMMEDIATE);
         level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, result));
-        if (player != null) itemStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+        if (player != null) {
+          itemStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+        }
       }
       return InteractionResult.sidedSuccess(level.isClientSide);
     }
