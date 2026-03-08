@@ -3,14 +3,17 @@ package io.github.jason13official.more_useful_copper.impl.common.registry;
 import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperButtonBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperComparatorBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.CopperLeverBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedButtonBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedComparatorBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.WaxedLeverBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRedstoneDustBlock;
 import java.util.function.BiConsumer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -18,20 +21,20 @@ import net.minecraft.world.level.material.PushReaction;
 
 public class ModBlocks {
 
-  public static Block COPPER_BUTTON;
-  public static Block EXPOSED_COPPER_BUTTON;
-  public static Block WEATHERED_COPPER_BUTTON;
-  public static Block OXIDIZED_COPPER_BUTTON;
+  public static CopperButtonBlock COPPER_BUTTON;
+  public static CopperButtonBlock EXPOSED_COPPER_BUTTON;
+  public static CopperButtonBlock WEATHERED_COPPER_BUTTON;
+  public static CopperButtonBlock OXIDIZED_COPPER_BUTTON;
 
   public static Block WAXED_COPPER_BUTTON;
   public static Block WAXED_EXPOSED_COPPER_BUTTON;
   public static Block WAXED_WEATHERED_COPPER_BUTTON;
   public static Block WAXED_OXIDIZED_COPPER_BUTTON;
 
-  public static Block COPPER_COMPARATOR;
-  public static Block EXPOSED_COPPER_COMPARATOR;
-  public static Block WEATHERED_COPPER_COMPARATOR;
-  public static Block OXIDIZED_COPPER_COMPARATOR;
+  public static CopperComparatorBlock COPPER_COMPARATOR;
+  public static CopperComparatorBlock EXPOSED_COPPER_COMPARATOR;
+  public static CopperComparatorBlock WEATHERED_COPPER_COMPARATOR;
+  public static CopperComparatorBlock OXIDIZED_COPPER_COMPARATOR;
 
   public static Block WAXED_COPPER_COMPARATOR;
   public static Block WAXED_EXPOSED_COPPER_COMPARATOR;
@@ -47,6 +50,16 @@ public class ModBlocks {
   public static Block WAXED_EXPOSED_COPPER_REDSTONE_DUST;
   public static Block WAXED_WEATHERED_COPPER_REDSTONE_DUST;
   public static Block WAXED_OXIDIZED_COPPER_REDSTONE_DUST;
+
+  public static CopperLeverBlock COPPER_LEVER;
+  public static CopperLeverBlock EXPOSED_COPPER_LEVER;
+  public static CopperLeverBlock WEATHERED_COPPER_LEVER;
+  public static CopperLeverBlock OXIDIZED_COPPER_LEVER;
+
+  public static Block WAXED_COPPER_LEVER;
+  public static Block WAXED_EXPOSED_COPPER_LEVER;
+  public static Block WAXED_WEATHERED_COPPER_LEVER;
+  public static Block WAXED_OXIDIZED_COPPER_LEVER;
 
   public static void register(BiConsumer<Block, ResourceLocation> consumer) {
 
@@ -106,6 +119,25 @@ public class ModBlocks {
     consumer.accept(WAXED_EXPOSED_COPPER_REDSTONE_DUST, MoreUsefulCopper.identifier("waxed_exposed_copper_redstone_dust"));
     consumer.accept(WAXED_WEATHERED_COPPER_REDSTONE_DUST, MoreUsefulCopper.identifier("waxed_weathered_copper_redstone_dust"));
     consumer.accept(WAXED_OXIDIZED_COPPER_REDSTONE_DUST, MoreUsefulCopper.identifier("waxed_oxidized_copper_redstone_dust"));
+
+    COPPER_LEVER = weatheringCopperLever(WeatherState.UNAFFECTED);
+    EXPOSED_COPPER_LEVER = weatheringCopperLever(WeatherState.EXPOSED);
+    WEATHERED_COPPER_LEVER = weatheringCopperLever(WeatherState.WEATHERED);
+    OXIDIZED_COPPER_LEVER = weatheringCopperLever(WeatherState.OXIDIZED);
+
+    WAXED_COPPER_LEVER = waxedCopperLever();
+    WAXED_EXPOSED_COPPER_LEVER = waxedCopperLever();
+    WAXED_WEATHERED_COPPER_LEVER = waxedCopperLever();
+    WAXED_OXIDIZED_COPPER_LEVER = waxedCopperLever();
+
+    consumer.accept(COPPER_LEVER, MoreUsefulCopper.identifier("copper_lever"));
+    consumer.accept(EXPOSED_COPPER_LEVER, MoreUsefulCopper.identifier("exposed_copper_lever"));
+    consumer.accept(WEATHERED_COPPER_LEVER, MoreUsefulCopper.identifier("weathered_copper_lever"));
+    consumer.accept(OXIDIZED_COPPER_LEVER, MoreUsefulCopper.identifier("oxidized_copper_lever"));
+    consumer.accept(WAXED_COPPER_LEVER, MoreUsefulCopper.identifier("waxed_copper_lever"));
+    consumer.accept(WAXED_EXPOSED_COPPER_LEVER, MoreUsefulCopper.identifier("waxed_exposed_copper_lever"));
+    consumer.accept(WAXED_WEATHERED_COPPER_LEVER, MoreUsefulCopper.identifier("waxed_weathered_copper_lever"));
+    consumer.accept(WAXED_OXIDIZED_COPPER_LEVER, MoreUsefulCopper.identifier("waxed_oxidized_copper_lever"));
   }
 
   private static CopperButtonBlock weatheringCopperButton(WeatherState weatherState, int ticksToStayPressed) {
@@ -132,5 +164,13 @@ public class ModBlocks {
   private static WaxedRedstoneDustBlock waxedCopperRedstoneDust(WeatherState weatherState) {
     return new WaxedRedstoneDustBlock(
         Properties.of().noCollission().instabreak().pushReaction(PushReaction.DESTROY), weatherState);
+  }
+
+  private static CopperLeverBlock weatheringCopperLever(WeatherState weatherState) {
+    return new CopperLeverBlock(Properties.of().noCollission().strength(0.5F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), weatherState);
+  }
+
+  private static WaxedLeverBlock waxedCopperLever() {
+    return new WaxedLeverBlock(Properties.of().noCollission().strength(0.5F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY));
   }
 }
