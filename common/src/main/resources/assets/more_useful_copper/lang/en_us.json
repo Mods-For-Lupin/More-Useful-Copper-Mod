@@ -1,5 +1,6 @@
 {
   "itemGroup.moreUsefulCopper": "More Useful Copper",
+  
   "block.more_useful_copper.copper_button": "Copper Button",
   "block.more_useful_copper.exposed_copper_button": "Exposed Copper Button",
   "block.more_useful_copper.weathered_copper_button": "Weathered Copper Button",
@@ -16,6 +17,24 @@
   "item.more_useful_copper.waxed_exposed_copper_button": "Waxed Exposed Copper Button",
   "item.more_useful_copper.waxed_weathered_copper_button": "Waxed Weathered Copper Button",
   "item.more_useful_copper.waxed_oxidized_copper_button": "Waxed Oxidized Copper Button",
+
+  "block.more_useful_copper.copper_redstone_dust": "Copper Redstone Dust",
+  "block.more_useful_copper.exposed_copper_redstone_dust": "Exposed Copper Redstone Dust",
+  "block.more_useful_copper.weathered_copper_redstone_dust": "Weathered Copper Redstone Dust",
+  "block.more_useful_copper.oxidized_copper_redstone_dust": "Oxidized Copper Redstone Dust",
+  "block.more_useful_copper.waxed_copper_redstone_dust": "Waxed Copper Redstone Dust",
+  "block.more_useful_copper.waxed_exposed_copper_redstone_dust": "Waxed Exposed Copper Redstone Dust",
+  "block.more_useful_copper.waxed_weathered_copper_redstone_dust": "Waxed Weathered Copper Redstone Dust",
+  "block.more_useful_copper.waxed_oxidized_copper_redstone_dust": "Waxed Oxidized Copper Redstone Dust",
+  "item.more_useful_copper.copper_redstone_dust": "Copper Redstone Dust",
+  "item.more_useful_copper.exposed_copper_redstone_dust": "Exposed Copper Redstone Dust",
+  "item.more_useful_copper.weathered_copper_redstone_dust": "Weathered Copper Redstone Dust",
+  "item.more_useful_copper.oxidized_copper_redstone_dust": "Oxidized Copper Redstone Dust",
+  "item.more_useful_copper.waxed_copper_redstone_dust": "Waxed Copper Redstone Dust",
+  "item.more_useful_copper.waxed_exposed_copper_redstone_dust": "Waxed Exposed Copper Redstone Dust",
+  "item.more_useful_copper.waxed_weathered_copper_redstone_dust": "Waxed Weathered Copper Redstone Dust",
+  "item.more_useful_copper.waxed_oxidized_copper_redstone_dust": "Waxed Oxidized Copper Redstone Dust",
+  
   "block.more_useful_copper.copper_comparator": "Copper Comparator",
   "block.more_useful_copper.exposed_copper_comparator": "Exposed Copper Comparator",
   "block.more_useful_copper.weathered_copper_comparator": "Weathered Copper Comparator",
@@ -32,6 +51,7 @@
   "item.more_useful_copper.waxed_exposed_copper_comparator": "Waxed Exposed Copper Comparator",
   "item.more_useful_copper.waxed_weathered_copper_comparator": "Waxed Weathered Copper Comparator",
   "item.more_useful_copper.waxed_oxidized_copper_comparator": "Waxed Oxidized Copper Comparator",
+  
   "item.more_useful_copper.wax_scraper": "Wax Scraper",
   "item.more_useful_copper.spray_bottle": "Spray Bottle"
 }
