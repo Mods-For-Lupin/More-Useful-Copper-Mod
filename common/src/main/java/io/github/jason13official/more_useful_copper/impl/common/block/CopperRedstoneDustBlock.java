@@ -124,6 +124,10 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   }
 
   private boolean shouldSignal = true;
+  // True while ANY wire type (vanilla or copper) is inside its getBestNeighborSignal call.
+  // Mirrors the role of vanilla's shouldSignal=false, but works across all block instances.
+  // Single-threaded redstone tick: no volatile needed.
+  public static boolean isAnyWireCalculating = false;
   protected final BlockState crossState;
   private final WeatheringCopper.WeatherState weatherState;
 
@@ -342,7 +346,9 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
 
   private int calculateTargetStrength(Level level, BlockPos pos) {
     this.shouldSignal = false;
+    isAnyWireCalculating = true;
     int i = level.getBestNeighborSignal(pos);
+    isAnyWireCalculating = false;
     this.shouldSignal = true;
     int j = 0;
     if (i < 15) {
@@ -443,7 +449,7 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
 
   @Override
   public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-    if (!this.shouldSignal || direction == Direction.DOWN) {
+    if (!this.shouldSignal || isAnyWireCalculating || direction == Direction.DOWN) {
       return 0;
     }
     int i = state.getValue(POWER);

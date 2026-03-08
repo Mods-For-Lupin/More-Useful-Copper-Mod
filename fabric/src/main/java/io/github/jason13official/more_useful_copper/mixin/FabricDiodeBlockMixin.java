@@ -10,12 +10,15 @@ import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(DiodeBlock.class)
 public abstract class FabricDiodeBlockMixin {
+
+  @Shadow protected abstract boolean sideInputDiodesOnly();
 
   // Repeaters and comparators facing copper wire read its power on the front input
   @Inject(method = "getInputSignal", at = @At("RETURN"), cancellable = true)
@@ -31,10 +34,13 @@ public abstract class FabricDiodeBlockMixin {
     }
   }
 
-  // Comparator side-input reads power from copper wire (replaces SignalGetter interface mixin)
+  // Comparator side-input reads power from copper wire.
+  // Repeaters use sideInputDiodesOnly() = true, so copper wire must NOT contribute to
+  // getAlternateSignal for them — that would incorrectly allow copper wire to lock a repeater.
   @Inject(method = "getAlternateSignal", at = @At("RETURN"), cancellable = true)
   protected void muc$getAlternateSignal(SignalGetter level, BlockPos pos, BlockState state,
       CallbackInfoReturnable<Integer> cir) {
+    if (this.sideInputDiodesOnly()) return;
     Direction dir = state.getValue(HorizontalDirectionalBlock.FACING);
     Direction left = dir.getClockWise();
     Direction right = dir.getCounterClockWise();
