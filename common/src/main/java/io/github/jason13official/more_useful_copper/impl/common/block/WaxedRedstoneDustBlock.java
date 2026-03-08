@@ -13,8 +13,8 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class WaxedRedstoneDustBlock extends CopperRedstoneDustBlock {
 
-  public WaxedRedstoneDustBlock(Properties props) {
-    super(props, WeatherState.UNAFFECTED);
+  public WaxedRedstoneDustBlock(Properties props, WeatherState weatherState) {
+    super(props, weatherState);
   }
 
   @Override

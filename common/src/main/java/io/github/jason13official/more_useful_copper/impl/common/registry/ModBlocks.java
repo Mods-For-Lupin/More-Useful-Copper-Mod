@@ -93,10 +93,10 @@ public class ModBlocks {
     WEATHERED_COPPER_REDSTONE_DUST = weatheringCopperRedstoneDust(WeatherState.WEATHERED);
     OXIDIZED_COPPER_REDSTONE_DUST = weatheringCopperRedstoneDust(WeatherState.OXIDIZED);
 
-    WAXED_COPPER_REDSTONE_DUST = waxedCopperRedstoneDust();
-    WAXED_EXPOSED_COPPER_REDSTONE_DUST = waxedCopperRedstoneDust();
-    WAXED_WEATHERED_COPPER_REDSTONE_DUST = waxedCopperRedstoneDust();
-    WAXED_OXIDIZED_COPPER_REDSTONE_DUST = waxedCopperRedstoneDust();
+    WAXED_COPPER_REDSTONE_DUST = waxedCopperRedstoneDust(WeatherState.UNAFFECTED);
+    WAXED_EXPOSED_COPPER_REDSTONE_DUST = waxedCopperRedstoneDust(WeatherState.EXPOSED);
+    WAXED_WEATHERED_COPPER_REDSTONE_DUST = waxedCopperRedstoneDust(WeatherState.WEATHERED);
+    WAXED_OXIDIZED_COPPER_REDSTONE_DUST = waxedCopperRedstoneDust(WeatherState.OXIDIZED);
 
     consumer.accept(COPPER_REDSTONE_DUST, MoreUsefulCopper.identifier("copper_redstone_dust"));
     consumer.accept(EXPOSED_COPPER_REDSTONE_DUST, MoreUsefulCopper.identifier("exposed_copper_redstone_dust"));
@@ -129,8 +129,8 @@ public class ModBlocks {
         Properties.of().noCollission().instabreak().pushReaction(PushReaction.DESTROY), weatherState);
   }
 
-  private static WaxedRedstoneDustBlock waxedCopperRedstoneDust() {
+  private static WaxedRedstoneDustBlock waxedCopperRedstoneDust(WeatherState weatherState) {
     return new WaxedRedstoneDustBlock(
-        Properties.of().noCollission().instabreak().pushReaction(PushReaction.DESTROY));
+        Properties.of().noCollission().instabreak().pushReaction(PushReaction.DESTROY), weatherState);
   }
 }

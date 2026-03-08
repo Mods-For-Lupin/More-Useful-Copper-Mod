@@ -10,7 +10,6 @@ import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -94,34 +93,33 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   // Shared static cache across all 8 copper wire block instances
   private static final Map<BlockState, VoxelShape> SHAPES_CACHE = Maps.newHashMap();
 
-  // Copper-orange color ramp (power 0-15)
-  private static final Vec3[] COLORS = Util.make(new Vec3[16], vec3s -> {
-    for (int i = 0; i <= 15; i++) {
-      float f = (float) i / 15.0F;
-      float r = f * 0.28F + 0.72F;   // 0.72 → 1.00
-      float g = f * 0.20F + 0.45F;   // 0.45 → 0.65
-      float b = f * 0.10F + 0.10F;   // 0.10 → 0.20
-      vec3s[i] = new Vec3(r, g, b);
-    }
-  });
+  private Vec3 particleColor(int power) {
+    float f = power / 15.0F;
+    return switch (this.weatherState) {
+      case EXPOSED   -> new Vec3(f * 0.38 + 0.26, f * 0.29 + 0.20, f * 0.25 + 0.16);
+      case WEATHERED -> new Vec3(f * 0.26 + 0.17, f * 0.36 + 0.24, f * 0.26 + 0.18);
+      case OXIDIZED  -> new Vec3(f * 0.20 + 0.13, f * 0.39 + 0.26, f * 0.32 + 0.21);
+      default        -> new Vec3(f * 0.46 + 0.30, f * 0.26 + 0.17, f * 0.19 + 0.13);
+    };
+  }
 
   /**
    * Returns a packed RGB color for the given power level and oxidation state.
    * Used by block color providers on both Fabric and Forge.
    *
-   * Color progressions (dim at power 0 → bright at power 15):
-   *   UNAFFECTED  orange   #B8720A → #FFA433
-   *   EXPOSED     red-pink #8A3829 → #DB5938
-   *   WEATHERED   teal     #1A4D47 → #29BF78
-   *   OXIDIZED    cyan     #0D4752 → #17D38A
+   * Color progressions (dim at power 0 → bright at power 15), derived from blurred reference images:
+   *   UNAFFECTED  #C36E52  dim 40% → bright
+   *   EXPOSED     #A37E69  dim 40% → bright
+   *   WEATHERED   #6D9A70  dim 40% → bright
+   *   OXIDIZED    #54A688  dim 40% → bright
    */
   public static int getColorForPower(int power, WeatherState weatherState) {
     float f = power / 15.0F;
     return switch (weatherState) {
-      case EXPOSED   -> Mth.color(f * 0.32F + 0.54F, f * 0.13F + 0.22F, f * 0.06F + 0.16F);
-      case WEATHERED -> Mth.color(f * 0.06F + 0.10F, f * 0.45F + 0.30F, f * 0.19F + 0.28F);
-      case OXIDIZED  -> Mth.color(f * 0.04F + 0.05F, f * 0.55F + 0.28F, f * 0.22F + 0.32F);
-      default        -> Mth.color(f * 0.28F + 0.72F, f * 0.20F + 0.45F, f * 0.10F + 0.10F);
+      case EXPOSED   -> Mth.color(f * 0.38F + 0.26F, f * 0.29F + 0.20F, f * 0.25F + 0.16F);
+      case WEATHERED -> Mth.color(f * 0.26F + 0.17F, f * 0.36F + 0.24F, f * 0.26F + 0.18F);
+      case OXIDIZED  -> Mth.color(f * 0.20F + 0.13F, f * 0.39F + 0.26F, f * 0.32F + 0.21F);
+      default        -> Mth.color(f * 0.46F + 0.30F, f * 0.26F + 0.17F, f * 0.19F + 0.13F);
     };
   }
 
@@ -606,12 +604,12 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
         RedstoneSide redstoneSide = state.getValue(PROPERTY_BY_DIRECTION.get(direction));
         switch (redstoneSide) {
           case UP:
-            this.spawnParticlesAlongLine(level, random, pos, COLORS[power], direction, Direction.UP, -0.5F, 0.5F);
+            this.spawnParticlesAlongLine(level, random, pos, this.particleColor(power), direction, Direction.UP, -0.5F, 0.5F);
           case SIDE:
-            this.spawnParticlesAlongLine(level, random, pos, COLORS[power], Direction.DOWN, direction, 0.0F, 0.5F);
+            this.spawnParticlesAlongLine(level, random, pos, this.particleColor(power), Direction.DOWN, direction, 0.0F, 0.5F);
             break;
           default:
-            this.spawnParticlesAlongLine(level, random, pos, COLORS[power], Direction.DOWN, direction, 0.0F, 0.3F);
+            this.spawnParticlesAlongLine(level, random, pos, this.particleColor(power), Direction.DOWN, direction, 0.0F, 0.3F);
         }
       }
     }
