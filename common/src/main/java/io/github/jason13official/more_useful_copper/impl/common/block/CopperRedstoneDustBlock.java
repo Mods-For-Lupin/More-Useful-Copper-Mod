@@ -105,6 +105,26 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     }
   });
 
+  /**
+   * Returns a packed RGB color for the given power level and oxidation state.
+   * Used by block color providers on both Fabric and Forge.
+   *
+   * Color progressions (dim at power 0 → bright at power 15):
+   *   UNAFFECTED  orange   #B8720A → #FFA433
+   *   EXPOSED     red-pink #8A3829 → #DB5938
+   *   WEATHERED   teal     #1A4D47 → #29BF78
+   *   OXIDIZED    cyan     #0D4752 → #17D38A
+   */
+  public static int getColorForPower(int power, WeatherState weatherState) {
+    float f = power / 15.0F;
+    return switch (weatherState) {
+      case EXPOSED   -> Mth.color(f * 0.32F + 0.54F, f * 0.13F + 0.22F, f * 0.06F + 0.16F);
+      case WEATHERED -> Mth.color(f * 0.06F + 0.10F, f * 0.45F + 0.30F, f * 0.19F + 0.28F);
+      case OXIDIZED  -> Mth.color(f * 0.04F + 0.05F, f * 0.55F + 0.28F, f * 0.22F + 0.32F);
+      default        -> Mth.color(f * 0.28F + 0.72F, f * 0.20F + 0.45F, f * 0.10F + 0.10F);
+    };
+  }
+
   private boolean shouldSignal = true;
   protected final BlockState crossState;
   private final WeatheringCopper.WeatherState weatherState;
