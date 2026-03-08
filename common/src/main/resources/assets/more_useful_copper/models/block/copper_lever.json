@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/lever",
+  "textures": {
+    "particle": "minecraft:block/copper_block",
+    "base": "minecraft:block/copper_block",
+    "lever": "more_useful_copper:block/copper_lever"
+  }
+}

@@ -29,6 +29,15 @@ public class ModItems {
     consumer.accept(new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_BUTTON, new Properties()), MoreUsefulCopper.identifier("waxed_weathered_copper_button"));
     consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_BUTTON, new Properties()), MoreUsefulCopper.identifier("waxed_oxidized_copper_button"));
 
+    consumer.accept(new BlockItem(ModBlocks.COPPER_LEVER, new Properties()), MoreUsefulCopper.identifier("copper_lever"));
+    consumer.accept(new BlockItem(ModBlocks.EXPOSED_COPPER_LEVER, new Properties()), MoreUsefulCopper.identifier("exposed_copper_lever"));
+    consumer.accept(new BlockItem(ModBlocks.WEATHERED_COPPER_LEVER, new Properties()), MoreUsefulCopper.identifier("weathered_copper_lever"));
+    consumer.accept(new BlockItem(ModBlocks.OXIDIZED_COPPER_LEVER, new Properties()), MoreUsefulCopper.identifier("oxidized_copper_lever"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_COPPER_LEVER, new Properties()), MoreUsefulCopper.identifier("waxed_copper_lever"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_EXPOSED_COPPER_LEVER, new Properties()), MoreUsefulCopper.identifier("waxed_exposed_copper_lever"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_LEVER, new Properties()), MoreUsefulCopper.identifier("waxed_weathered_copper_lever"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_LEVER, new Properties()), MoreUsefulCopper.identifier("waxed_oxidized_copper_lever"));
+
     consumer.accept(new BlockItem(ModBlocks.COPPER_COMPARATOR, new Properties()), MoreUsefulCopper.identifier("copper_comparator"));
     consumer.accept(new BlockItem(ModBlocks.EXPOSED_COPPER_COMPARATOR, new Properties()), MoreUsefulCopper.identifier("exposed_copper_comparator"));
     consumer.accept(new BlockItem(ModBlocks.WEATHERED_COPPER_COMPARATOR, new Properties()), MoreUsefulCopper.identifier("weathered_copper_comparator"));

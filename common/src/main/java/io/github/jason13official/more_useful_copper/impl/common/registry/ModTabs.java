@@ -41,6 +41,15 @@ public class ModTabs {
     output.accept(ModBlocks.WAXED_WEATHERED_COPPER_BUTTON);
     output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_BUTTON);
 
+    output.accept(ModBlocks.COPPER_LEVER);
+    output.accept(ModBlocks.EXPOSED_COPPER_LEVER);
+    output.accept(ModBlocks.WEATHERED_COPPER_LEVER);
+    output.accept(ModBlocks.OXIDIZED_COPPER_LEVER);
+    output.accept(ModBlocks.WAXED_COPPER_LEVER);
+    output.accept(ModBlocks.WAXED_EXPOSED_COPPER_LEVER);
+    output.accept(ModBlocks.WAXED_WEATHERED_COPPER_LEVER);
+    output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_LEVER);
+
     output.accept(ModBlocks.COPPER_COMPARATOR);
     output.accept(ModBlocks.EXPOSED_COPPER_COMPARATOR);
     output.accept(ModBlocks.WEATHERED_COPPER_COMPARATOR);
