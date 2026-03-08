@@ -1,0 +1,8 @@
+{
+  "render_type": "cutout",
+  "parent": "minecraft:block/redstone_dust_side",
+  "textures": {
+    "particle": "more_useful_copper:block/weathered_copper_redstone_dust_dot",
+    "overlay": "more_useful_copper:block/copper_redstone_dust_overlay"
+  }
+}

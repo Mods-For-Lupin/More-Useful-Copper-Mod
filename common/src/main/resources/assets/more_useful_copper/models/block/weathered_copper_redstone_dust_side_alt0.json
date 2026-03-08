@@ -1,0 +1,7 @@
+{
+  "render_type": "cutout",
+  "parent": "more_useful_copper:block/weathered_copper_redstone_dust_side_alt",
+  "textures": {
+    "line": "more_useful_copper:block/weathered_copper_redstone_dust_line0"
+  }
+}

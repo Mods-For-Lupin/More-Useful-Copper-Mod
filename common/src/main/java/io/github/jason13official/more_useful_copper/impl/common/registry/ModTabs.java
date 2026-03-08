@@ -49,5 +49,14 @@ public class ModTabs {
     output.accept(ModBlocks.WAXED_EXPOSED_COPPER_COMPARATOR);
     output.accept(ModBlocks.WAXED_WEATHERED_COPPER_COMPARATOR);
     output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_COMPARATOR);
+
+    output.accept(ModBlocks.COPPER_REDSTONE_DUST);
+    output.accept(ModBlocks.EXPOSED_COPPER_REDSTONE_DUST);
+    output.accept(ModBlocks.WEATHERED_COPPER_REDSTONE_DUST);
+    output.accept(ModBlocks.OXIDIZED_COPPER_REDSTONE_DUST);
+    output.accept(ModBlocks.WAXED_COPPER_REDSTONE_DUST);
+    output.accept(ModBlocks.WAXED_EXPOSED_COPPER_REDSTONE_DUST);
+    output.accept(ModBlocks.WAXED_WEATHERED_COPPER_REDSTONE_DUST);
+    output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_REDSTONE_DUST);
   }
 }

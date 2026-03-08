@@ -1,0 +1,12 @@
+{
+  "values": [
+    "more_useful_copper:copper_redstone_dust",
+    "more_useful_copper:exposed_copper_redstone_dust",
+    "more_useful_copper:weathered_copper_redstone_dust",
+    "more_useful_copper:oxidized_copper_redstone_dust",
+    "more_useful_copper:waxed_copper_redstone_dust",
+    "more_useful_copper:waxed_exposed_copper_redstone_dust",
+    "more_useful_copper:waxed_weathered_copper_redstone_dust",
+    "more_useful_copper:waxed_oxidized_copper_redstone_dust"
+  ]
+}

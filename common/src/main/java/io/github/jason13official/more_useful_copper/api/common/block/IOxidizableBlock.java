@@ -28,6 +28,10 @@ public interface IOxidizableBlock extends ChangeOverTimeBlock<WeatherState> {
     addMapping(ModBlocks.COPPER_COMPARATOR, ModBlocks.EXPOSED_COPPER_COMPARATOR);
     addMapping(ModBlocks.EXPOSED_COPPER_COMPARATOR, ModBlocks.WEATHERED_COPPER_COMPARATOR);
     addMapping(ModBlocks.WEATHERED_COPPER_COMPARATOR, ModBlocks.OXIDIZED_COPPER_COMPARATOR);
+
+    addMapping(ModBlocks.COPPER_REDSTONE_DUST, ModBlocks.EXPOSED_COPPER_REDSTONE_DUST);
+    addMapping(ModBlocks.EXPOSED_COPPER_REDSTONE_DUST, ModBlocks.WEATHERED_COPPER_REDSTONE_DUST);
+    addMapping(ModBlocks.WEATHERED_COPPER_REDSTONE_DUST, ModBlocks.OXIDIZED_COPPER_REDSTONE_DUST);
   }
 
   static Optional<Block> getPrevious(Block block) {

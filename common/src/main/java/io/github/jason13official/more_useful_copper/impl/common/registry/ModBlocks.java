@@ -3,8 +3,10 @@ package io.github.jason13official.more_useful_copper.impl.common.registry;
 import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperButtonBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperComparatorBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedButtonBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedComparatorBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRedstoneDustBlock;
 import java.util.function.BiConsumer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -35,6 +37,16 @@ public class ModBlocks {
   public static Block WAXED_EXPOSED_COPPER_COMPARATOR;
   public static Block WAXED_WEATHERED_COPPER_COMPARATOR;
   public static Block WAXED_OXIDIZED_COPPER_COMPARATOR;
+
+  public static CopperRedstoneDustBlock COPPER_REDSTONE_DUST;
+  public static CopperRedstoneDustBlock EXPOSED_COPPER_REDSTONE_DUST;
+  public static CopperRedstoneDustBlock WEATHERED_COPPER_REDSTONE_DUST;
+  public static CopperRedstoneDustBlock OXIDIZED_COPPER_REDSTONE_DUST;
+
+  public static Block WAXED_COPPER_REDSTONE_DUST;
+  public static Block WAXED_EXPOSED_COPPER_REDSTONE_DUST;
+  public static Block WAXED_WEATHERED_COPPER_REDSTONE_DUST;
+  public static Block WAXED_OXIDIZED_COPPER_REDSTONE_DUST;
 
   public static void register(BiConsumer<Block, ResourceLocation> consumer) {
 
@@ -75,6 +87,25 @@ public class ModBlocks {
     consumer.accept(WAXED_EXPOSED_COPPER_COMPARATOR, MoreUsefulCopper.identifier("waxed_exposed_copper_comparator"));
     consumer.accept(WAXED_WEATHERED_COPPER_COMPARATOR, MoreUsefulCopper.identifier("waxed_weathered_copper_comparator"));
     consumer.accept(WAXED_OXIDIZED_COPPER_COMPARATOR, MoreUsefulCopper.identifier("waxed_oxidized_copper_comparator"));
+
+    COPPER_REDSTONE_DUST = weatheringCopperRedstoneDust(WeatherState.UNAFFECTED);
+    EXPOSED_COPPER_REDSTONE_DUST = weatheringCopperRedstoneDust(WeatherState.EXPOSED);
+    WEATHERED_COPPER_REDSTONE_DUST = weatheringCopperRedstoneDust(WeatherState.WEATHERED);
+    OXIDIZED_COPPER_REDSTONE_DUST = weatheringCopperRedstoneDust(WeatherState.OXIDIZED);
+
+    WAXED_COPPER_REDSTONE_DUST = waxedCopperRedstoneDust();
+    WAXED_EXPOSED_COPPER_REDSTONE_DUST = waxedCopperRedstoneDust();
+    WAXED_WEATHERED_COPPER_REDSTONE_DUST = waxedCopperRedstoneDust();
+    WAXED_OXIDIZED_COPPER_REDSTONE_DUST = waxedCopperRedstoneDust();
+
+    consumer.accept(COPPER_REDSTONE_DUST, MoreUsefulCopper.identifier("copper_redstone_dust"));
+    consumer.accept(EXPOSED_COPPER_REDSTONE_DUST, MoreUsefulCopper.identifier("exposed_copper_redstone_dust"));
+    consumer.accept(WEATHERED_COPPER_REDSTONE_DUST, MoreUsefulCopper.identifier("weathered_copper_redstone_dust"));
+    consumer.accept(OXIDIZED_COPPER_REDSTONE_DUST, MoreUsefulCopper.identifier("oxidized_copper_redstone_dust"));
+    consumer.accept(WAXED_COPPER_REDSTONE_DUST, MoreUsefulCopper.identifier("waxed_copper_redstone_dust"));
+    consumer.accept(WAXED_EXPOSED_COPPER_REDSTONE_DUST, MoreUsefulCopper.identifier("waxed_exposed_copper_redstone_dust"));
+    consumer.accept(WAXED_WEATHERED_COPPER_REDSTONE_DUST, MoreUsefulCopper.identifier("waxed_weathered_copper_redstone_dust"));
+    consumer.accept(WAXED_OXIDIZED_COPPER_REDSTONE_DUST, MoreUsefulCopper.identifier("waxed_oxidized_copper_redstone_dust"));
   }
 
   private static CopperButtonBlock weatheringCopperButton(WeatherState weatherState, int ticksToStayPressed) {
@@ -91,5 +122,15 @@ public class ModBlocks {
 
   private static WaxedComparatorBlock waxedCopperComparator() {
     return new WaxedComparatorBlock(Properties.of().instabreak().pushReaction(PushReaction.DESTROY));
+  }
+
+  private static CopperRedstoneDustBlock weatheringCopperRedstoneDust(WeatherState weatherState) {
+    return new CopperRedstoneDustBlock(
+        Properties.of().noCollission().instabreak().pushReaction(PushReaction.DESTROY), weatherState);
+  }
+
+  private static WaxedRedstoneDustBlock waxedCopperRedstoneDust() {
+    return new WaxedRedstoneDustBlock(
+        Properties.of().noCollission().instabreak().pushReaction(PushReaction.DESTROY));
   }
 }
