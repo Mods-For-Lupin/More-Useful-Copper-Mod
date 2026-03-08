@@ -47,7 +47,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.RedstoneSide;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
@@ -92,45 +91,13 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   );
   // Shared static cache across all 8 copper wire block instances
   private static final Map<BlockState, VoxelShape> SHAPES_CACHE = Maps.newHashMap();
-
-  private Vec3 particleColor(int power) {
-    float f = power / 15.0F;
-    return switch (this.weatherState) {
-      case EXPOSED   -> new Vec3(f * 0.38 + 0.26, f * 0.29 + 0.20, f * 0.25 + 0.16);
-      case WEATHERED -> new Vec3(f * 0.26 + 0.17, f * 0.36 + 0.24, f * 0.26 + 0.18);
-      case OXIDIZED  -> new Vec3(f * 0.20 + 0.13, f * 0.39 + 0.26, f * 0.32 + 0.21);
-      default        -> new Vec3(f * 0.46 + 0.30, f * 0.26 + 0.17, f * 0.19 + 0.13);
-    };
-  }
-
-  /**
-   * Returns a packed RGB color for the given power level and oxidation state.
-   * Used by block color providers on both Fabric and Forge.
-   *
-   * Color progressions (dim at power 0 → bright at power 15), derived from blurred reference images:
-   *   UNAFFECTED  #C36E52  dim 40% → bright
-   *   EXPOSED     #A37E69  dim 40% → bright
-   *   WEATHERED   #6D9A70  dim 40% → bright
-   *   OXIDIZED    #54A688  dim 40% → bright
-   */
-  public static int getColorForPower(int power, WeatherState weatherState) {
-    float f = power / 15.0F;
-    return switch (weatherState) {
-      case EXPOSED   -> Mth.color(f * 0.38F + 0.26F, f * 0.29F + 0.20F, f * 0.25F + 0.16F);
-      case WEATHERED -> Mth.color(f * 0.26F + 0.17F, f * 0.36F + 0.24F, f * 0.26F + 0.18F);
-      case OXIDIZED  -> Mth.color(f * 0.20F + 0.13F, f * 0.39F + 0.26F, f * 0.32F + 0.21F);
-      default        -> Mth.color(f * 0.46F + 0.30F, f * 0.26F + 0.17F, f * 0.19F + 0.13F);
-    };
-  }
-
-  private boolean shouldSignal = true;
   // True while ANY wire type (vanilla or copper) is inside its getBestNeighborSignal call.
   // Mirrors the role of vanilla's shouldSignal=false, but works across all block instances.
   // Single-threaded redstone tick: no volatile needed.
   public static boolean isAnyWireCalculating = false;
   protected final BlockState crossState;
   private final WeatheringCopper.WeatherState weatherState;
-
+  private boolean shouldSignal = true;
   public CopperRedstoneDustBlock(BlockBehaviour.Properties props, WeatherState weatherState) {
     super(props);
     this.weatherState = weatherState;
@@ -156,12 +123,93 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     }
   }
 
+  /**
+   * Returns a packed RGB color for the given power level and oxidation state. Used by block color providers on both Fabric and Forge.
+   * <p>
+   * Color progressions (dim at power 0 → bright at power 15), derived from blurred reference images: UNAFFECTED  #C36E52  dim 40% → bright EXPOSED     #A37E69  dim 40% → bright WEATHERED   #6D9A70
+   * dim 40% → bright OXIDIZED    #54A688  dim 40% → bright
+   */
+  public static int getColorForPower(int power, WeatherState weatherState) {
+    float f = power / 15.0F;
+    return switch (weatherState) {
+      case EXPOSED -> Mth.color(f * 0.38F + 0.26F, f * 0.29F + 0.20F, f * 0.25F + 0.16F);
+      case WEATHERED -> Mth.color(f * 0.26F + 0.17F, f * 0.36F + 0.24F, f * 0.26F + 0.18F);
+      case OXIDIZED -> Mth.color(f * 0.20F + 0.13F, f * 0.39F + 0.26F, f * 0.32F + 0.21F);
+      default -> Mth.color(f * 0.46F + 0.30F, f * 0.26F + 0.17F, f * 0.19F + 0.13F);
+    };
+  }
+
+  protected static boolean isCross(BlockState state) {
+    return state.getValue(NORTH).isConnected()
+        && state.getValue(SOUTH).isConnected()
+        && state.getValue(EAST).isConnected()
+        && state.getValue(WEST).isConnected();
+  }
+
+  protected static boolean isDot(BlockState state) {
+    return !state.getValue(NORTH).isConnected()
+        && !state.getValue(SOUTH).isConnected()
+        && !state.getValue(EAST).isConnected()
+        && !state.getValue(WEST).isConnected();
+  }
+
+  // --- Shape ---
+
+  protected static boolean shouldConnectTo(BlockState state) {
+    return shouldConnectTo(state, null);
+  }
+
+  protected static boolean shouldConnectTo(BlockState state, @Nullable Direction direction) {
+    if (state.is(Blocks.REDSTONE_WIRE) || state.is(ModBlockTags.COPPER_REDSTONE_WIRE)) {
+      return true;
+    } else if (state.is(Blocks.REPEATER)) {
+      Direction facing = state.getValue(RepeaterBlock.FACING);
+      return facing == direction || facing.getOpposite() == direction;
+    } else {
+      return state.is(Blocks.OBSERVER) ? direction == state.getValue(ObserverBlock.FACING) : state.isSignalSource() && direction != null;
+    }
+  }
+
+  // --- Placement & shape updates ---
+
+  @Nullable
+  private static InteractionResult tryWaxing(BlockState state, Level level, BlockPos pos, Player player, ItemStack itemStack) {
+    if (itemStack.getItem() instanceof HoneycombItem) {
+      Optional<BlockState> waxedState = WaxableRegistry.getWaxed(state);
+      if (waxedState.isPresent()) {
+        if (!level.isClientSide) {
+          BlockState blockstate = waxedState.get();
+          if (player instanceof ServerPlayer sp) {
+            CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(sp, pos, itemStack);
+          }
+          itemStack.shrink(1);
+          level.setBlock(pos, blockstate, Block.UPDATE_ALL_IMMEDIATE);
+          level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockstate));
+          level.levelEvent(null, LevelEvent.PARTICLES_AND_SOUND_WAX_ON, pos, 0);
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
+      }
+      return InteractionResult.PASS;
+    }
+    return null;
+  }
+
+  private Vec3 particleColor(int power) {
+    float f = power / 15.0F;
+    return switch (this.weatherState) {
+      case EXPOSED -> new Vec3(f * 0.38 + 0.26, f * 0.29 + 0.20, f * 0.25 + 0.16);
+      case WEATHERED -> new Vec3(f * 0.26 + 0.17, f * 0.36 + 0.24, f * 0.26 + 0.18);
+      case OXIDIZED -> new Vec3(f * 0.20 + 0.13, f * 0.39 + 0.26, f * 0.32 + 0.21);
+      default -> new Vec3(f * 0.46 + 0.30, f * 0.26 + 0.17, f * 0.19 + 0.13);
+    };
+  }
+
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     builder.add(NORTH, EAST, SOUTH, WEST, POWER, WATERLOGGED);
   }
 
-  // --- Shape ---
+  // --- Connection logic (copied from RedStoneWireBlock) ---
 
   private VoxelShape calculateShape(BlockState state) {
     VoxelShape shape = SHAPE_DOT;
@@ -180,8 +228,6 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
     return SHAPES_CACHE.get(state.setValue(POWER, 0));
   }
-
-  // --- Placement & shape updates ---
 
   @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -233,8 +279,6 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     }
   }
 
-  // --- Connection logic (copied from RedStoneWireBlock) ---
-
   protected BlockState getConnectionState(BlockGetter level, BlockState state, BlockPos pos) {
     boolean wasDot = isDot(state);
     state = this.getMissingConnections(level, this.defaultBlockState().setValue(POWER, state.getValue(POWER)), pos);
@@ -247,12 +291,22 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     boolean w = state.getValue(WEST).isConnected();
     boolean noNS = !n && !s;
     boolean noEW = !e && !w;
-    if (!w && noNS) state = state.setValue(WEST, RedstoneSide.SIDE);
-    if (!e && noNS) state = state.setValue(EAST, RedstoneSide.SIDE);
-    if (!n && noEW) state = state.setValue(NORTH, RedstoneSide.SIDE);
-    if (!s && noEW) state = state.setValue(SOUTH, RedstoneSide.SIDE);
+    if (!w && noNS) {
+      state = state.setValue(WEST, RedstoneSide.SIDE);
+    }
+    if (!e && noNS) {
+      state = state.setValue(EAST, RedstoneSide.SIDE);
+    }
+    if (!n && noEW) {
+      state = state.setValue(NORTH, RedstoneSide.SIDE);
+    }
+    if (!s && noEW) {
+      state = state.setValue(SOUTH, RedstoneSide.SIDE);
+    }
     return state;
   }
+
+  // --- Modified: recognizes both vanilla and copper wire ---
 
   private BlockState getMissingConnections(BlockGetter level, BlockState state, BlockPos pos) {
     boolean aboveIsNonConductor = !level.getBlockState(pos.above()).isRedstoneConductor(level, pos);
@@ -287,45 +341,18 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
         : RedstoneSide.SIDE;
   }
 
-  protected static boolean isCross(BlockState state) {
-    return state.getValue(NORTH).isConnected()
-        && state.getValue(SOUTH).isConnected()
-        && state.getValue(EAST).isConnected()
-        && state.getValue(WEST).isConnected();
-  }
-
-  protected static boolean isDot(BlockState state) {
-    return !state.getValue(NORTH).isConnected()
-        && !state.getValue(SOUTH).isConnected()
-        && !state.getValue(EAST).isConnected()
-        && !state.getValue(WEST).isConnected();
-  }
-
-  // --- Modified: recognizes both vanilla and copper wire ---
-
-  protected static boolean shouldConnectTo(BlockState state) {
-    return shouldConnectTo(state, null);
-  }
-
-  protected static boolean shouldConnectTo(BlockState state, @Nullable Direction direction) {
-    if (state.is(Blocks.REDSTONE_WIRE) || state.is(ModBlockTags.COPPER_REDSTONE_WIRE)) {
-      return true;
-    } else if (state.is(Blocks.REPEATER)) {
-      Direction facing = state.getValue(RepeaterBlock.FACING);
-      return facing == direction || facing.getOpposite() == direction;
-    } else {
-      return state.is(Blocks.OBSERVER) ? direction == state.getValue(ObserverBlock.FACING) : state.isSignalSource() && direction != null;
-    }
-  }
+  // --- Power propagation (copied from RedStoneWireBlock) ---
 
   // Modified: reads power from both vanilla wire and all copper wire variants
   private int getWireSignal(BlockState state) {
-    if (state.is(ModBlockTags.COPPER_REDSTONE_WIRE)) return state.getValue(POWER);
-    if (state.is(Blocks.REDSTONE_WIRE)) return state.getValue(RedStoneWireBlock.POWER);
+    if (state.is(ModBlockTags.COPPER_REDSTONE_WIRE)) {
+      return state.getValue(POWER);
+    }
+    if (state.is(Blocks.REDSTONE_WIRE)) {
+      return state.getValue(RedStoneWireBlock.POWER);
+    }
     return 0;
   }
-
-  // --- Power propagation (copied from RedStoneWireBlock) ---
 
   private void updatePowerStrength(Level level, BlockPos pos, BlockState state) {
     int i = this.calculateTargetStrength(level, pos);
@@ -390,6 +417,8 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     }
   }
 
+  // --- Block event handlers ---
+
   protected void updatesOnShapeChange(Level level, BlockPos pos, BlockState oldState, BlockState newState) {
     for (Direction direction : Direction.Plane.HORIZONTAL) {
       BlockPos blockPos = pos.relative(direction);
@@ -400,8 +429,6 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
       }
     }
   }
-
-  // --- Block event handlers ---
 
   @Override
   public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
@@ -428,6 +455,8 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     }
   }
 
+  // --- Signal output ---
+
   @Override
   public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
     if (!level.isClientSide) {
@@ -439,8 +468,6 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
       }
     }
   }
-
-  // --- Signal output ---
 
   @Override
   public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
@@ -462,12 +489,12 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
         : i;
   }
 
+  // --- Survival ---
+
   @Override
   public boolean isSignalSource(BlockState state) {
     return this.shouldSignal;
   }
-
-  // --- Survival ---
 
   @Override
   public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
@@ -476,18 +503,18 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     return this.canSurviveOn(level, blockPos, blockState);
   }
 
+  // --- Waterlogging ---
+
   private boolean canSurviveOn(BlockGetter level, BlockPos pos, BlockState state) {
     return state.isFaceSturdy(level, pos, Direction.UP) || state.is(Blocks.HOPPER);
   }
 
-  // --- Waterlogging ---
+  // --- IOxidizableBlock ---
 
   @Override
   public FluidState getFluidState(BlockState state) {
     return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
   }
-
-  // --- IOxidizableBlock ---
 
   @Override
   public WeatherState getAge() {
@@ -499,33 +526,11 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     this.onRandomTick(state, level, pos, random);
   }
 
+  // --- Waxing helper (copied from CopperComparatorBlock) ---
+
   @Override
   public boolean isRandomlyTicking(BlockState state) {
     return IOxidizableBlock.getNext(state.getBlock()).isPresent();
-  }
-
-  // --- Waxing helper (copied from CopperComparatorBlock) ---
-
-  @Nullable
-  private static InteractionResult tryWaxing(BlockState state, Level level, BlockPos pos, Player player, ItemStack itemStack) {
-    if (itemStack.getItem() instanceof HoneycombItem) {
-      Optional<BlockState> waxedState = WaxableRegistry.getWaxed(state);
-      if (waxedState.isPresent()) {
-        if (!level.isClientSide) {
-          BlockState blockstate = waxedState.get();
-          if (player instanceof ServerPlayer sp) {
-            CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(sp, pos, itemStack);
-          }
-          itemStack.shrink(1);
-          level.setBlock(pos, blockstate, Block.UPDATE_ALL_IMMEDIATE);
-          level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockstate));
-          level.levelEvent(null, LevelEvent.PARTICLES_AND_SOUND_WAX_ON, pos, 0);
-        }
-        return InteractionResult.sidedSuccess(level.isClientSide);
-      }
-      return InteractionResult.PASS;
-    }
-    return null;
   }
 
   // --- Interaction ---

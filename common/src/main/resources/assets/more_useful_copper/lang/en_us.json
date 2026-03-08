@@ -1,6 +1,5 @@
 {
   "itemGroup.moreUsefulCopper": "More Useful Copper",
-  
   "block.more_useful_copper.copper_button": "Copper Button",
   "block.more_useful_copper.exposed_copper_button": "Exposed Copper Button",
   "block.more_useful_copper.weathered_copper_button": "Weathered Copper Button",
@@ -17,7 +16,6 @@
   "item.more_useful_copper.waxed_exposed_copper_button": "Waxed Exposed Copper Button",
   "item.more_useful_copper.waxed_weathered_copper_button": "Waxed Weathered Copper Button",
   "item.more_useful_copper.waxed_oxidized_copper_button": "Waxed Oxidized Copper Button",
-  
   "block.more_useful_copper.copper_lever": "Copper Lever",
   "block.more_useful_copper.exposed_copper_lever": "Exposed Copper Lever",
   "block.more_useful_copper.weathered_copper_lever": "Weathered Copper Lever",
@@ -34,7 +32,6 @@
   "item.more_useful_copper.waxed_exposed_copper_lever": "Waxed Exposed Copper Lever",
   "item.more_useful_copper.waxed_weathered_copper_lever": "Waxed Weathered Copper Lever",
   "item.more_useful_copper.waxed_oxidized_copper_lever": "Waxed Oxidized Copper Lever",
-
   "block.more_useful_copper.copper_redstone_dust": "Copper Redstone Dust",
   "block.more_useful_copper.exposed_copper_redstone_dust": "Exposed Copper Redstone Dust",
   "block.more_useful_copper.weathered_copper_redstone_dust": "Weathered Copper Redstone Dust",
@@ -51,7 +48,6 @@
   "item.more_useful_copper.waxed_exposed_copper_redstone_dust": "Waxed Exposed Copper Redstone Dust",
   "item.more_useful_copper.waxed_weathered_copper_redstone_dust": "Waxed Weathered Copper Redstone Dust",
   "item.more_useful_copper.waxed_oxidized_copper_redstone_dust": "Waxed Oxidized Copper Redstone Dust",
-  
   "block.more_useful_copper.copper_comparator": "Copper Comparator",
   "block.more_useful_copper.exposed_copper_comparator": "Exposed Copper Comparator",
   "block.more_useful_copper.weathered_copper_comparator": "Weathered Copper Comparator",
@@ -68,7 +64,6 @@
   "item.more_useful_copper.waxed_exposed_copper_comparator": "Waxed Exposed Copper Comparator",
   "item.more_useful_copper.waxed_weathered_copper_comparator": "Waxed Weathered Copper Comparator",
   "item.more_useful_copper.waxed_oxidized_copper_comparator": "Waxed Oxidized Copper Comparator",
-
   "item.more_useful_copper.wax_scraper": "Wax Scraper",
   "item.more_useful_copper.spray_bottle": "Spray Bottle"
 }
