@@ -1,6 +1,6 @@
 {
   "render_type": "cutout",
-  "parent": "minecraft:block/repeater_1tick_locked_on",
+  "parent": "minecraft:block/repeater_1tick_on_locked",
   "textures": {
     "slab": "minecraft:block/exposed_copper",
     "top": "more_useful_copper:block/exposed_copper_repeater_on",
