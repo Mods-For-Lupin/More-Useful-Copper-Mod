@@ -5,12 +5,9 @@ import io.github.jason13official.more_useful_copper.api.common.block.WaxableRegi
 import io.github.jason13official.more_useful_copper.impl.common.block.entity.CopperComparatorBlockEntity;
 import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
 import java.util.List;
-import java.util.Optional;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -18,7 +15,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.HoneycombItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -27,7 +23,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
@@ -38,7 +33,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.ComparatorMode;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
@@ -66,27 +60,6 @@ public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBloc
   }
 
   // --- IOxidizableBlock ---
-
-  private static @Nullable InteractionResult tryWaxing(BlockState state, Level level, BlockPos pos, Player player, ItemStack itemStack) {
-    if (itemStack.getItem() instanceof HoneycombItem) {
-      Optional<BlockState> waxedState = WaxableRegistry.getWaxed(state);
-      if (waxedState.isPresent()) {
-        if (!level.isClientSide) {
-          BlockState blockstate = waxedState.get();
-          if (player instanceof ServerPlayer sp) {
-            CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(sp, pos, itemStack);
-          }
-          itemStack.shrink(1);
-          level.setBlock(pos, blockstate, Block.UPDATE_ALL_IMMEDIATE);
-          level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockstate));
-          level.levelEvent(null, LevelEvent.PARTICLES_AND_SOUND_WAX_ON, pos, 0);
-        }
-        return InteractionResult.sidedSuccess(level.isClientSide);
-      }
-      return InteractionResult.PASS;
-    }
-    return null;
-  }
 
   @Override
   public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
@@ -270,7 +243,7 @@ public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBloc
     }
 
     // apply wax
-    InteractionResult waxResult = tryWaxing(state, level, pos, player, stackInHand);
+    InteractionResult waxResult = WaxableRegistry.tryWaxing(state, level, pos, player, stackInHand);
     if (waxResult != null) {
       return waxResult;
     }

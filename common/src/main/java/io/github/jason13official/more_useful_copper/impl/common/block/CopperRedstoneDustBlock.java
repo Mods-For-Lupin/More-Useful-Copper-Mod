@@ -8,20 +8,16 @@ import io.github.jason13official.more_useful_copper.api.common.block.WaxableRegi
 import io.github.jason13official.more_useful_copper.impl.common.tags.ModBlockTags;
 import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.HoneycombItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -30,7 +26,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.ObserverBlock;
 import net.minecraft.world.level.block.RedStoneWireBlock;
@@ -48,7 +43,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.RedstoneSide;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
@@ -171,28 +165,6 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   }
 
   // --- Placement & shape updates ---
-
-  @Nullable
-  private static InteractionResult tryWaxing(BlockState state, Level level, BlockPos pos, Player player, ItemStack itemStack) {
-    if (itemStack.getItem() instanceof HoneycombItem) {
-      Optional<BlockState> waxedState = WaxableRegistry.getWaxed(state);
-      if (waxedState.isPresent()) {
-        if (!level.isClientSide) {
-          BlockState blockstate = waxedState.get();
-          if (player instanceof ServerPlayer sp) {
-            CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(sp, pos, itemStack);
-          }
-          itemStack.shrink(1);
-          level.setBlock(pos, blockstate, Block.UPDATE_ALL_IMMEDIATE);
-          level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockstate));
-          level.levelEvent(null, LevelEvent.PARTICLES_AND_SOUND_WAX_ON, pos, 0);
-        }
-        return InteractionResult.sidedSuccess(level.isClientSide);
-      }
-      return InteractionResult.PASS;
-    }
-    return null;
-  }
 
   private Vec3 particleColor(int power) {
     float f = power / 15.0F;
@@ -526,8 +498,6 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     this.onRandomTick(state, level, pos, random);
   }
 
-  // --- Waxing helper (copied from CopperComparatorBlock) ---
-
   @Override
   public boolean isRandomlyTicking(BlockState state) {
     return IOxidizableBlock.getNext(state.getBlock()).isPresent();
@@ -553,7 +523,7 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     }
 
     // Apply wax
-    InteractionResult waxResult = tryWaxing(state, level, pos, player, stackInHand);
+    InteractionResult waxResult = WaxableRegistry.tryWaxing(state, level, pos, player, stackInHand);
     if (waxResult != null) {
       return waxResult;
     }
