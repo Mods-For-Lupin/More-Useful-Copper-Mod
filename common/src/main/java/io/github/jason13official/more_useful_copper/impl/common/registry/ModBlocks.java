@@ -238,7 +238,7 @@ public class ModBlocks {
     return new CopperButtonBlock(Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY), weatherState, BlockSetType.STONE, ticksToStayPressed, true);
   }
 
-  private static ButtonBlock waxedCopperButton(int ticksToStayPressed) {
+  private static WaxedButtonBlock waxedCopperButton(int ticksToStayPressed) {
     return new WaxedButtonBlock(Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY), BlockSetType.STONE, ticksToStayPressed, true);
   }
 

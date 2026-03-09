@@ -8,14 +8,20 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class WaxedButtonBlock extends ButtonBlock {
+public class WaxedButtonBlock extends CopperButtonBlock {
 
   public WaxedButtonBlock(Properties properties, BlockSetType type, int ticksToStayPressed, boolean arrowsCanPress) {
-    super(properties, type, ticksToStayPressed, arrowsCanPress);
+    super(properties, WeatherState.UNAFFECTED, type, ticksToStayPressed, arrowsCanPress);
+  }
+
+  @Override
+  public boolean isRandomlyTicking(BlockState state) {
+    return false;
   }
 
   @Override
