@@ -1,6 +1,6 @@
 package io.github.jason13official.more_useful_copper.mixin;
 
-import io.github.jason13official.more_useful_copper.mixin.logic.CommonRedStoneWireBlockMixinLogic;
+import io.github.jason13official.more_useful_copper.impl.common.util.CommonRedStoneWireBlockMixinLogic;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;

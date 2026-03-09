@@ -34,6 +34,33 @@ public class MoreUsefulCopperClientFabric implements ClientModInitializer {
     BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_WEATHERED_COPPER_REDSTONE_DUST, RenderType.cutout());
     BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_OXIDIZED_COPPER_REDSTONE_DUST, RenderType.cutout());
 
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.COPPER_REDSTONE_TORCH, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.EXPOSED_COPPER_REDSTONE_TORCH, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WEATHERED_COPPER_REDSTONE_TORCH, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.OXIDIZED_COPPER_REDSTONE_TORCH, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_COPPER_REDSTONE_TORCH, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_EXPOSED_COPPER_REDSTONE_TORCH, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_WEATHERED_COPPER_REDSTONE_TORCH, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_OXIDIZED_COPPER_REDSTONE_TORCH, RenderType.cutout());
+
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.COPPER_WALL_REDSTONE_TORCH, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.EXPOSED_COPPER_WALL_REDSTONE_TORCH, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WEATHERED_COPPER_WALL_REDSTONE_TORCH, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.OXIDIZED_COPPER_WALL_REDSTONE_TORCH, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_COPPER_WALL_REDSTONE_TORCH, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_EXPOSED_COPPER_WALL_REDSTONE_TORCH, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_WEATHERED_COPPER_WALL_REDSTONE_TORCH, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_OXIDIZED_COPPER_WALL_REDSTONE_TORCH, RenderType.cutout());
+
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.COPPER_REPEATER, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.EXPOSED_COPPER_REPEATER, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WEATHERED_COPPER_REPEATER, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.OXIDIZED_COPPER_REPEATER, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_COPPER_REPEATER, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_EXPOSED_COPPER_REPEATER, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_WEATHERED_COPPER_REPEATER, RenderType.cutout());
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.WAXED_OXIDIZED_COPPER_REPEATER, RenderType.cutout());
+
     ColorProviderRegistry.BLOCK.register(
         (state, level, pos, tint) -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.UNAFFECTED),
         ModBlocks.COPPER_REDSTONE_DUST, ModBlocks.WAXED_COPPER_REDSTONE_DUST);

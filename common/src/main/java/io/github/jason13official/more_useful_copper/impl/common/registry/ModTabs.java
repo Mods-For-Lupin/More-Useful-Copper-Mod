@@ -67,5 +67,23 @@ public class ModTabs {
     output.accept(ModBlocks.WAXED_EXPOSED_COPPER_REDSTONE_DUST);
     output.accept(ModBlocks.WAXED_WEATHERED_COPPER_REDSTONE_DUST);
     output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_REDSTONE_DUST);
+
+    output.accept(ModBlocks.COPPER_REDSTONE_TORCH);
+    output.accept(ModBlocks.EXPOSED_COPPER_REDSTONE_TORCH);
+    output.accept(ModBlocks.WEATHERED_COPPER_REDSTONE_TORCH);
+    output.accept(ModBlocks.OXIDIZED_COPPER_REDSTONE_TORCH);
+    output.accept(ModBlocks.WAXED_COPPER_REDSTONE_TORCH);
+    output.accept(ModBlocks.WAXED_EXPOSED_COPPER_REDSTONE_TORCH);
+    output.accept(ModBlocks.WAXED_WEATHERED_COPPER_REDSTONE_TORCH);
+    output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_REDSTONE_TORCH);
+
+    output.accept(ModBlocks.COPPER_REPEATER);
+    output.accept(ModBlocks.EXPOSED_COPPER_REPEATER);
+    output.accept(ModBlocks.WEATHERED_COPPER_REPEATER);
+    output.accept(ModBlocks.OXIDIZED_COPPER_REPEATER);
+    output.accept(ModBlocks.WAXED_COPPER_REPEATER);
+    output.accept(ModBlocks.WAXED_EXPOSED_COPPER_REPEATER);
+    output.accept(ModBlocks.WAXED_WEATHERED_COPPER_REPEATER);
+    output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_REPEATER);
   }
 }

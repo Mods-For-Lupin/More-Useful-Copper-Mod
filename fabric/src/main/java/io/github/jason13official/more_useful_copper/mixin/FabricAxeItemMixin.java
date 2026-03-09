@@ -1,6 +1,6 @@
 package io.github.jason13official.more_useful_copper.mixin;
 
-import io.github.jason13official.more_useful_copper.mixin.logic.CommonAxeItemMixinLogic;
+import io.github.jason13official.more_useful_copper.impl.common.util.CommonAxeItemMixinLogic;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.context.UseOnContext;

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "T": { "item": "more_useful_copper:copper_redstone_torch" },
+    "C": { "item": "minecraft:copper_ingot" },
+    "R": { "item": "minecraft:redstone" }
+  },
+  "pattern": [
+    "TCT",
+    "CRC",
+    "CCC"
+  ],
+  "result": { "item": "more_useful_copper:copper_repeater" },
+  "show_notification": true
+}

@@ -4,10 +4,12 @@ import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
 import io.github.jason13official.more_useful_copper.impl.common.item.SprayBottleItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.WaxScraperItem;
 import java.util.function.BiConsumer;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.StandingAndWallBlockItem;
 
 public class ModItems {
 
@@ -55,5 +57,24 @@ public class ModItems {
     consumer.accept(new BlockItem(ModBlocks.WAXED_EXPOSED_COPPER_REDSTONE_DUST, new Properties()), MoreUsefulCopper.identifier("waxed_exposed_copper_redstone_dust"));
     consumer.accept(new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_REDSTONE_DUST, new Properties()), MoreUsefulCopper.identifier("waxed_weathered_copper_redstone_dust"));
     consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_REDSTONE_DUST, new Properties()), MoreUsefulCopper.identifier("waxed_oxidized_copper_redstone_dust"));
+
+    // Torch items use StandingAndWallBlockItem so one item places both floor and wall variants
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.COPPER_REDSTONE_TORCH, ModBlocks.COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN), MoreUsefulCopper.identifier("copper_redstone_torch"));
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.EXPOSED_COPPER_REDSTONE_TORCH, ModBlocks.EXPOSED_COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN), MoreUsefulCopper.identifier("exposed_copper_redstone_torch"));
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WEATHERED_COPPER_REDSTONE_TORCH, ModBlocks.WEATHERED_COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN), MoreUsefulCopper.identifier("weathered_copper_redstone_torch"));
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.OXIDIZED_COPPER_REDSTONE_TORCH, ModBlocks.OXIDIZED_COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN), MoreUsefulCopper.identifier("oxidized_copper_redstone_torch"));
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WAXED_COPPER_REDSTONE_TORCH, ModBlocks.WAXED_COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN), MoreUsefulCopper.identifier("waxed_copper_redstone_torch"));
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WAXED_EXPOSED_COPPER_REDSTONE_TORCH, ModBlocks.WAXED_EXPOSED_COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN), MoreUsefulCopper.identifier("waxed_exposed_copper_redstone_torch"));
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WAXED_WEATHERED_COPPER_REDSTONE_TORCH, ModBlocks.WAXED_WEATHERED_COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN), MoreUsefulCopper.identifier("waxed_weathered_copper_redstone_torch"));
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_REDSTONE_TORCH, ModBlocks.WAXED_OXIDIZED_COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN), MoreUsefulCopper.identifier("waxed_oxidized_copper_redstone_torch"));
+
+    consumer.accept(new BlockItem(ModBlocks.COPPER_REPEATER, new Properties()), MoreUsefulCopper.identifier("copper_repeater"));
+    consumer.accept(new BlockItem(ModBlocks.EXPOSED_COPPER_REPEATER, new Properties()), MoreUsefulCopper.identifier("exposed_copper_repeater"));
+    consumer.accept(new BlockItem(ModBlocks.WEATHERED_COPPER_REPEATER, new Properties()), MoreUsefulCopper.identifier("weathered_copper_repeater"));
+    consumer.accept(new BlockItem(ModBlocks.OXIDIZED_COPPER_REPEATER, new Properties()), MoreUsefulCopper.identifier("oxidized_copper_repeater"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_COPPER_REPEATER, new Properties()), MoreUsefulCopper.identifier("waxed_copper_repeater"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_EXPOSED_COPPER_REPEATER, new Properties()), MoreUsefulCopper.identifier("waxed_exposed_copper_repeater"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_REPEATER, new Properties()), MoreUsefulCopper.identifier("waxed_weathered_copper_repeater"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_REPEATER, new Properties()), MoreUsefulCopper.identifier("waxed_oxidized_copper_repeater"));
   }
 }

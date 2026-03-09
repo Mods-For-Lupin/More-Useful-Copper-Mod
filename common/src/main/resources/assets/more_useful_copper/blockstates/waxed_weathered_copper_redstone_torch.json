@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "more_useful_copper:block/weathered_copper_redstone_torch_off"
+    },
+    "lit=true": {
+      "model": "more_useful_copper:block/weathered_copper_redstone_torch"
+    }
+  }
+}

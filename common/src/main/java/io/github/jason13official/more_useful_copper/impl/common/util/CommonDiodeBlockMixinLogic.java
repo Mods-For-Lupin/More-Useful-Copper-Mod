@@ -1,4 +1,4 @@
-package io.github.jason13official.more_useful_copper.mixin.logic;
+package io.github.jason13official.more_useful_copper.impl.common.util;
 
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
 import io.github.jason13official.more_useful_copper.impl.common.tags.ModBlockTags;

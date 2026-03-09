@@ -5,10 +5,16 @@ import io.github.jason13official.more_useful_copper.impl.common.block.CopperButt
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperComparatorBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperLeverBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneTorchBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.CopperRepeaterBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.CopperWallRedstoneTorchBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedButtonBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedComparatorBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedLeverBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRedstoneDustBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRedstoneTorchBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRepeaterBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.WaxedWallRedstoneTorchBlock;
 import java.util.function.BiConsumer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -17,6 +23,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.PushReaction;
 
 public class ModBlocks {
@@ -60,6 +67,36 @@ public class ModBlocks {
   public static Block WAXED_EXPOSED_COPPER_LEVER;
   public static Block WAXED_WEATHERED_COPPER_LEVER;
   public static Block WAXED_OXIDIZED_COPPER_LEVER;
+
+  public static CopperRedstoneTorchBlock COPPER_REDSTONE_TORCH;
+  public static CopperRedstoneTorchBlock EXPOSED_COPPER_REDSTONE_TORCH;
+  public static CopperRedstoneTorchBlock WEATHERED_COPPER_REDSTONE_TORCH;
+  public static CopperRedstoneTorchBlock OXIDIZED_COPPER_REDSTONE_TORCH;
+
+  public static Block WAXED_COPPER_REDSTONE_TORCH;
+  public static Block WAXED_EXPOSED_COPPER_REDSTONE_TORCH;
+  public static Block WAXED_WEATHERED_COPPER_REDSTONE_TORCH;
+  public static Block WAXED_OXIDIZED_COPPER_REDSTONE_TORCH;
+
+  public static CopperWallRedstoneTorchBlock COPPER_WALL_REDSTONE_TORCH;
+  public static CopperWallRedstoneTorchBlock EXPOSED_COPPER_WALL_REDSTONE_TORCH;
+  public static CopperWallRedstoneTorchBlock WEATHERED_COPPER_WALL_REDSTONE_TORCH;
+  public static CopperWallRedstoneTorchBlock OXIDIZED_COPPER_WALL_REDSTONE_TORCH;
+
+  public static Block WAXED_COPPER_WALL_REDSTONE_TORCH;
+  public static Block WAXED_EXPOSED_COPPER_WALL_REDSTONE_TORCH;
+  public static Block WAXED_WEATHERED_COPPER_WALL_REDSTONE_TORCH;
+  public static Block WAXED_OXIDIZED_COPPER_WALL_REDSTONE_TORCH;
+
+  public static CopperRepeaterBlock COPPER_REPEATER;
+  public static CopperRepeaterBlock EXPOSED_COPPER_REPEATER;
+  public static CopperRepeaterBlock WEATHERED_COPPER_REPEATER;
+  public static CopperRepeaterBlock OXIDIZED_COPPER_REPEATER;
+
+  public static Block WAXED_COPPER_REPEATER;
+  public static Block WAXED_EXPOSED_COPPER_REPEATER;
+  public static Block WAXED_WEATHERED_COPPER_REPEATER;
+  public static Block WAXED_OXIDIZED_COPPER_REPEATER;
 
   public static void register(BiConsumer<Block, ResourceLocation> consumer) {
 
@@ -138,6 +175,63 @@ public class ModBlocks {
     consumer.accept(WAXED_EXPOSED_COPPER_LEVER, MoreUsefulCopper.identifier("waxed_exposed_copper_lever"));
     consumer.accept(WAXED_WEATHERED_COPPER_LEVER, MoreUsefulCopper.identifier("waxed_weathered_copper_lever"));
     consumer.accept(WAXED_OXIDIZED_COPPER_LEVER, MoreUsefulCopper.identifier("waxed_oxidized_copper_lever"));
+
+    COPPER_REDSTONE_TORCH = copperRedstoneTorch(WeatherState.UNAFFECTED);
+    EXPOSED_COPPER_REDSTONE_TORCH = copperRedstoneTorch(WeatherState.EXPOSED);
+    WEATHERED_COPPER_REDSTONE_TORCH = copperRedstoneTorch(WeatherState.WEATHERED);
+    OXIDIZED_COPPER_REDSTONE_TORCH = copperRedstoneTorch(WeatherState.OXIDIZED);
+
+    WAXED_COPPER_REDSTONE_TORCH = waxedCopperRedstoneTorch();
+    WAXED_EXPOSED_COPPER_REDSTONE_TORCH = waxedCopperRedstoneTorch();
+    WAXED_WEATHERED_COPPER_REDSTONE_TORCH = waxedCopperRedstoneTorch();
+    WAXED_OXIDIZED_COPPER_REDSTONE_TORCH = waxedCopperRedstoneTorch();
+
+    COPPER_WALL_REDSTONE_TORCH = copperWallRedstoneTorch(WeatherState.UNAFFECTED);
+    EXPOSED_COPPER_WALL_REDSTONE_TORCH = copperWallRedstoneTorch(WeatherState.EXPOSED);
+    WEATHERED_COPPER_WALL_REDSTONE_TORCH = copperWallRedstoneTorch(WeatherState.WEATHERED);
+    OXIDIZED_COPPER_WALL_REDSTONE_TORCH = copperWallRedstoneTorch(WeatherState.OXIDIZED);
+
+    WAXED_COPPER_WALL_REDSTONE_TORCH = waxedCopperWallRedstoneTorch();
+    WAXED_EXPOSED_COPPER_WALL_REDSTONE_TORCH = waxedCopperWallRedstoneTorch();
+    WAXED_WEATHERED_COPPER_WALL_REDSTONE_TORCH = waxedCopperWallRedstoneTorch();
+    WAXED_OXIDIZED_COPPER_WALL_REDSTONE_TORCH = waxedCopperWallRedstoneTorch();
+
+    consumer.accept(COPPER_REDSTONE_TORCH, MoreUsefulCopper.identifier("copper_redstone_torch"));
+    consumer.accept(EXPOSED_COPPER_REDSTONE_TORCH, MoreUsefulCopper.identifier("exposed_copper_redstone_torch"));
+    consumer.accept(WEATHERED_COPPER_REDSTONE_TORCH, MoreUsefulCopper.identifier("weathered_copper_redstone_torch"));
+    consumer.accept(OXIDIZED_COPPER_REDSTONE_TORCH, MoreUsefulCopper.identifier("oxidized_copper_redstone_torch"));
+    consumer.accept(WAXED_COPPER_REDSTONE_TORCH, MoreUsefulCopper.identifier("waxed_copper_redstone_torch"));
+    consumer.accept(WAXED_EXPOSED_COPPER_REDSTONE_TORCH, MoreUsefulCopper.identifier("waxed_exposed_copper_redstone_torch"));
+    consumer.accept(WAXED_WEATHERED_COPPER_REDSTONE_TORCH, MoreUsefulCopper.identifier("waxed_weathered_copper_redstone_torch"));
+    consumer.accept(WAXED_OXIDIZED_COPPER_REDSTONE_TORCH, MoreUsefulCopper.identifier("waxed_oxidized_copper_redstone_torch"));
+
+    consumer.accept(COPPER_WALL_REDSTONE_TORCH, MoreUsefulCopper.identifier("copper_wall_redstone_torch"));
+    consumer.accept(EXPOSED_COPPER_WALL_REDSTONE_TORCH, MoreUsefulCopper.identifier("exposed_copper_wall_redstone_torch"));
+    consumer.accept(WEATHERED_COPPER_WALL_REDSTONE_TORCH, MoreUsefulCopper.identifier("weathered_copper_wall_redstone_torch"));
+    consumer.accept(OXIDIZED_COPPER_WALL_REDSTONE_TORCH, MoreUsefulCopper.identifier("oxidized_copper_wall_redstone_torch"));
+    consumer.accept(WAXED_COPPER_WALL_REDSTONE_TORCH, MoreUsefulCopper.identifier("waxed_copper_wall_redstone_torch"));
+    consumer.accept(WAXED_EXPOSED_COPPER_WALL_REDSTONE_TORCH, MoreUsefulCopper.identifier("waxed_exposed_copper_wall_redstone_torch"));
+    consumer.accept(WAXED_WEATHERED_COPPER_WALL_REDSTONE_TORCH, MoreUsefulCopper.identifier("waxed_weathered_copper_wall_redstone_torch"));
+    consumer.accept(WAXED_OXIDIZED_COPPER_WALL_REDSTONE_TORCH, MoreUsefulCopper.identifier("waxed_oxidized_copper_wall_redstone_torch"));
+
+    COPPER_REPEATER = copperRepeater(WeatherState.UNAFFECTED);
+    EXPOSED_COPPER_REPEATER = copperRepeater(WeatherState.EXPOSED);
+    WEATHERED_COPPER_REPEATER = copperRepeater(WeatherState.WEATHERED);
+    OXIDIZED_COPPER_REPEATER = copperRepeater(WeatherState.OXIDIZED);
+
+    WAXED_COPPER_REPEATER = waxedCopperRepeater();
+    WAXED_EXPOSED_COPPER_REPEATER = waxedCopperRepeater();
+    WAXED_WEATHERED_COPPER_REPEATER = waxedCopperRepeater();
+    WAXED_OXIDIZED_COPPER_REPEATER = waxedCopperRepeater();
+
+    consumer.accept(COPPER_REPEATER, MoreUsefulCopper.identifier("copper_repeater"));
+    consumer.accept(EXPOSED_COPPER_REPEATER, MoreUsefulCopper.identifier("exposed_copper_repeater"));
+    consumer.accept(WEATHERED_COPPER_REPEATER, MoreUsefulCopper.identifier("weathered_copper_repeater"));
+    consumer.accept(OXIDIZED_COPPER_REPEATER, MoreUsefulCopper.identifier("oxidized_copper_repeater"));
+    consumer.accept(WAXED_COPPER_REPEATER, MoreUsefulCopper.identifier("waxed_copper_repeater"));
+    consumer.accept(WAXED_EXPOSED_COPPER_REPEATER, MoreUsefulCopper.identifier("waxed_exposed_copper_repeater"));
+    consumer.accept(WAXED_WEATHERED_COPPER_REPEATER, MoreUsefulCopper.identifier("waxed_weathered_copper_repeater"));
+    consumer.accept(WAXED_OXIDIZED_COPPER_REPEATER, MoreUsefulCopper.identifier("waxed_oxidized_copper_repeater"));
   }
 
   private static CopperButtonBlock weatheringCopperButton(WeatherState weatherState, int ticksToStayPressed) {
@@ -172,5 +266,35 @@ public class ModBlocks {
 
   private static WaxedLeverBlock waxedCopperLever() {
     return new WaxedLeverBlock(Properties.of().noCollission().strength(0.5F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY));
+  }
+
+  private static CopperRedstoneTorchBlock copperRedstoneTorch(WeatherState weatherState) {
+    return new CopperRedstoneTorchBlock(
+        Properties.of().noCollission().instabreak().lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 7 : 0).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY),
+        weatherState);
+  }
+
+  private static WaxedRedstoneTorchBlock waxedCopperRedstoneTorch() {
+    return new WaxedRedstoneTorchBlock(
+        Properties.of().noCollission().instabreak().lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 7 : 0).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY));
+  }
+
+  private static CopperWallRedstoneTorchBlock copperWallRedstoneTorch(WeatherState weatherState) {
+    return new CopperWallRedstoneTorchBlock(
+        Properties.of().noCollission().instabreak().lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 7 : 0).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY),
+        weatherState);
+  }
+
+  private static WaxedWallRedstoneTorchBlock waxedCopperWallRedstoneTorch() {
+    return new WaxedWallRedstoneTorchBlock(
+        Properties.of().noCollission().instabreak().lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 7 : 0).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY));
+  }
+
+  private static CopperRepeaterBlock copperRepeater(WeatherState weatherState) {
+    return new CopperRepeaterBlock(Properties.of().instabreak().pushReaction(PushReaction.DESTROY), weatherState);
+  }
+
+  private static WaxedRepeaterBlock waxedCopperRepeater() {
+    return new WaxedRepeaterBlock(Properties.of().instabreak().pushReaction(PushReaction.DESTROY));
   }
 }

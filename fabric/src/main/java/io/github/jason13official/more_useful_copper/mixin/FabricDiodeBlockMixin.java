@@ -1,6 +1,6 @@
 package io.github.jason13official.more_useful_copper.mixin;
 
-import io.github.jason13official.more_useful_copper.mixin.logic.CommonDiodeBlockMixinLogic;
+import io.github.jason13official.more_useful_copper.impl.common.util.CommonDiodeBlockMixinLogic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.SignalGetter;
