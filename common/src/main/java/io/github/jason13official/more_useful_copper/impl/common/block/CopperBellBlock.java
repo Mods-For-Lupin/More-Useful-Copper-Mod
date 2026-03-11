@@ -15,8 +15,12 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -98,20 +102,35 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
   }
 
   public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-
     ItemStack stack = player.getItemInHand(hand);
 
-    if (stack.is(Items.HONEYCOMB)) {
-
-      BlockState newState = state.setValue(CopperBellBlock.WAXED, true);
-      level.setBlock(pos, newState, 18);
-      level.setBlocksDirty(pos, state, newState);
-
-      if (!player.getAbilities().instabuild) {
-        stack.shrink(1);
-        player.setItemInHand(hand, stack);
+    if (stack.is(ModItemTags.WAX_SCRAPER)) {
+      if (state.getValue(WAXED)) {
+        if (!level.isClientSide) {
+          level.playSound(null, pos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+          level.levelEvent(null, LevelEvent.PARTICLES_WAX_OFF, pos, 0);
+          level.setBlock(pos, state.setValue(WAXED, false), Block.UPDATE_ALL_IMMEDIATE);
+          level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
+          if (!player.getAbilities().instabuild) {
+            stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+          }
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
       }
-      return InteractionResult.SUCCESS;
+      return InteractionResult.PASS;
+    }
+
+    if (stack.is(Items.HONEYCOMB) && !state.getValue(WAXED)) {
+      if (!level.isClientSide) {
+        BlockState newState = state.setValue(WAXED, true);
+        level.setBlock(pos, newState, Block.UPDATE_ALL_IMMEDIATE);
+        level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, newState));
+        level.levelEvent(null, LevelEvent.PARTICLES_AND_SOUND_WAX_ON, pos, 0);
+        if (!player.getAbilities().instabuild) {
+          stack.shrink(1);
+        }
+      }
+      return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     return this.onHit(level, state, hit, player, true) ? InteractionResult.sidedSuccess(level.isClientSide) : InteractionResult.PASS;
