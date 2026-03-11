@@ -7,21 +7,22 @@ import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.ChangeOverTimeBlock;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -116,8 +117,34 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
           }
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
+      } else if (state.getValue(OXIDIZATION) > 0) {
+        if (!level.isClientSide) {
+          BlockState newState = state.setValue(OXIDIZATION, state.getValue(OXIDIZATION) - 1);
+          level.setBlock(pos, newState, Block.UPDATE_ALL_IMMEDIATE);
+          level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, newState));
+          level.levelEvent(null, LevelEvent.PARTICLES_SCRAPE, pos, 0);
+          level.playSound(null, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
+          if (!player.getAbilities().instabuild) {
+            stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+          }
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
       }
       return InteractionResult.PASS;
+    }
+
+    if (stack.is(ModItemTags.MANUAL_OXIDIZER) && !state.getValue(WAXED) && state.getValue(OXIDIZATION) < 3) {
+      if (!level.isClientSide) {
+        BlockState newState = state.setValue(OXIDIZATION, state.getValue(OXIDIZATION) + 1);
+        level.setBlock(pos, newState, Block.UPDATE_ALL_IMMEDIATE);
+        level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, newState));
+        level.levelEvent(null, LevelEvent.PARTICLES_SCRAPE, pos, 0);
+        level.playSound(null, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        if (!player.getAbilities().instabuild) {
+          stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+        }
+      }
+      return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     if (stack.is(Items.HONEYCOMB) && !state.getValue(WAXED)) {
@@ -299,6 +326,46 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
 
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
     return createTickerHelper(blockEntityType, ModTiles.COPPER_BELL, level.isClientSide ? CopperBellBlockEntity::clientTick : CopperBellBlockEntity::serverTick);
+  }
+
+  public boolean isRandomlyTicking(BlockState state) {
+    return !state.getValue(WAXED) && state.getValue(OXIDIZATION) < 3;
+  }
+
+  public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    if (random.nextFloat() < 0.05688889F) {
+      this.applyOxidation(state, level, pos, random);
+    }
+  }
+
+  private void applyOxidation(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    int currentAge = state.getValue(OXIDIZATION);
+    int moreOxidized = 0;
+    int sameOrLess = 0;
+
+    for (BlockPos nearPos : BlockPos.withinManhattan(pos, 4, 4, 4)) {
+      if (nearPos.distManhattan(pos) > 4) break;
+      if (nearPos.equals(pos)) continue;
+      BlockState nearState = level.getBlockState(nearPos);
+      Block nearBlock = nearState.getBlock();
+      if (nearBlock instanceof CopperBellBlock nearBell) {
+        int nearAge = nearState.getValue(OXIDIZATION);
+        if (nearAge < currentAge) return;
+        if (nearAge > currentAge) moreOxidized++;
+        else sameOrLess++;
+      } else if (nearBlock instanceof ChangeOverTimeBlock<?> ctb) {
+        int nearOrdinal = ctb.getAge().ordinal();
+        if (nearOrdinal < currentAge) return;
+        if (nearOrdinal > currentAge) moreOxidized++;
+        else sameOrLess++;
+      }
+    }
+
+    float f = (float)(moreOxidized + 1) / (float)(moreOxidized + sameOrLess + 1);
+    float chance = f * f * (currentAge == 0 ? 0.75F : 1.0F);
+    if (random.nextFloat() < chance) {
+      level.setBlock(pos, state.setValue(OXIDIZATION, currentAge + 1), Block.UPDATE_ALL_IMMEDIATE);
+    }
   }
 
   public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {

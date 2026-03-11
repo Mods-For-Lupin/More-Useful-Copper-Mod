@@ -81,20 +81,7 @@ public class CopperBellBlockEntity extends BlockEntity {
   }
 
   public static void serverTick(Level level, BlockPos pos, BlockState state, CopperBellBlockEntity blockEntity) {
-
-
-    int oxidization = state.getValue(CopperBellBlock.OXIDIZATION);
-    blockEntity.oxidization = oxidization;
-
-    // low chance every other tick to increase oxidization level
-    if (level.random.nextFloat() <= 0.001 && level.getGameTime() % 2 == 0 && !state.getValue(CopperBellBlock.WAXED) && oxidization < 3) {
-      BlockState newState = state.setValue(CopperBellBlock.OXIDIZATION, oxidization + 1);
-      level.setBlock(pos, newState, 18);
-      level.setBlocksDirty(pos, state, newState);
-
-      // System.out.println("oxidized bell at " + pos.toShortString());
-    }
-
+    blockEntity.oxidization = state.getValue(CopperBellBlock.OXIDIZATION);
     tick(level, pos, state, blockEntity, CopperBellBlockEntity::makeRaidersGlow);
   }
 
