@@ -32,6 +32,8 @@ public class ModTabs {
     output.accept(ModItems.WAX_SCRAPER);
     output.accept(ModItems.SPRAY_BOTTLE);
 
+    output.accept(ModBlocks.COPPER_BELL);
+
     output.accept(ModBlocks.COPPER_BUTTON);
     output.accept(ModBlocks.EXPOSED_COPPER_BUTTON);
     output.accept(ModBlocks.WEATHERED_COPPER_BUTTON);

@@ -22,6 +22,8 @@ public class ModItems {
     consumer.accept(SPRAY_BOTTLE, MoreUsefulCopper.identifier("spray_bottle"));
     consumer.accept(WAX_SCRAPER, MoreUsefulCopper.identifier("wax_scraper"));
 
+    consumer.accept(new BlockItem(ModBlocks.COPPER_BELL, new Properties()), MoreUsefulCopper.identifier("copper_bell"));
+
     consumer.accept(new BlockItem(ModBlocks.COPPER_BUTTON, new Properties()), MoreUsefulCopper.identifier("copper_button"));
     consumer.accept(new BlockItem(ModBlocks.EXPOSED_COPPER_BUTTON, new Properties()), MoreUsefulCopper.identifier("exposed_copper_button"));
     consumer.accept(new BlockItem(ModBlocks.WEATHERED_COPPER_BUTTON, new Properties()), MoreUsefulCopper.identifier("weathered_copper_button"));

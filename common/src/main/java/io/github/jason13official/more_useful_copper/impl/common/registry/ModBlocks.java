@@ -1,6 +1,7 @@
 package io.github.jason13official.more_useful_copper.impl.common.registry;
 
 import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
+import io.github.jason13official.more_useful_copper.impl.common.block.CopperBellBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperButtonBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperComparatorBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperLeverBlock;
@@ -18,15 +19,20 @@ import io.github.jason13official.more_useful_copper.impl.common.block.WaxedWallR
 import java.util.function.BiConsumer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
 public class ModBlocks {
+
+  public static CopperBellBlock COPPER_BELL;
 
   public static CopperButtonBlock COPPER_BUTTON;
   public static CopperButtonBlock EXPOSED_COPPER_BUTTON;
@@ -99,6 +105,9 @@ public class ModBlocks {
   public static Block WAXED_OXIDIZED_COPPER_REPEATER;
 
   public static void register(BiConsumer<Block, ResourceLocation> consumer) {
+
+    COPPER_BELL = new CopperBellBlock(Properties.of().mapColor(MapColor.GOLD).forceSolidOn().requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.ANVIL).pushReaction(PushReaction.DESTROY).noOcclusion());
+    consumer.accept(COPPER_BELL, MoreUsefulCopper.identifier("copper_bell"));
 
     COPPER_BUTTON = weatheringCopperButton(WeatherState.UNAFFECTED, CopperButtonBlock.UNAFFECTED_PRESSED_TICKS);
     EXPOSED_COPPER_BUTTON = weatheringCopperButton(WeatherState.EXPOSED, CopperButtonBlock.EXPOSED_PRESSED_TICKS);
