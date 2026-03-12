@@ -1,6 +1,8 @@
 package io.github.jason13official.more_useful_copper.impl.common.registry;
 
 import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
+import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue.Type;
+import io.github.jason13official.more_useful_copper.impl.common.item.CopperStatueItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.SprayBottleItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.WaxScraperItem;
 import java.util.function.BiConsumer;
@@ -15,12 +17,25 @@ public class ModItems {
 
   public static Item WAX_SCRAPER;
   public static Item SPRAY_BOTTLE;
+  public static Item COPPER_STATUE_CREEPER;
+  public static Item COPPER_STATUE_SKELETON;
+  public static Item COPPER_STATUE_SPIDER;
+  public static Item COPPER_STATUE_ZOMBIE;
 
   public static void register(BiConsumer<Item, ResourceLocation> consumer) {
     WAX_SCRAPER = new WaxScraperItem(new Properties().durability(64));
     SPRAY_BOTTLE = new SprayBottleItem(new Properties().durability(64));
     consumer.accept(SPRAY_BOTTLE, MoreUsefulCopper.identifier("spray_bottle"));
     consumer.accept(WAX_SCRAPER, MoreUsefulCopper.identifier("wax_scraper"));
+
+    COPPER_STATUE_CREEPER = new CopperStatueItem(Type.CREEPER, new Properties().stacksTo(16));
+    COPPER_STATUE_SKELETON = new CopperStatueItem(Type.SKELETON, new Properties().stacksTo(16));
+    COPPER_STATUE_SPIDER = new CopperStatueItem(Type.SPIDER, new Properties().stacksTo(16));
+    COPPER_STATUE_ZOMBIE = new CopperStatueItem(Type.ZOMBIE, new Properties().stacksTo(16));
+    consumer.accept(COPPER_STATUE_CREEPER, MoreUsefulCopper.identifier("copper_statue_creeper"));
+    consumer.accept(COPPER_STATUE_SKELETON, MoreUsefulCopper.identifier("copper_statue_skeleton"));
+    consumer.accept(COPPER_STATUE_SPIDER, MoreUsefulCopper.identifier("copper_statue_spider"));
+    consumer.accept(COPPER_STATUE_ZOMBIE, MoreUsefulCopper.identifier("copper_statue_zombie"));
 
     consumer.accept(new BlockItem(ModBlocks.COPPER_BELL, new Properties()), MoreUsefulCopper.identifier("copper_bell"));
 

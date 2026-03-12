@@ -1,8 +1,16 @@
 package io.github.jason13official.more_useful_copper;
 
+import io.github.jason13official.more_useful_copper.impl.client.model.CreeperStatueModel;
+import io.github.jason13official.more_useful_copper.impl.client.model.SkeletonStatueModel;
+import io.github.jason13official.more_useful_copper.impl.client.model.SpiderStatueModel;
+import io.github.jason13official.more_useful_copper.impl.client.model.ZombieStatueModel;
+import io.github.jason13official.more_useful_copper.impl.client.model.geom.ModModelLayers;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.blockentity.CopperBellRenderer;
+import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperStatueRenderer;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
+import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue.Type;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModBlocks;
+import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTiles;
 import java.util.function.Consumer;
 import net.minecraft.client.color.block.BlockColor;
@@ -34,6 +42,18 @@ public class MoreUsefulCopperClientForge {
 
     modEventBus.addListener((Consumer<EntityRenderersEvent.RegisterRenderers>) event -> {
       event.registerBlockEntityRenderer(ModTiles.COPPER_BELL, CopperBellRenderer::new);
+      event.registerEntityRenderer(ModEntities.COPPER_STATUE, CopperStatueRenderer::new);
+    });
+
+    modEventBus.addListener((Consumer<EntityRenderersEvent.RegisterLayerDefinitions>) event -> {
+      for (Type type : Type.values()) {
+        switch (type) {
+          case CREEPER -> event.registerLayerDefinition(ModModelLayers.createBoatModelName(type), CreeperStatueModel::createBodyLayer);
+          case SKELETON -> event.registerLayerDefinition(ModModelLayers.createBoatModelName(type), SkeletonStatueModel::createBodyLayer);
+          case SPIDER -> event.registerLayerDefinition(ModModelLayers.createBoatModelName(type), SpiderStatueModel::createBodyLayer);
+          case ZOMBIE -> event.registerLayerDefinition(ModModelLayers.createBoatModelName(type), ZombieStatueModel::createBodyLayer);
+        }
+      }
     });
   }
 }

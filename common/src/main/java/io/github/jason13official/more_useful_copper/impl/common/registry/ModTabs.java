@@ -32,6 +32,11 @@ public class ModTabs {
     output.accept(ModItems.WAX_SCRAPER);
     output.accept(ModItems.SPRAY_BOTTLE);
 
+    output.accept(ModItems.COPPER_STATUE_CREEPER);
+    output.accept(ModItems.COPPER_STATUE_SKELETON);
+    output.accept(ModItems.COPPER_STATUE_SPIDER);
+    output.accept(ModItems.COPPER_STATUE_ZOMBIE);
+
     output.accept(ModBlocks.COPPER_BELL);
 
     output.accept(ModBlocks.COPPER_BUTTON);

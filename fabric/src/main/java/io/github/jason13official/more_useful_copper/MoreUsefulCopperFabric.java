@@ -8,9 +8,11 @@ import io.github.jason13official.more_useful_copper.impl.common.registry.ModTile
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 
 public class MoreUsefulCopperFabric implements ModInitializer {
 
@@ -25,6 +27,8 @@ public class MoreUsefulCopperFabric implements ModInitializer {
 
     // after game object registration
     MoreUsefulCopper.init();
+
+    FabricDefaultAttributeRegistry.register(ModEntities.COPPER_STATUE, LivingEntity.createLivingAttributes());
 
     // on to client init
   }

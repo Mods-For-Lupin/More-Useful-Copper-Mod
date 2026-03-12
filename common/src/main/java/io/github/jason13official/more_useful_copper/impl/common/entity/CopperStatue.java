@@ -26,6 +26,7 @@ public class CopperStatue extends WeatheringCopperStatueEntity {
 
   @Override
   protected void defineSynchedData() {
+    super.defineSynchedData();
     this.entityData.define(DATA_ID_TYPE, Type.CREEPER.ordinal());
   }
 
