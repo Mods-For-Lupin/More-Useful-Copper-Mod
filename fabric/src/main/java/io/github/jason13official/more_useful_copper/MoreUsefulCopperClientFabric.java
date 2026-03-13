@@ -25,6 +25,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 
 public class MoreUsefulCopperClientFabric implements ClientModInitializer {
@@ -39,6 +40,8 @@ public class MoreUsefulCopperClientFabric implements ClientModInitializer {
     BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SPIDER, CopperStatueItemRenderer.INSTANCE::renderByItem);
     BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_ZOMBIE, CopperStatueItemRenderer.INSTANCE::renderByItem);
 
+    EntityRendererRegistry.register(ModEntities.LIGHTNING_BOTTLE, ThrownItemRenderer::new);
+
     EntityRendererRegistry.register(ModEntities.COPPER_BOTTOM_BOAT, CopperBottomBoatRenderer::new);
     EntityModelLayerRegistry.registerModelLayer(CopperBottomBoatModel.LAYER_LOCATION, CopperBottomBoatModel::createBodyModel);
 
@@ -51,6 +54,8 @@ public class MoreUsefulCopperClientFabric implements ClientModInitializer {
         case ZOMBIE -> EntityModelLayerRegistry.registerModelLayer(ModModelLayers.createBoatModelName(type), ZombieStatueModel::createBodyLayer);
       }
     }
+
+    BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.GARDEN_STAKE, RenderType.cutout());
 
     BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.COPPER_COMPARATOR, RenderType.cutout());
     BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.EXPOSED_COPPER_COMPARATOR, RenderType.cutout());

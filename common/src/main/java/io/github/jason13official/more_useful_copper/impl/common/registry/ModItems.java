@@ -4,6 +4,8 @@ import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue.Type;
 import io.github.jason13official.more_useful_copper.impl.common.item.CopperBottomBoatItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.CopperStatueItem;
+import io.github.jason13official.more_useful_copper.impl.common.item.GardenStakeBlockItem;
+import io.github.jason13official.more_useful_copper.impl.common.item.LightningBottleItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.SprayBottleItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.WaxScraperItem;
 import java.util.function.BiConsumer;
@@ -23,12 +25,19 @@ public class ModItems {
   public static Item COPPER_STATUE_SPIDER;
   public static Item COPPER_STATUE_ZOMBIE;
   public static Item COPPER_BOTTOM_BOAT;
+  public static Item LIGHTNING_BOTTLE;
+  public static Item GARDEN_STAKE;
 
   public static void register(BiConsumer<Item, ResourceLocation> consumer) {
     WAX_SCRAPER = new WaxScraperItem(new Properties().durability(64));
     SPRAY_BOTTLE = new SprayBottleItem(new Properties().durability(64));
     consumer.accept(SPRAY_BOTTLE, MoreUsefulCopper.identifier("spray_bottle"));
     consumer.accept(WAX_SCRAPER, MoreUsefulCopper.identifier("wax_scraper"));
+
+    LIGHTNING_BOTTLE = new LightningBottleItem(new Properties().stacksTo(16));
+    GARDEN_STAKE = new GardenStakeBlockItem(ModBlocks.GARDEN_STAKE, new Properties());
+    consumer.accept(LIGHTNING_BOTTLE, MoreUsefulCopper.identifier("lightning_bottle"));
+    consumer.accept(GARDEN_STAKE, MoreUsefulCopper.identifier("garden_stake"));
 
     COPPER_BOTTOM_BOAT = new CopperBottomBoatItem(new Properties().stacksTo(1));
     consumer.accept(COPPER_BOTTOM_BOAT, MoreUsefulCopper.identifier("copper_bottom_boat"));

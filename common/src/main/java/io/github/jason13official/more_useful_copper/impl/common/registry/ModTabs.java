@@ -31,6 +31,8 @@ public class ModTabs {
     output.accept(ModItems.WAX_SCRAPER);
     output.accept(ModItems.SPRAY_BOTTLE);
     output.accept(ModItems.COPPER_BOTTOM_BOAT);
+    output.accept(ModItems.GARDEN_STAKE);
+    output.accept(ModItems.LIGHTNING_BOTTLE);
 
     output.accept(ModItems.COPPER_STATUE_CREEPER);
     output.accept(ModItems.COPPER_STATUE_SKELETON);

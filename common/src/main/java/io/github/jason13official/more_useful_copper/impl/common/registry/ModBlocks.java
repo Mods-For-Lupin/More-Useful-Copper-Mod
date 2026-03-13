@@ -9,6 +9,7 @@ import io.github.jason13official.more_useful_copper.impl.common.block.CopperReds
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneTorchBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRepeaterBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperWallRedstoneTorchBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.GardenStakeBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedButtonBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedComparatorBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedLeverBlock;
@@ -104,7 +105,12 @@ public class ModBlocks {
   public static Block WAXED_WEATHERED_COPPER_REPEATER;
   public static Block WAXED_OXIDIZED_COPPER_REPEATER;
 
+  public static Block GARDEN_STAKE;
+
   public static void register(BiConsumer<Block, ResourceLocation> consumer) {
+
+    GARDEN_STAKE = new GardenStakeBlock(BlockBehaviour.Properties.of().noOcclusion().noCollission().lightLevel(s -> s.getValue(GardenStakeBlock.LIT) ? 7 : 2));
+    consumer.accept(GARDEN_STAKE, MoreUsefulCopper.identifier("garden_stake"));
 
     COPPER_BELL = new CopperBellBlock(Properties.of().mapColor(MapColor.GOLD).forceSolidOn().requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.ANVIL).pushReaction(PushReaction.DESTROY).noOcclusion());
     consumer.accept(COPPER_BELL, MoreUsefulCopper.identifier("copper_bell"));

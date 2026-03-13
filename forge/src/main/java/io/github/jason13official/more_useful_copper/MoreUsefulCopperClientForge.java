@@ -20,6 +20,7 @@ import io.github.jason13official.more_useful_copper.impl.common.registry.ModTile
 import java.util.function.Consumer;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -55,9 +56,9 @@ public class MoreUsefulCopperClientForge {
 
     modEventBus.addListener((Consumer<EntityRenderersEvent.RegisterRenderers>) event -> {
       event.registerBlockEntityRenderer(ModTiles.COPPER_BELL, CopperBellRenderer::new);
-
       event.registerEntityRenderer(ModEntities.COPPER_STATUE, CopperStatueRenderer::new);
       event.registerEntityRenderer(ModEntities.COPPER_BOTTOM_BOAT, CopperBottomBoatRenderer::new);
+      event.registerEntityRenderer(ModEntities.LIGHTNING_BOTTLE, ThrownItemRenderer::new);
     });
 
     modEventBus.addListener((Consumer<EntityRenderersEvent.RegisterLayerDefinitions>) event -> {
