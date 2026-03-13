@@ -19,8 +19,6 @@ import io.github.jason13official.more_useful_copper.impl.common.registry.ModEnti
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTiles;
 import java.util.function.Consumer;
-import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -29,7 +27,6 @@ import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -38,50 +35,62 @@ public class MoreUsefulCopperClientForge {
   public MoreUsefulCopperClientForge(final IEventBus modEventBus) {
 
     modEventBus.addListener((Consumer<FMLClientSetupEvent>) event -> {
-      BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_CREEPER, CopperStatueItemRenderer.INSTANCE::renderByItem);
-      BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SKELETON, CopperStatueItemRenderer.INSTANCE::renderByItem);
-      BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SPIDER, CopperStatueItemRenderer.INSTANCE::renderByItem);
-      BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_ZOMBIE, CopperStatueItemRenderer.INSTANCE::renderByItem);
-
-      ItemProperties.register(ModItems.MOISTURE_COMPASS, new ResourceLocation("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
-        return !MoistureCompassItem.isMoistureCompass(itemStack) ? CompassItem.getSpawnPosition(clientLevel) : MoistureCompassItem.getMoisturePosition(itemStack.getOrCreateTag());
-      }));
+      registerItemRenderers();
+      registerItemProperties();
     });
 
-    modEventBus.addListener((Consumer<RegisterColorHandlersEvent.Block>) event -> {
-      event.register(
-          (state, level, pos, tint) -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.UNAFFECTED),
-          ModBlocks.COPPER_REDSTONE_DUST, ModBlocks.WAXED_COPPER_REDSTONE_DUST);
-      event.register(
-          (state, level, pos, tint) -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.EXPOSED),
-          ModBlocks.EXPOSED_COPPER_REDSTONE_DUST, ModBlocks.WAXED_EXPOSED_COPPER_REDSTONE_DUST);
-      event.register(
-          (state, level, pos, tint) -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.WEATHERED),
-          ModBlocks.WEATHERED_COPPER_REDSTONE_DUST, ModBlocks.WAXED_WEATHERED_COPPER_REDSTONE_DUST);
-      event.register(
-          (state, level, pos, tint) -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.OXIDIZED),
-          ModBlocks.OXIDIZED_COPPER_REDSTONE_DUST, ModBlocks.WAXED_OXIDIZED_COPPER_REDSTONE_DUST);
-    });
+    modEventBus.addListener(this::registerBlockColorHandlers);
 
-    modEventBus.addListener((Consumer<EntityRenderersEvent.RegisterRenderers>) event -> {
-      event.registerBlockEntityRenderer(ModTiles.COPPER_BELL, CopperBellRenderer::new);
-      event.registerEntityRenderer(ModEntities.COPPER_STATUE, CopperStatueRenderer::new);
-      event.registerEntityRenderer(ModEntities.COPPER_BOTTOM_BOAT, CopperBottomBoatRenderer::new);
-      event.registerEntityRenderer(ModEntities.LIGHTNING_BOTTLE, ThrownItemRenderer::new);
-    });
+    modEventBus.addListener(this::registerTileRenderers);
+    modEventBus.addListener(this::registerEntityRenderers);
 
-    modEventBus.addListener((Consumer<EntityRenderersEvent.RegisterLayerDefinitions>) event -> {
+    modEventBus.addListener(this::registerEntityModels);
+  }
 
-      event.registerLayerDefinition(CopperBottomBoatModel.LAYER_LOCATION, CopperBottomBoatModel::createBodyModel);
+  private void registerItemProperties() {
+    ItemProperties.register(ModItems.MOISTURE_COMPASS, new ResourceLocation("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
+      return !MoistureCompassItem.isMoistureCompass(itemStack) ? CompassItem.getSpawnPosition(clientLevel) : MoistureCompassItem.getMoisturePosition(itemStack.getOrCreateTag());
+    }));
+  }
 
-      for (Type type : Type.values()) {
-        switch (type) {
-          case CREEPER -> event.registerLayerDefinition(ModModelLayers.createBoatModelName(type), CreeperStatueModel::createBodyLayer);
-          case SKELETON -> event.registerLayerDefinition(ModModelLayers.createBoatModelName(type), SkeletonStatueModel::createBodyLayer);
-          case SPIDER -> event.registerLayerDefinition(ModModelLayers.createBoatModelName(type), SpiderStatueModel::createBodyLayer);
-          case ZOMBIE -> event.registerLayerDefinition(ModModelLayers.createBoatModelName(type), ZombieStatueModel::createBodyLayer);
-        }
+  private void registerItemRenderers() {
+    BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_CREEPER, CopperStatueItemRenderer.INSTANCE::renderByItem);
+    BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SKELETON, CopperStatueItemRenderer.INSTANCE::renderByItem);
+    BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SPIDER, CopperStatueItemRenderer.INSTANCE::renderByItem);
+    BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_ZOMBIE, CopperStatueItemRenderer.INSTANCE::renderByItem);
+  }
+
+  private void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+    event.registerEntityRenderer(ModEntities.COPPER_STATUE, CopperStatueRenderer::new);
+    event.registerEntityRenderer(ModEntities.COPPER_BOTTOM_BOAT, CopperBottomBoatRenderer::new);
+    event.registerEntityRenderer(ModEntities.LIGHTNING_BOTTLE, ThrownItemRenderer::new);
+  }
+
+  private void registerTileRenderers(EntityRenderersEvent.RegisterRenderers event) {
+    event.registerBlockEntityRenderer(ModTiles.COPPER_BELL, CopperBellRenderer::new);
+  }
+
+  private void registerEntityModels(EntityRenderersEvent.RegisterLayerDefinitions event) {
+    event.registerLayerDefinition(CopperBottomBoatModel.LAYER_LOCATION, CopperBottomBoatModel::createBodyModel);
+
+    for (Type type : Type.values()) {
+      switch (type) {
+        case CREEPER -> event.registerLayerDefinition(ModModelLayers.createBoatModelName(type), CreeperStatueModel::createBodyLayer);
+        case SKELETON -> event.registerLayerDefinition(ModModelLayers.createBoatModelName(type), SkeletonStatueModel::createBodyLayer);
+        case SPIDER -> event.registerLayerDefinition(ModModelLayers.createBoatModelName(type), SpiderStatueModel::createBodyLayer);
+        case ZOMBIE -> event.registerLayerDefinition(ModModelLayers.createBoatModelName(type), ZombieStatueModel::createBodyLayer);
       }
-    });
+    }
+  }
+
+  private void registerBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
+    event.register((state, level, pos, tint) -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.UNAFFECTED), ModBlocks.COPPER_REDSTONE_DUST,
+        ModBlocks.WAXED_COPPER_REDSTONE_DUST);
+    event.register((state, level, pos, tint) -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.EXPOSED), ModBlocks.EXPOSED_COPPER_REDSTONE_DUST,
+        ModBlocks.WAXED_EXPOSED_COPPER_REDSTONE_DUST);
+    event.register((state, level, pos, tint) -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.WEATHERED),
+        ModBlocks.WEATHERED_COPPER_REDSTONE_DUST, ModBlocks.WAXED_WEATHERED_COPPER_REDSTONE_DUST);
+    event.register((state, level, pos, tint) -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.OXIDIZED), ModBlocks.OXIDIZED_COPPER_REDSTONE_DUST,
+        ModBlocks.WAXED_OXIDIZED_COPPER_REDSTONE_DUST);
   }
 }
