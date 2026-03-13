@@ -9,7 +9,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 public class CommonRedStoneWireBlockMixinLogic {
 
-  // Vanilla wire connects TO copper wire
+  /// Mixin injection: makes vanilla redstone wire connect to any copper wire variant.
+  ///
+  /// @param state     the neighbor block state being evaluated for connection
+  /// @param direction the side being checked
+  /// @param cir       mixin return-value callback; set to `true` if `state` is copper wire
   public static void injectedShouldConnectTo(BlockState state, Direction direction,
       CallbackInfoReturnable<Boolean> cir) {
     if (state.is(ModBlockTags.COPPER_REDSTONE_WIRE)) {
@@ -17,27 +21,33 @@ public class CommonRedStoneWireBlockMixinLogic {
     }
   }
 
-  // Vanilla wire reads power FROM copper wire neighbors
+  /// Mixin injection: lets vanilla wire read the power level of an adjacent copper wire neighbor.
+  ///
+  /// @param state the neighbor block state
+  /// @param cir   mixin return-value callback; set to the copper wire's power if applicable
   public static void injectedGetWireSignal(BlockState state, CallbackInfoReturnable<Integer> cir) {
     if (state.is(ModBlockTags.COPPER_REDSTONE_WIRE)) {
       cir.setReturnValue(state.getValue(RedStoneWireBlock.POWER));
     }
   }
 
-  // Set the cross-type "all wires silent" flag for the duration of vanilla wire's
-  // getBestNeighborSignal call, so copper wire getSignal returns 0 during that window.
-  // This fixes the reverse-direction attenuation bug (copper→vanilla boundary).
+  /// Mixin injection — HEAD of vanilla wire's power-calculation method.
+  /// Sets [CopperRedstoneDustBlock.isAnyWireCalculating] so copper wires suppress their `getSignal`
+  /// during `getBestNeighborSignal`, fixing the reverse-direction attenuation bug at copper→vanilla boundaries.
   public static void injectedCalcHead() {
     CopperRedstoneDustBlock.isAnyWireCalculating = true;
   }
 
+  /// Mixin injection — RETURN of vanilla wire's power-calculation method. Clears [CopperRedstoneDustBlock.isAnyWireCalculating].
   public static void injectedCalcReturn() {
     CopperRedstoneDustBlock.isAnyWireCalculating = false;
   }
 
-  // Suppress vanilla wire's own getSignal when any wire type is calculating.
-  // This fixes the vanilla→copper boundary bug: vanilla wire's signal must not appear
-  // in getBestNeighborSignal (only in the j=getWireSignal path, which attenuates by -1).
+  /// Mixin injection: suppresses vanilla wire's `getSignal` while any wire type is calculating.
+  /// Without this, vanilla wire would contribute to `getBestNeighborSignal` directly instead of
+  /// only through the attenuated `j = getWireSignal` path, breaking vanilla→copper boundaries.
+  ///
+  /// @param cir set to `0` when suppression is active
   public static void injectedSuppressDuringCalc(CallbackInfoReturnable<Integer> cir) {
     if (CopperRedstoneDustBlock.isAnyWireCalculating) {
       cir.setReturnValue(0);

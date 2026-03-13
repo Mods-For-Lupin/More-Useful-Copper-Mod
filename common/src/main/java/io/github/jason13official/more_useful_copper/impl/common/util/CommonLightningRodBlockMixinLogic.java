@@ -14,6 +14,10 @@ public class CommonLightningRodBlockMixinLogic {
 
   private static final Supplier<ItemStack> FILLED_LIGHTNING_BOTTLE = () -> new ItemStack(ModItems.LIGHTNING_BOTTLE);
 
+  /// Mixin injection: called when a lightning rod is struck.
+  /// Delegates to [createFilledLightningBottle] on the server side only.
+  ///
+  /// @param pos position of the lightning rod block
   public static void onLightningStrike(Level abstractLevel, BlockPos pos) {
 
     if (!(abstractLevel instanceof ServerLevel level)) {
@@ -23,6 +27,11 @@ public class CommonLightningRodBlockMixinLogic {
     createFilledLightningBottle(level, pos);
   }
 
+  /// Converts one glass bottle in the container directly below the rod into a lightning bottle.
+  /// If the matching stack has count > 1, the stack is shrunk and the filled bottle is placed in
+  /// an empty slot; if no empty slot exists it is given to the nearest player within 64 blocks.
+  ///
+  /// @param pos position of the lightning rod (container is checked at `pos.below()`)
   private static void createFilledLightningBottle(ServerLevel level, BlockPos pos) {
 
 

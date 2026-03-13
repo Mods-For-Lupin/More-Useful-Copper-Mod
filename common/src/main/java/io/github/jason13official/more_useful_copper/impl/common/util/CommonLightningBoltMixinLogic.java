@@ -12,6 +12,12 @@ import net.minecraft.world.phys.AABB;
 
 public class CommonLightningBoltMixinLogic {
 
+  /// Mixin injection: called each tick of a [LightningBolt] to light nearby garden stakes.
+  /// Only acts on tick `life == 2` (the peak-energy tick). Checks the strike block, then the
+  /// bolt's current position, then a 10×6×10 AABB around the strike position.
+  ///
+  /// @param life      remaining lifetime ticks of the bolt
+  /// @param strikePos the block position the bolt originally struck
   public static void onLightningTick(LightningBolt self, int life, BlockPos strikePos) {
 
     if (!(self.level() instanceof ServerLevel level)) {

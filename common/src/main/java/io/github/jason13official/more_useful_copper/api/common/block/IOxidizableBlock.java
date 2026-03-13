@@ -15,6 +15,10 @@ public interface IOxidizableBlock extends ChangeOverTimeBlock<WeatherState> {
   BiMap<Block, Block> NEXT_BY_BLOCK = HashBiMap.create();
   BiMap<Block, Block> PREVIOUS_BY_BLOCK = HashBiMap.create();
 
+  /// Registers a one-step oxidation transition from `initialState` to `nextState`.
+  ///
+  /// @param initialState the less-oxidized block
+  /// @param nextState    the more-oxidized block
   static void addMapping(Block initialState, Block nextState) {
     NEXT_BY_BLOCK.forcePut(initialState, nextState);
     PREVIOUS_BY_BLOCK.forcePut(nextState, initialState);
@@ -50,11 +54,19 @@ public interface IOxidizableBlock extends ChangeOverTimeBlock<WeatherState> {
     addMapping(ModBlocks.WEATHERED_COPPER_REPEATER, ModBlocks.OXIDIZED_COPPER_REPEATER);
   }
 
+  /// Returns the less-oxidized block one step before `block` in the chain, if any.
+  ///
+  /// @param block a registered oxidizable block
+  /// @return the previous oxidation stage, or empty if already `UNAFFECTED`
   static Optional<Block> getPrevious(Block block) {
 
     return Optional.ofNullable(PREVIOUS_BY_BLOCK.get(block));
   }
 
+  /// Walks the oxidation chain backwards to find the fully unaffected (first) block.
+  ///
+  /// @param initialBlock any block in the chain
+  /// @return the `UNAFFECTED` block at the start of the chain
   static Block getFirst(Block initialBlock) {
 
     Block reference = initialBlock;
@@ -71,6 +83,10 @@ public interface IOxidizableBlock extends ChangeOverTimeBlock<WeatherState> {
     return getPrevious(state.getBlock()).map((block) -> block.withPropertiesOf(state));
   }
 
+  /// Returns the more-oxidized block one step after `block` in the chain, if any.
+  ///
+  /// @param block a registered oxidizable block
+  /// @return the next oxidation stage, or empty if already `OXIDIZED`
   static Optional<Block> getNext(Block block) {
 
     return Optional.ofNullable(NEXT_BY_BLOCK.get(block));
@@ -86,6 +102,10 @@ public interface IOxidizableBlock extends ChangeOverTimeBlock<WeatherState> {
     return getNext(state.getBlock()).map((block) -> block.withPropertiesOf(state));
   }
 
+  /// Returns a multiplier applied to the random-tick oxidation chance.
+  /// `UNAFFECTED` blocks oxidize at 75% the normal rate; all other stages use 100%.
+  ///
+  /// @return `0.75` for `UNAFFECTED`, `1.0` otherwise
   default float getChanceModifier() {
 
     return this.getAge() == WeatherState.UNAFFECTED ? 0.75F : 1.0F;

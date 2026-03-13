@@ -21,6 +21,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 public class CommonAxeItemMixinLogic {
 
+  /// Mixin injection: extends axe right-click logic to handle mod copper blocks.
+  /// Priority order: (1) remove wax via [WaxableRegistry], (2) scrape oxidation via [IOxidizableBlock].
+  /// Sets `cir` on success so the mixin can return early.
   public static void injectedUseAxeOnBlockLogic(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
     Level level = context.getLevel();
     BlockPos blockPos = context.getClickedPos();

@@ -70,6 +70,7 @@ public abstract class WeatheringCopperStatueEntity extends AbstractStatueEntity 
     this.getEntityData().set(OXIDIZATION_LEVEL, level);
   }
 
+  /// Advances oxidation by one stage (0 = unaffected → 3 = oxidized). No-ops if already at max.
   public void oxidize() {
     int currentLevel = this.getOxidizationLevel();
 
@@ -78,10 +79,10 @@ public abstract class WeatheringCopperStatueEntity extends AbstractStatueEntity 
     }
   }
 
+  /// Ticks oxidation on the server: 0.05% chance per tick to advance one oxidation stage,
+  /// unless the statue is waxed.
   @Override
   protected void serverAiStep() {
-    // called every tick on the server/logical side
-
     ServerLevel level = (ServerLevel) this.level();
 
     if (level.getRandom().nextFloat() <= 0.0005) {
@@ -91,6 +92,7 @@ public abstract class WeatheringCopperStatueEntity extends AbstractStatueEntity 
     }
   }
 
+  /// Applies wax when a player right-clicks with a honeycomb, consuming one item from the stack.
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
 

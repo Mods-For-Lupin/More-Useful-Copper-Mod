@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
 
-  /// mimics a similar field in {@link ArmorStand}
+  /// Matches only rideable minecarts — used in [pushEntities] to replicate [ArmorStand] push behaviour.
   private static final Predicate<Entity> RIDABLE_MINECARTS = entity -> entity instanceof AbstractMinecart && ((AbstractMinecart) entity).getMinecartType() == Type.RIDEABLE;
 
   public long lastHit;
@@ -77,6 +77,8 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
   protected void doPush(Entity entity) {
   }
 
+  /// Pushes any rideable minecarts that overlap this entity's bounding box.
+  /// Statues don't interact with regular entity push logic, so this is the only push they perform.
   @Override
   protected void pushEntities() {
     List<Entity> list = this.level().getEntities(this, this.getBoundingBox(), RIDABLE_MINECARTS);
@@ -89,6 +91,12 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
     }
   }
 
+  /// Handles damage with armor-stand-like behaviour:
+  /// - Bypasses-invulnerability and creative players kill immediately.
+  /// - Fire/explosion routes through [damagedByFireOrExplosion].
+  /// - Only player-attack and arrow damage can break the statue; a second hit within 5 ticks destroys it.
+  ///
+  /// @return `true` if the damage was accepted (including wobble-only hits)
   @Override
   public boolean hurt(DamageSource source, float amount) {
 
@@ -133,6 +141,10 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
     return true;
   }
 
+  /// Handles fire and explosion damage types, mirroring vanilla armor-stand logic.
+  /// Explosions break immediately; fire damage is accumulated or sets the statue on fire.
+  ///
+  /// @return `true` if this method consumed the damage (caller should return early)
   private boolean damagedByFireOrExplosion(DamageSource source) {
     if (source.is(DamageTypeTags.IS_EXPLOSION)) {
       this.brokenByAnything(source);
@@ -152,6 +164,8 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
     return false;
   }
 
+  /// Returns `true` if damage should be silently ignored — either because the entity is already
+  /// dead/client-side, damage bypasses invulnerability and kills it, or it's invulnerable to this source.
   private boolean damagePersists(DamageSource source) {
     if (this.level().isClientSide || this.isRemoved()) {
       return true;
@@ -204,6 +218,8 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
     }
   }
 
+  /// Drops the appropriate statue item for the concrete variant, preserving any custom name,
+  /// then delegates to [brokenByAnything] for sound and loot drops.
   private void brokenByPlayer(DamageSource damageSource) {
 
     ItemStack toReturn = ItemStack.EMPTY;
@@ -284,6 +300,12 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
     return this.isInvisible();
   }
 
+  /// Sets or clears a single bit within a packed byte flag field.
+  ///
+  /// @param oldBit the existing byte
+  /// @param offset the bit mask (e.g. `0x01`, `0x02`)
+  /// @param value  `true` to set the bit, `false` to clear it
+  /// @return the modified byte
   private byte setBit(byte oldBit, int offset, boolean value) {
     if (value) {
       oldBit = (byte) (oldBit | offset);

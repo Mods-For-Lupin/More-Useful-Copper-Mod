@@ -114,6 +114,7 @@ public class CopperBottomBoat extends Boat {
     this.zo = z;
   }
 
+  /// Returns `true` if `entity` should be able to collide with `vehicle`, excluding same-vehicle passengers.
   public static boolean canVehicleCollide(Entity vehicle, Entity entity) {
     return (entity.canBeCollidedWith() || entity.isPushable()) && !vehicle.isPassengerOfSameVehicle(entity);
   }
@@ -431,10 +432,19 @@ public class CopperBottomBoat extends Boat {
     this.entityData.set(DATA_ID_PADDLE_RIGHT, right);
   }
 
+  /// Returns the interpolated paddle rotation angle for the given side and partial tick, used by the renderer.
+  ///
+  /// @param side      `0` = left, `1` = right
+  /// @param limbSwing partial tick interpolation factor
+  /// @return angle in radians, or `0` if the paddle is not actively rowing
   public float getRowingTime(int side, float limbSwing) {
     return this.getPaddleState(side) ? Mth.clampedLerp(this.paddlePositions[side] - ((float) Math.PI / 8F), this.paddlePositions[side], limbSwing) : 0.0F;
   }
 
+  /// Determines the boat's current movement medium in priority order:
+  /// fully submerged → in water → on land → in air.
+  ///
+  /// @return the current [Status]
   private Status getStatus() {
     Status CopperBottomBoat$status = this.isUnderwater();
     if (CopperBottomBoat$status != null) {
@@ -586,6 +596,8 @@ public class CopperBottomBoat extends Boat {
     return flag ? Status.UNDER_WATER : null;
   }
 
+  /// Applies buoyancy, gravity, and friction each tick based on the current [Status].
+  /// Also snaps the boat to the water surface when transitioning from air to water.
   private void floatCopperBottomBoat() {
     double d0 = -0.04F;
     double d1 = this.isNoGravity() ? (double) 0.0F : (double) -0.04F;
@@ -627,6 +639,8 @@ public class CopperBottomBoat extends Boat {
 
   }
 
+  /// Translates player input (left/right/forward/back) into rotation and thrust each tick.
+  /// Oxidation level reduces the movement multiplier by 0.25 per stage (doubled at level 3).
   private void controlCopperBottomBoat() {
     if (this.isVehicle()) {
       float force = 0.0F;
