@@ -11,50 +11,38 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public interface IPlatformHelper {
 
-  /**
-   * Gets the name of the current platform
-   *
-   * @return The name of the current platform.
-   */
+  /// Gets the name of the current platform.
+  ///
+  /// @return the name of the current platform
   String getPlatformName();
 
-  /**
-   * Checks if a mod with the given id is loaded.
-   *
-   * @param modId The mod to check if it is loaded.
-   * @return True if the mod is loaded, false otherwise.
-   */
+  /// Checks if a mod with the given id is loaded.
+  ///
+  /// @param modId the mod id to check
+  /// @return `true` if the mod is loaded, `false` otherwise
   boolean isModLoaded(String modId);
 
-  /**
-   * Check if the game is currently in a development environment.
-   *
-   * @return True if in a development environment, false otherwise.
-   */
+  /// Checks if the game is currently in a development environment.
+  ///
+  /// @return `true` if in a development environment, `false` otherwise
   boolean isDevelopmentEnvironment();
 
-  /**
-   * Gets the name of the environment type as a string.
-   *
-   * @return The name of the environment type.
-   */
+  /// Gets the name of the environment type as a string.
+  ///
+  /// @return `"development"` or `"production"`
   default String getEnvironmentName() {
 
     return isDevelopmentEnvironment() ? "development" : "production";
   }
 
-  /**
-   * Gets the root directory of the current environment as a path.
-   *
-   * @return The root directory for the current instance the mod is loaded in.
-   */
+  /// Gets the root directory of the current environment.
+  ///
+  /// @return the game directory path for the current instance
   Path getGameDirectory();
 
-  /**
-   * Gets the config directory of the current environment as a path.
-   *
-   * @return The config directory for the current instance the mod is loaded in.
-   */
+  /// Gets the config directory of the current environment.
+  ///
+  /// @return the config directory path for the current instance
   default Path getConfigDirectory() {
 
     return getGameDirectory().resolve("config");
@@ -64,6 +52,11 @@ public interface IPlatformHelper {
 
   CreativeModeTab.Builder tabBuilder();
 
-  /// Mimicking {@link BlockEntityType}'s private `BlockEntitySupplier`
+  /// Creates a [BlockEntityType.Builder] mimicking `BlockEntityType`'s private `BlockEntitySupplier`.
+  ///
+  /// @param <T>         the block entity type
+  /// @param constructor factory function taking position and state
+  /// @param validBlocks blocks this entity type is valid for
+  /// @return a new [BlockEntityType.Builder]
   <T extends BlockEntity> BlockEntityType.Builder<T> tileBuilder(BiFunction<BlockPos, BlockState, T> constructor, Block... validBlocks);
 }

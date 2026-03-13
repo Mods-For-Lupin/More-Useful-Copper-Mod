@@ -32,11 +32,14 @@ public class WaxableRegistry {
     return Optional.ofNullable(WAXABLES.get(state.getBlock())).map((block) -> block.withPropertiesOf(state));
   }
 
-  /**
-   * Attempts to apply wax to a block using a honeycomb item.
-   * Returns a non-null {@link InteractionResult} if the item was a honeycomb (hit or miss),
-   * or {@code null} if the item was not a honeycomb (caller should continue handling).
-   */
+  /// Attempts to apply wax to a block using a honeycomb item.
+  ///
+  /// @param state     the current block state
+  /// @param level     the world
+  /// @param pos       position of the block
+  /// @param player    the player interacting
+  /// @param itemStack the item being used
+  /// @return a non-`null` [InteractionResult] if the item was a honeycomb (success or pass), `null` if the item was not a honeycomb (caller should continue handling)
   @Nullable
   public static InteractionResult tryWaxing(BlockState state, Level level, BlockPos pos, Player player, ItemStack itemStack) {
     if (itemStack.getItem() instanceof HoneycombItem) {

@@ -61,28 +61,19 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   public static final EnumProperty<RedstoneSide> WEST = BlockStateProperties.WEST_REDSTONE;
   public static final IntegerProperty POWER = BlockStateProperties.POWER;
   public static final Map<Direction, EnumProperty<RedstoneSide>> PROPERTY_BY_DIRECTION = Maps.newEnumMap(
-      ImmutableMap.of(Direction.NORTH, NORTH, Direction.EAST, EAST, Direction.SOUTH, SOUTH, Direction.WEST, WEST)
-  );
+      ImmutableMap.of(Direction.NORTH, NORTH, Direction.EAST, EAST, Direction.SOUTH, SOUTH, Direction.WEST, WEST));
   public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
   // --- Shape constants (copied from RedStoneWireBlock) ---
   private static final VoxelShape SHAPE_DOT = Block.box(3.0, 0.0, 3.0, 13.0, 1.0, 13.0);
   private static final Map<Direction, VoxelShape> SHAPES_FLOOR = Maps.newEnumMap(
-      ImmutableMap.of(
-          Direction.NORTH, Block.box(3.0, 0.0, 0.0, 13.0, 1.0, 13.0),
-          Direction.SOUTH, Block.box(3.0, 0.0, 3.0, 13.0, 1.0, 16.0),
-          Direction.EAST, Block.box(3.0, 0.0, 3.0, 16.0, 1.0, 13.0),
-          Direction.WEST, Block.box(0.0, 0.0, 3.0, 13.0, 1.0, 13.0)
-      )
-  );
+      ImmutableMap.of(Direction.NORTH, Block.box(3.0, 0.0, 0.0, 13.0, 1.0, 13.0), Direction.SOUTH, Block.box(3.0, 0.0, 3.0, 13.0, 1.0, 16.0), Direction.EAST, Block.box(3.0, 0.0, 3.0, 16.0, 1.0, 13.0),
+          Direction.WEST, Block.box(0.0, 0.0, 3.0, 13.0, 1.0, 13.0)));
   private static final Map<Direction, VoxelShape> SHAPES_UP = Maps.newEnumMap(
-      ImmutableMap.of(
-          Direction.NORTH, Shapes.or(SHAPES_FLOOR.get(Direction.NORTH), Block.box(3.0, 0.0, 0.0, 13.0, 16.0, 1.0)),
-          Direction.SOUTH, Shapes.or(SHAPES_FLOOR.get(Direction.SOUTH), Block.box(3.0, 0.0, 15.0, 13.0, 16.0, 16.0)),
-          Direction.EAST, Shapes.or(SHAPES_FLOOR.get(Direction.EAST), Block.box(15.0, 0.0, 3.0, 16.0, 16.0, 13.0)),
-          Direction.WEST, Shapes.or(SHAPES_FLOOR.get(Direction.WEST), Block.box(0.0, 0.0, 3.0, 1.0, 16.0, 13.0))
-      )
-  );
+      ImmutableMap.of(Direction.NORTH, Shapes.or(SHAPES_FLOOR.get(Direction.NORTH), Block.box(3.0, 0.0, 0.0, 13.0, 16.0, 1.0)), Direction.SOUTH,
+          Shapes.or(SHAPES_FLOOR.get(Direction.SOUTH), Block.box(3.0, 0.0, 15.0, 13.0, 16.0, 16.0)), Direction.EAST,
+          Shapes.or(SHAPES_FLOOR.get(Direction.EAST), Block.box(15.0, 0.0, 3.0, 16.0, 16.0, 13.0)), Direction.WEST,
+          Shapes.or(SHAPES_FLOOR.get(Direction.WEST), Block.box(0.0, 0.0, 3.0, 1.0, 16.0, 13.0))));
   // Shared static cache across all 8 copper wire block instances
   private static final Map<BlockState, VoxelShape> SHAPES_CACHE = Maps.newHashMap();
   // True while ANY wire type (vanilla or copper) is inside its getBestNeighborSignal call.
@@ -92,23 +83,14 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   protected final BlockState crossState;
   private final WeatheringCopper.WeatherState weatherState;
   private boolean shouldSignal = true;
+
   public CopperRedstoneDustBlock(BlockBehaviour.Properties props, WeatherState weatherState) {
     super(props);
     this.weatherState = weatherState;
     this.registerDefaultState(
-        this.stateDefinition.any()
-            .setValue(NORTH, RedstoneSide.NONE)
-            .setValue(EAST, RedstoneSide.NONE)
-            .setValue(SOUTH, RedstoneSide.NONE)
-            .setValue(WEST, RedstoneSide.NONE)
-            .setValue(POWER, 0)
-            .setValue(WATERLOGGED, false)
-    );
-    this.crossState = this.defaultBlockState()
-        .setValue(NORTH, RedstoneSide.SIDE)
-        .setValue(EAST, RedstoneSide.SIDE)
-        .setValue(SOUTH, RedstoneSide.SIDE)
-        .setValue(WEST, RedstoneSide.SIDE);
+        this.stateDefinition.any().setValue(NORTH, RedstoneSide.NONE).setValue(EAST, RedstoneSide.NONE).setValue(SOUTH, RedstoneSide.NONE).setValue(WEST, RedstoneSide.NONE).setValue(POWER, 0)
+            .setValue(WATERLOGGED, false));
+    this.crossState = this.defaultBlockState().setValue(NORTH, RedstoneSide.SIDE).setValue(EAST, RedstoneSide.SIDE).setValue(SOUTH, RedstoneSide.SIDE).setValue(WEST, RedstoneSide.SIDE);
 
     for (BlockState blockState : this.getStateDefinition().getPossibleStates()) {
       if (blockState.getValue(POWER) == 0) {
@@ -117,12 +99,11 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     }
   }
 
-  /**
-   * Returns a packed RGB color for the given power level and oxidation state. Used by block color providers on both Fabric and Forge.
-   * <p>
-   * Color progressions (dim at power 0 → bright at power 15), derived from blurred reference images: UNAFFECTED  #C36E52  dim 40% → bright EXPOSED     #A37E69  dim 40% → bright WEATHERED   #6D9A70
-   * dim 40% → bright OXIDIZED    #54A688  dim 40% → bright
-   */
+  /// Returns a packed RGB color for the given power level and oxidation state. Used by block color providers on both Fabric and Forge.
+  ///
+  /// @param power        signal strength (0–15)
+  /// @param weatherState the oxidation state of the wire
+  /// @return packed RGB int, interpolated from dim to bright based on power
   public static int getColorForPower(int power, WeatherState weatherState) {
     float f = power / 15.0F;
     return switch (weatherState) {
@@ -134,17 +115,11 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   }
 
   protected static boolean isCross(BlockState state) {
-    return state.getValue(NORTH).isConnected()
-        && state.getValue(SOUTH).isConnected()
-        && state.getValue(EAST).isConnected()
-        && state.getValue(WEST).isConnected();
+    return state.getValue(NORTH).isConnected() && state.getValue(SOUTH).isConnected() && state.getValue(EAST).isConnected() && state.getValue(WEST).isConnected();
   }
 
   protected static boolean isDot(BlockState state) {
-    return !state.getValue(NORTH).isConnected()
-        && !state.getValue(SOUTH).isConnected()
-        && !state.getValue(EAST).isConnected()
-        && !state.getValue(WEST).isConnected();
+    return !state.getValue(NORTH).isConnected() && !state.getValue(SOUTH).isConnected() && !state.getValue(EAST).isConnected() && !state.getValue(WEST).isConnected();
   }
 
   // --- Shape ---
@@ -204,8 +179,7 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
     FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
-    return this.getConnectionState(context.getLevel(), this.crossState, context.getClickedPos())
-        .setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+    return this.getConnectionState(context.getLevel(), this.crossState, context.getClickedPos()).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
   }
 
   @Override
@@ -219,13 +193,8 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
       return this.getConnectionState(level, state, pos);
     } else {
       RedstoneSide redstoneSide = this.getConnectingSide(level, pos, direction);
-      return redstoneSide.isConnected() == state.getValue(PROPERTY_BY_DIRECTION.get(direction)).isConnected() && !isCross(state)
-          ? state.setValue(PROPERTY_BY_DIRECTION.get(direction), redstoneSide)
-          : this.getConnectionState(
-              level,
-              this.crossState.setValue(POWER, state.getValue(POWER)).setValue(PROPERTY_BY_DIRECTION.get(direction), redstoneSide),
-              pos
-          );
+      return redstoneSide.isConnected() == state.getValue(PROPERTY_BY_DIRECTION.get(direction)).isConnected() && !isCross(state) ? state.setValue(PROPERTY_BY_DIRECTION.get(direction), redstoneSide)
+          : this.getConnectionState(level, this.crossState.setValue(POWER, state.getValue(POWER)).setValue(PROPERTY_BY_DIRECTION.get(direction), redstoneSide), pos);
     }
   }
 
@@ -307,9 +276,7 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
         return RedstoneSide.SIDE;
       }
     }
-    return !shouldConnectTo(blockState, direction)
-        && (blockState.isRedstoneConductor(level, blockPos) || !shouldConnectTo(level.getBlockState(blockPos.below())))
-        ? RedstoneSide.NONE
+    return !shouldConnectTo(blockState, direction) && (blockState.isRedstoneConductor(level, blockPos) || !shouldConnectTo(level.getBlockState(blockPos.below()))) ? RedstoneSide.NONE
         : RedstoneSide.SIDE;
   }
 
@@ -394,9 +361,8 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   protected void updatesOnShapeChange(Level level, BlockPos pos, BlockState oldState, BlockState newState) {
     for (Direction direction : Direction.Plane.HORIZONTAL) {
       BlockPos blockPos = pos.relative(direction);
-      if (oldState.getValue(PROPERTY_BY_DIRECTION.get(direction)).isConnected()
-          != newState.getValue(PROPERTY_BY_DIRECTION.get(direction)).isConnected()
-          && level.getBlockState(blockPos).isRedstoneConductor(level, blockPos)) {
+      if (oldState.getValue(PROPERTY_BY_DIRECTION.get(direction)).isConnected() != newState.getValue(PROPERTY_BY_DIRECTION.get(direction)).isConnected() && level.getBlockState(blockPos)
+          .isRedstoneConductor(level, blockPos)) {
         level.updateNeighborsAtExceptFromFacing(blockPos, newState.getBlock(), direction.getOpposite());
       }
     }
@@ -455,10 +421,7 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     if (i == 0) {
       return 0;
     }
-    return direction != Direction.UP
-        && !this.getConnectionState(level, state, pos).getValue(PROPERTY_BY_DIRECTION.get(direction.getOpposite())).isConnected()
-        ? 0
-        : i;
+    return direction != Direction.UP && !this.getConnectionState(level, state, pos).getValue(PROPERTY_BY_DIRECTION.get(direction.getOpposite())).isConnected() ? 0 : i;
   }
 
   // --- Survival ---
@@ -547,21 +510,9 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   @Override
   public BlockState rotate(BlockState state, Rotation rotation) {
     return switch (rotation) {
-      case CLOCKWISE_180 -> state
-          .setValue(NORTH, state.getValue(SOUTH))
-          .setValue(EAST, state.getValue(WEST))
-          .setValue(SOUTH, state.getValue(NORTH))
-          .setValue(WEST, state.getValue(EAST));
-      case COUNTERCLOCKWISE_90 -> state
-          .setValue(NORTH, state.getValue(EAST))
-          .setValue(EAST, state.getValue(SOUTH))
-          .setValue(SOUTH, state.getValue(WEST))
-          .setValue(WEST, state.getValue(NORTH));
-      case CLOCKWISE_90 -> state
-          .setValue(NORTH, state.getValue(WEST))
-          .setValue(EAST, state.getValue(NORTH))
-          .setValue(SOUTH, state.getValue(EAST))
-          .setValue(WEST, state.getValue(SOUTH));
+      case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH)).setValue(EAST, state.getValue(WEST)).setValue(SOUTH, state.getValue(NORTH)).setValue(WEST, state.getValue(EAST));
+      case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST)).setValue(EAST, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(WEST)).setValue(WEST, state.getValue(NORTH));
+      case CLOCKWISE_90 -> state.setValue(NORTH, state.getValue(WEST)).setValue(EAST, state.getValue(NORTH)).setValue(SOUTH, state.getValue(EAST)).setValue(WEST, state.getValue(SOUTH));
       default -> state;
     };
   }
@@ -596,8 +547,7 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     }
   }
 
-  private void spawnParticlesAlongLine(Level level, RandomSource random, BlockPos pos, Vec3 particleVec,
-      Direction xDirection, Direction zDirection, float min, float max) {
+  private void spawnParticlesAlongLine(Level level, RandomSource random, BlockPos pos, Vec3 particleVec, Direction xDirection, Direction zDirection, float min, float max) {
     float f = max - min;
     if (!(random.nextFloat() >= 0.2F * f)) {
       float g = 0.4375F;
@@ -605,11 +555,7 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
       double d = 0.5 + (double) (g * (float) xDirection.getStepX()) + (double) (h * (float) zDirection.getStepX());
       double e = 0.5 + (double) (g * (float) xDirection.getStepY()) + (double) (h * (float) zDirection.getStepY());
       double k = 0.5 + (double) (g * (float) xDirection.getStepZ()) + (double) (h * (float) zDirection.getStepZ());
-      level.addParticle(
-          new DustParticleOptions(particleVec.toVector3f(), 1.0F),
-          (double) pos.getX() + d, (double) pos.getY() + e, (double) pos.getZ() + k,
-          0.0, 0.0, 0.0
-      );
+      level.addParticle(new DustParticleOptions(particleVec.toVector3f(), 1.0F), (double) pos.getX() + d, (double) pos.getY() + e, (double) pos.getZ() + k, 0.0, 0.0, 0.0);
     }
   }
 }
