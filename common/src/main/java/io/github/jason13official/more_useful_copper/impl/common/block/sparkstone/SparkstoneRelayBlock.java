@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper.impl.common.block.sparkstone;
 
+import io.github.jason13official.more_useful_copper.api.common.mixin.DispenserAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -15,7 +16,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -34,7 +37,8 @@ public class SparkstoneRelayBlock extends Block {
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   public static final EnumProperty<SparkstonePeriod> PERIOD = EnumProperty.create("period", SparkstonePeriod.class);
 
-  protected static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
+  /// mimicking shape from BasePressurePlateBlock
+  protected static final VoxelShape SHAPE = Block.box(1.0, 0.0, 1.0, 15.0, 1.0, 15.0);
 
   public SparkstoneRelayBlock(Properties properties) {
     super(properties);
@@ -90,18 +94,34 @@ public class SparkstoneRelayBlock extends Block {
       level.destroyBlock(pos, true);
       return;
     }
+    // Only schedule — don't power on or notify neighbors yet.
+    // The tick handles the rising edge so downstream relays fire one tick later,
+    // producing a cascade wave instead of simultaneous triggering.
     if (!level.isClientSide && !state.getValue(POWERED)
-        && hasSignalOnNonFacingFaces(level, pos, state)) {
-      level.setBlock(pos, state.setValue(POWERED, true), Block.UPDATE_ALL);
-      // level.scheduleTick(pos, this, state.getValue(PERIOD).period);
-      level.scheduleTick(pos, this, 1); // testing 1 tick pulses on relays
-      level.updateNeighborsAt(pos, this);
+        && hasSignalOnNonFacingFaces(level, pos, state)
+        && !((ServerLevel) level).getBlockTicks().hasScheduledTick(pos, this)) {
+      // level.scheduleTick(pos, this, 1);
+      level.scheduleTick(pos, this, state.getValue(PERIOD).period);
     }
   }
 
   @Override
   public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-    if (state.getValue(POWERED)) {
+    if (!state.getValue(POWERED)) {
+      // Rising edge: power on and notify downstream so the next relay schedules its tick.
+      level.setBlock(pos, state.setValue(POWERED, true), Block.UPDATE_ALL);
+      level.scheduleTick(pos, this, 1);
+      level.updateNeighborsAt(pos, this);
+    } else {
+
+      Direction facing = state.getValue(FACING);
+      BlockPos relative = pos.relative(facing);
+
+      if (level.getBlockState(relative).getBlock() instanceof DispenserBlock dispenser) {
+        ((DispenserAccessor) dispenser).more_useful_copper$doDispense(level, relative);
+      }
+
+      // Falling edge: power off and notify downstream.
       level.setBlock(pos, state.setValue(POWERED, false), Block.UPDATE_ALL);
       level.updateNeighborsAt(pos, this);
     }
