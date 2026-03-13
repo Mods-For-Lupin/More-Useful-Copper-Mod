@@ -33,6 +33,7 @@ public class GardenStakeBlock extends Block {
     builder.add(LIT);
   }
 
+  /// Ensures a tick gets fired soon after being activated
   @Override
   public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
     level.scheduleTick(pos, state.getBlock(), 5);
@@ -40,15 +41,17 @@ public class GardenStakeBlock extends Block {
   }
 
   @Override
+  public boolean isRandomlyTicking(BlockState state) {
+    return state.getValue(LIT); // will use GardenStakeBlock#tick logic for random ticking via randomTick side effect
+  }
+
+//  @Override
+//  public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+//    super.randomTick(state, level, pos, random); // only calls to tick which we override
+//  }
+
+  @Override
   public void tick(BlockState selfState, ServerLevel level, BlockPos selfPos, RandomSource random) {
-
-    if (Services.PLATFORM.isDevelopmentEnvironment()) {
-      Constants.LOG.info("GardenStake#tick");
-    }
-
-    if (!selfState.getValue(LIT)) {
-      return;
-    }
 
     AABB box = new AABB(selfPos).inflate(5, 3, 5);
     List<BlockPos> alreadyChecked = new ArrayList<>();
@@ -78,16 +81,6 @@ public class GardenStakeBlock extends Block {
 
     // level.scheduleTick(selfPos, selfState.getBlock(), 5);
   }
-
-  @Override
-  public boolean isRandomlyTicking(BlockState state) {
-    return state.getValue(LIT); // will use tick logic for random ticking via randomTick side effect
-  }
-
-//  @Override
-//  public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-//    super.randomTick(state, level, pos, random);
-//  }
 
   @Override
   public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
