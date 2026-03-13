@@ -35,6 +35,7 @@ public class MoreUsefulCopperClientForge {
   public MoreUsefulCopperClientForge(final IEventBus modEventBus) {
 
     modEventBus.addListener((Consumer<FMLClientSetupEvent>) event -> {
+      MoreUsefulCopperClient.init(); // anything touching game objects must happen after registration
       registerItemRenderers();
       registerItemProperties();
     });
