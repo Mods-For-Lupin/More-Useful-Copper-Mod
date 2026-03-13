@@ -11,6 +11,9 @@ import io.github.jason13official.more_useful_copper.impl.common.block.CopperRepe
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperWallRedstoneTorchBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.GardenStakeBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedButtonBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.sparkstone.SparkstoneRelayBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.sparkstone.SparkstoneTorchBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.sparkstone.SparkstoneWallTorchBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedComparatorBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedLeverBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRedstoneDustBlock;
@@ -107,10 +110,29 @@ public class ModBlocks {
 
   public static Block GARDEN_STAKE;
 
+  public static SparkstoneTorchBlock SPARKSTONE_TORCH;
+  public static SparkstoneWallTorchBlock SPARKSTONE_WALL_TORCH;
+  public static SparkstoneRelayBlock SPARKSTONE_RELAY;
+
   public static void register(BiConsumer<Block, ResourceLocation> consumer) {
 
     GARDEN_STAKE = new GardenStakeBlock(BlockBehaviour.Properties.of().noOcclusion().noCollission().lightLevel(s -> s.getValue(GardenStakeBlock.LIT) ? 7 : 2));
     consumer.accept(GARDEN_STAKE, MoreUsefulCopper.identifier("garden_stake"));
+
+    SPARKSTONE_TORCH = new SparkstoneTorchBlock(
+        Properties.of().noCollission().instabreak()
+            .lightLevel(s -> s.getValue(SparkstoneTorchBlock.LIT) ? 10 : 0)
+            .sound(SoundType.COPPER).pushReaction(PushReaction.DESTROY));
+    SPARKSTONE_WALL_TORCH = new SparkstoneWallTorchBlock(
+        Properties.of().noCollission().instabreak()
+            .lightLevel(s -> s.getValue(SparkstoneWallTorchBlock.LIT) ? 10 : 0)
+            .sound(SoundType.COPPER).pushReaction(PushReaction.DESTROY));
+    SPARKSTONE_RELAY = new SparkstoneRelayBlock(
+        Properties.of().instabreak().pushReaction(PushReaction.DESTROY));
+
+    consumer.accept(SPARKSTONE_TORCH, MoreUsefulCopper.identifier("sparkstone_torch"));
+    consumer.accept(SPARKSTONE_WALL_TORCH, MoreUsefulCopper.identifier("sparkstone_wall_torch"));
+    consumer.accept(SPARKSTONE_RELAY, MoreUsefulCopper.identifier("sparkstone_relay"));
 
     COPPER_BELL = new CopperBellBlock(Properties.of().mapColor(MapColor.GOLD).forceSolidOn().requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.ANVIL).pushReaction(PushReaction.DESTROY).noOcclusion());
     consumer.accept(COPPER_BELL, MoreUsefulCopper.identifier("copper_bell"));

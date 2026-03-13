@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,powered=false": { "model": "more_useful_copper:block/sparkstone_relay" },
+    "facing=east,powered=false":  { "model": "more_useful_copper:block/sparkstone_relay", "y": 90 },
+    "facing=south,powered=false": { "model": "more_useful_copper:block/sparkstone_relay", "y": 180 },
+    "facing=west,powered=false":  { "model": "more_useful_copper:block/sparkstone_relay", "y": 270 },
+    "facing=north,powered=true":  { "model": "more_useful_copper:block/sparkstone_relay_powered" },
+    "facing=east,powered=true":   { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 90 },
+    "facing=south,powered=true":  { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 180 },
+    "facing=west,powered=true":   { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 270 }
+  }
+}

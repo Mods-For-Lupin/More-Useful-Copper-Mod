@@ -28,6 +28,9 @@ public class ModTabs {
   }
 
   private static void addItemsToTabOutput(Output output) {
+    output.accept(ModItems.SPARKSTONE_TORCH);
+    output.accept(ModItems.SPARKSTONE_RELAY);
+
     output.accept(ModItems.WAX_SCRAPER);
     output.accept(ModItems.SPRAY_BOTTLE);
     output.accept(ModItems.COPPER_BOTTOM_BOAT);

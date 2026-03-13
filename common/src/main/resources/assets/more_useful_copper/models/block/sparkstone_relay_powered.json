@@ -1,0 +1,7 @@
+{
+  "render_type": "cutout",
+  "parent": "minecraft:block/pressure_plate_down",
+  "textures": {
+    "texture": "more_useful_copper:block/sparkstone_relay_on"
+  }
+}

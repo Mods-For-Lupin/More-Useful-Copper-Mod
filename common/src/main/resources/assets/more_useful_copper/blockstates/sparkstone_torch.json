@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "lit=false,period=fast":      { "model": "more_useful_copper:block/sparkstone_torch_off" },
+    "lit=false,period=medium":    { "model": "more_useful_copper:block/sparkstone_torch_off" },
+    "lit=false,period=slow":      { "model": "more_useful_copper:block/sparkstone_torch_off" },
+    "lit=false,period=very_slow": { "model": "more_useful_copper:block/sparkstone_torch_off" },
+    "lit=true,period=fast":       { "model": "more_useful_copper:block/sparkstone_torch" },
+    "lit=true,period=medium":     { "model": "more_useful_copper:block/sparkstone_torch" },
+    "lit=true,period=slow":       { "model": "more_useful_copper:block/sparkstone_torch" },
+    "lit=true,period=very_slow":  { "model": "more_useful_copper:block/sparkstone_torch" }
+  }
+}

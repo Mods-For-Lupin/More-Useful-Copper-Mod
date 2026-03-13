@@ -29,6 +29,8 @@ public class ModItems {
   public static Item LIGHTNING_BOTTLE;
   public static Item GARDEN_STAKE;
   public static Item MOISTURE_COMPASS;
+  public static Item SPARKSTONE_TORCH;
+  public static Item SPARKSTONE_RELAY;
 
   public static void register(BiConsumer<Item, ResourceLocation> consumer) {
     WAX_SCRAPER = new WaxScraperItem(new Properties().durability(64));
@@ -55,6 +57,11 @@ public class ModItems {
     consumer.accept(COPPER_STATUE_SKELETON, MoreUsefulCopper.identifier("copper_statue_skeleton"));
     consumer.accept(COPPER_STATUE_SPIDER, MoreUsefulCopper.identifier("copper_statue_spider"));
     consumer.accept(COPPER_STATUE_ZOMBIE, MoreUsefulCopper.identifier("copper_statue_zombie"));
+
+    SPARKSTONE_TORCH = new StandingAndWallBlockItem(ModBlocks.SPARKSTONE_TORCH, ModBlocks.SPARKSTONE_WALL_TORCH, new Properties(), Direction.DOWN);
+    SPARKSTONE_RELAY = new BlockItem(ModBlocks.SPARKSTONE_RELAY, new Properties());
+    consumer.accept(SPARKSTONE_TORCH, MoreUsefulCopper.identifier("sparkstone_torch"));
+    consumer.accept(SPARKSTONE_RELAY, MoreUsefulCopper.identifier("sparkstone_relay"));
 
     consumer.accept(new BlockItem(ModBlocks.COPPER_BELL, new Properties()), MoreUsefulCopper.identifier("copper_bell"));
 
