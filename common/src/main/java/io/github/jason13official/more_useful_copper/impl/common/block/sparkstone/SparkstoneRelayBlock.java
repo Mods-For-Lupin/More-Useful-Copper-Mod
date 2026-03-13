@@ -64,8 +64,12 @@ public class SparkstoneRelayBlock extends Block {
 
   @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
-    return this.defaultBlockState()
-        .setValue(FACING, context.getHorizontalDirection().getOpposite());
+
+    if (context.getPlayer() != null && context.getPlayer().isShiftKeyDown()) {
+      return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+    }
+
+    return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection());
   }
 
   @Override
@@ -89,7 +93,8 @@ public class SparkstoneRelayBlock extends Block {
     if (!level.isClientSide && !state.getValue(POWERED)
         && hasSignalOnNonFacingFaces(level, pos, state)) {
       level.setBlock(pos, state.setValue(POWERED, true), Block.UPDATE_ALL);
-      level.scheduleTick(pos, this, state.getValue(PERIOD).period);
+      // level.scheduleTick(pos, this, state.getValue(PERIOD).period);
+      level.scheduleTick(pos, this, 1); // testing 1 tick pulses on relays
       level.updateNeighborsAt(pos, this);
     }
   }
@@ -103,13 +108,17 @@ public class SparkstoneRelayBlock extends Block {
   }
 
   /// Returns `true` if any face other than FACING (or from below) has a signal.
+  ///
+  /// Uses `dir.getOpposite()` so we ask each neighbor what it emits *toward* this block.
+  /// Relay A facing EAST has `getSignal(..., EAST) = 15`; relay B to relay A's east
+  /// queries with dir=WEST → `getSignal(relayAPos, EAST)` correctly detects the output.
   private boolean hasSignalOnNonFacingFaces(Level level, BlockPos pos, BlockState state) {
     Direction facing = state.getValue(FACING);
     for (Direction dir : Direction.Plane.HORIZONTAL) {
       if (dir == facing) continue;
-      if (level.getSignal(pos.relative(dir), dir) > 0) return true;
+      if (level.getSignal(pos.relative(dir), dir.getOpposite()) > 0) return true;
     }
-    return level.getSignal(pos.below(), Direction.DOWN) > 0;
+    return level.getSignal(pos.below(), Direction.UP) > 0;
   }
 
   // --- Redstone signal output ---
@@ -136,7 +145,7 @@ public class SparkstoneRelayBlock extends Block {
       InteractionHand hand, BlockHitResult hit) {
     if (!level.isClientSide) {
       Direction next = state.getValue(FACING).getClockWise();
-      level.setBlock(pos, state.setValue(FACING, next), 3);
+      level.setBlock(pos, state.setValue(FACING, next), Block.UPDATE_ALL);
       level.updateNeighborsAt(pos, this);
       level.playSound(null, pos, SoundEvents.STONE_BUTTON_CLICK_ON, SoundSource.BLOCKS, 0.3f, 0.6f);
     }

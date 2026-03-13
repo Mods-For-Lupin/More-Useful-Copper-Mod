@@ -101,7 +101,7 @@ public class SparkstoneWallTorchBlock extends Block {
   public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
     if (isAttachedBlockPowered(level, pos, state)) {
       if (state.getValue(LIT)) {
-        level.setBlock(pos, state.setValue(LIT, false), 3);
+        level.setBlock(pos, state.setValue(LIT, false), Block.UPDATE_ALL);
         level.updateNeighborsAt(pos, this);
       }
       return;
@@ -110,11 +110,11 @@ public class SparkstoneWallTorchBlock extends Block {
     int period = state.getValue(PERIOD).period;
 
     if (state.getValue(LIT)) {
-      level.setBlock(pos, state.setValue(LIT, false), 3);
+      level.setBlock(pos, state.setValue(LIT, false), Block.UPDATE_ALL);
       level.updateNeighborsAt(pos, this);
       level.scheduleTick(pos, this, period - 1);
     } else {
-      level.setBlock(pos, state.setValue(LIT, true), 3);
+      level.setBlock(pos, state.setValue(LIT, true), Block.UPDATE_ALL);
       level.updateNeighborsAt(pos, this);
       level.scheduleTick(pos, this, 1);
     }

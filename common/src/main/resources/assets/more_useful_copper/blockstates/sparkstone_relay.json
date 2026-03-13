@@ -1,12 +1,39 @@
 {
   "variants": {
-    "facing=north,powered=false": { "model": "more_useful_copper:block/sparkstone_relay" },
-    "facing=east,powered=false":  { "model": "more_useful_copper:block/sparkstone_relay", "y": 90 },
-    "facing=south,powered=false": { "model": "more_useful_copper:block/sparkstone_relay", "y": 180 },
-    "facing=west,powered=false":  { "model": "more_useful_copper:block/sparkstone_relay", "y": 270 },
-    "facing=north,powered=true":  { "model": "more_useful_copper:block/sparkstone_relay_powered" },
-    "facing=east,powered=true":   { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 90 },
-    "facing=south,powered=true":  { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 180 },
-    "facing=west,powered=true":   { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 270 }
+    "facing=north,period=fast,powered=false":      { "model": "more_useful_copper:block/sparkstone_relay" },
+    "facing=north,period=medium,powered=false":    { "model": "more_useful_copper:block/sparkstone_relay" },
+    "facing=north,period=slow,powered=false":      { "model": "more_useful_copper:block/sparkstone_relay" },
+    "facing=north,period=very_slow,powered=false": { "model": "more_useful_copper:block/sparkstone_relay" },
+    "facing=north,period=fast,powered=true":       { "model": "more_useful_copper:block/sparkstone_relay_powered" },
+    "facing=north,period=medium,powered=true":     { "model": "more_useful_copper:block/sparkstone_relay_powered" },
+    "facing=north,period=slow,powered=true":       { "model": "more_useful_copper:block/sparkstone_relay_powered" },
+    "facing=north,period=very_slow,powered=true":  { "model": "more_useful_copper:block/sparkstone_relay_powered" },
+
+    "facing=east,period=fast,powered=false":       { "model": "more_useful_copper:block/sparkstone_relay", "y": 90 },
+    "facing=east,period=medium,powered=false":     { "model": "more_useful_copper:block/sparkstone_relay", "y": 90 },
+    "facing=east,period=slow,powered=false":       { "model": "more_useful_copper:block/sparkstone_relay", "y": 90 },
+    "facing=east,period=very_slow,powered=false":  { "model": "more_useful_copper:block/sparkstone_relay", "y": 90 },
+    "facing=east,period=fast,powered=true":        { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 90 },
+    "facing=east,period=medium,powered=true":      { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 90 },
+    "facing=east,period=slow,powered=true":        { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 90 },
+    "facing=east,period=very_slow,powered=true":   { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 90 },
+
+    "facing=south,period=fast,powered=false":      { "model": "more_useful_copper:block/sparkstone_relay", "y": 180 },
+    "facing=south,period=medium,powered=false":    { "model": "more_useful_copper:block/sparkstone_relay", "y": 180 },
+    "facing=south,period=slow,powered=false":      { "model": "more_useful_copper:block/sparkstone_relay", "y": 180 },
+    "facing=south,period=very_slow,powered=false": { "model": "more_useful_copper:block/sparkstone_relay", "y": 180 },
+    "facing=south,period=fast,powered=true":       { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 180 },
+    "facing=south,period=medium,powered=true":     { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 180 },
+    "facing=south,period=slow,powered=true":       { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 180 },
+    "facing=south,period=very_slow,powered=true":  { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 180 },
+
+    "facing=west,period=fast,powered=false":       { "model": "more_useful_copper:block/sparkstone_relay", "y": 270 },
+    "facing=west,period=medium,powered=false":     { "model": "more_useful_copper:block/sparkstone_relay", "y": 270 },
+    "facing=west,period=slow,powered=false":       { "model": "more_useful_copper:block/sparkstone_relay", "y": 270 },
+    "facing=west,period=very_slow,powered=false":  { "model": "more_useful_copper:block/sparkstone_relay", "y": 270 },
+    "facing=west,period=fast,powered=true":        { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 270 },
+    "facing=west,period=medium,powered=true":      { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 270 },
+    "facing=west,period=slow,powered=true":        { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 270 },
+    "facing=west,period=very_slow,powered=true":   { "model": "more_useful_copper:block/sparkstone_relay_powered", "y": 270 }
   }
 }
