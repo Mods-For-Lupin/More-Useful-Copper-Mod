@@ -57,7 +57,7 @@ public class GardenStakeBlock extends Block {
     for (double x = box.minX; x < box.maxX; x++) {
       for (double z = box.minZ; z < box.maxZ; z++) {
         for (double y = box.minY; y < box.maxY; y++) {
-          
+
           if (random.nextFloat() >= 0.1) {
             continue iteration;
           }
