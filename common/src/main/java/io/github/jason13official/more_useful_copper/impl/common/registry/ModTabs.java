@@ -33,6 +33,7 @@ public class ModTabs {
     output.accept(ModItems.COPPER_BOTTOM_BOAT);
     output.accept(ModItems.GARDEN_STAKE);
     output.accept(ModItems.LIGHTNING_BOTTLE);
+    output.accept(ModItems.MOISTURE_COMPASS);
 
     output.accept(ModItems.COPPER_STATUE_CREEPER);
     output.accept(ModItems.COPPER_STATUE_SKELETON);

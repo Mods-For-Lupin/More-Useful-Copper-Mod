@@ -6,6 +6,7 @@ import io.github.jason13official.more_useful_copper.impl.common.item.CopperBotto
 import io.github.jason13official.more_useful_copper.impl.common.item.CopperStatueItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.GardenStakeBlockItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.LightningBottleItem;
+import io.github.jason13official.more_useful_copper.impl.common.item.MoistureCompassItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.SprayBottleItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.WaxScraperItem;
 import java.util.function.BiConsumer;
@@ -27,6 +28,7 @@ public class ModItems {
   public static Item COPPER_BOTTOM_BOAT;
   public static Item LIGHTNING_BOTTLE;
   public static Item GARDEN_STAKE;
+  public static Item MOISTURE_COMPASS;
 
   public static void register(BiConsumer<Item, ResourceLocation> consumer) {
     WAX_SCRAPER = new WaxScraperItem(new Properties().durability(64));
@@ -38,6 +40,9 @@ public class ModItems {
     GARDEN_STAKE = new GardenStakeBlockItem(ModBlocks.GARDEN_STAKE, new Properties());
     consumer.accept(LIGHTNING_BOTTLE, MoreUsefulCopper.identifier("lightning_bottle"));
     consumer.accept(GARDEN_STAKE, MoreUsefulCopper.identifier("garden_stake"));
+
+    MOISTURE_COMPASS = new MoistureCompassItem(new Properties().stacksTo(1));
+    consumer.accept(MOISTURE_COMPASS, MoreUsefulCopper.identifier("moisture_compass"));
 
     COPPER_BOTTOM_BOAT = new CopperBottomBoatItem(new Properties().stacksTo(1));
     consumer.accept(COPPER_BOTTOM_BOAT, MoreUsefulCopper.identifier("copper_bottom_boat"));

@@ -13,6 +13,7 @@ import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.
 import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperStatueRenderer;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue.Type;
+import io.github.jason13official.more_useful_copper.impl.common.item.MoistureCompassItem;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModBlocks;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
@@ -21,6 +22,10 @@ import java.util.function.Consumer;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
@@ -37,6 +42,10 @@ public class MoreUsefulCopperClientForge {
       BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SKELETON, CopperStatueItemRenderer.INSTANCE::renderByItem);
       BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SPIDER, CopperStatueItemRenderer.INSTANCE::renderByItem);
       BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_ZOMBIE, CopperStatueItemRenderer.INSTANCE::renderByItem);
+
+      ItemProperties.register(ModItems.MOISTURE_COMPASS, new ResourceLocation("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
+        return !MoistureCompassItem.isMoistureCompass(itemStack) ? CompassItem.getSpawnPosition(clientLevel) : MoistureCompassItem.getMoisturePosition(itemStack.getOrCreateTag());
+      }));
     });
 
     modEventBus.addListener((Consumer<RegisterColorHandlersEvent.Block>) event -> {

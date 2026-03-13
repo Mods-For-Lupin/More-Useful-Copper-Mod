@@ -13,6 +13,7 @@ import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue.Type;
+import io.github.jason13official.more_useful_copper.impl.common.item.MoistureCompassItem;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModBlocks;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
@@ -26,6 +27,10 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 
 public class MoreUsefulCopperClientFabric implements ClientModInitializer {
@@ -34,6 +39,10 @@ public class MoreUsefulCopperClientFabric implements ClientModInitializer {
   public void onInitializeClient() {
 
     MoreUsefulCopperClient.init();
+
+    ItemProperties.register(ModItems.MOISTURE_COMPASS, new ResourceLocation("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
+      return !MoistureCompassItem.isMoistureCompass(itemStack) ? CompassItem.getSpawnPosition(clientLevel) : MoistureCompassItem.getMoisturePosition(itemStack.getOrCreateTag());
+    }));
 
     BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_CREEPER, CopperStatueItemRenderer.INSTANCE::renderByItem);
     BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SKELETON, CopperStatueItemRenderer.INSTANCE::renderByItem);
