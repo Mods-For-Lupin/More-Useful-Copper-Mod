@@ -1,16 +1,19 @@
 package io.github.jason13official.more_useful_copper;
 
+import io.github.jason13official.more_useful_copper.api.client.rendering.BuiltinItemRendererRegistry;
 import io.github.jason13official.more_useful_copper.impl.client.model.CreeperStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.SkeletonStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.SpiderStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.ZombieStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.geom.ModModelLayers;
+import io.github.jason13official.more_useful_copper.impl.client.renderer.CopperStatueItemRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.blockentity.CopperBellRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperStatueRenderer;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue.Type;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModBlocks;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
+import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTiles;
 import java.util.function.Consumer;
 import net.minecraft.client.color.block.BlockColor;
@@ -20,10 +23,18 @@ import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class MoreUsefulCopperClientForge {
 
   public MoreUsefulCopperClientForge(final IEventBus modEventBus) {
+
+    modEventBus.addListener((Consumer<FMLClientSetupEvent>) event -> {
+      BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_CREEPER, CopperStatueItemRenderer.INSTANCE::renderByItem);
+      BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SKELETON, CopperStatueItemRenderer.INSTANCE::renderByItem);
+      BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SPIDER, CopperStatueItemRenderer.INSTANCE::renderByItem);
+      BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_ZOMBIE, CopperStatueItemRenderer.INSTANCE::renderByItem);
+    });
 
     modEventBus.addListener((Consumer<RegisterColorHandlersEvent.Block>) event -> {
       event.register(

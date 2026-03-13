@@ -5,6 +5,7 @@ import io.github.jason13official.more_useful_copper.impl.client.model.SkeletonSt
 import io.github.jason13official.more_useful_copper.impl.client.model.SpiderStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.ZombieStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.geom.ModModelLayers;
+import io.github.jason13official.more_useful_copper.impl.client.renderer.CopperStatueItemRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.blockentity.CopperBellRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperStatueRenderer;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
@@ -12,9 +13,11 @@ import io.github.jason13official.more_useful_copper.impl.common.entity.CopperSta
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue.Type;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModBlocks;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
+import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTiles;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -28,6 +31,11 @@ public class MoreUsefulCopperClientFabric implements ClientModInitializer {
   public void onInitializeClient() {
 
     MoreUsefulCopperClient.init();
+
+    BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_CREEPER, CopperStatueItemRenderer.INSTANCE::renderByItem);
+    BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SKELETON, CopperStatueItemRenderer.INSTANCE::renderByItem);
+    BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SPIDER, CopperStatueItemRenderer.INSTANCE::renderByItem);
+    BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_ZOMBIE, CopperStatueItemRenderer.INSTANCE::renderByItem);
 
     EntityRendererRegistry.register(ModEntities.COPPER_STATUE, CopperStatueRenderer::new);
     for (Type type : Type.values()) {

@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CopperStatueItem extends Item {
 
-  private final CopperStatue.Type type;
+  public final CopperStatue.Type type;
 
   public CopperStatueItem(CopperStatue.Type type, Item.Properties properties) {
     super(properties);

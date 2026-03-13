@@ -3,6 +3,7 @@ package io.github.jason13official.more_useful_copper.impl.client.renderer.entity
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
 import io.github.jason13official.more_useful_copper.impl.client.model.CreeperStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.SkeletonStatueModel;
@@ -65,6 +66,18 @@ public class CopperStatueRenderer extends EntityRenderer<CopperStatue> {
   public void render(CopperStatue entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
 
     poseStack.pushPose();
+
+    // BoatRenderer: get the model out of the ground
+    // poseStack.translate(0.0F, 0.375F, 0.0F);
+
+    // flip the model vertically (bottom becomes top)
+    poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - entityYaw));
+
+    // invert the model on the x-axis and y-axis ???
+    poseStack.scale(-1.0F, -1.0F, 1.0F);
+
+    // LivingEntityRenderer: get the model out of the ground
+    poseStack.translate(0.0F, -1.501F, 0.0F);
 
     Pair<ResourceLocation, EntityModel<CopperStatue>> pair = this.statueResources.get(entity.getVariant());
     ResourceLocation resourceLocation = pair.getA();

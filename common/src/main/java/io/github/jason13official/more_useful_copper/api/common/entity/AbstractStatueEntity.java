@@ -1,5 +1,7 @@
 package io.github.jason13official.more_useful_copper.api.common.entity;
 
+import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue;
+import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
 import java.util.List;
 import java.util.function.Predicate;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -20,6 +22,8 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.AbstractMinecart.Type;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -32,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
 
   /// mimics a similar field in {@link ArmorStand}
-  private static final Predicate<Entity> RIDABLE_MINECARTS = entity -> entity instanceof AbstractMinecart && ((AbstractMinecart) entity).getMinecartType() == AbstractMinecart.Type.RIDEABLE;
+  private static final Predicate<Entity> RIDABLE_MINECARTS = entity -> entity instanceof AbstractMinecart && ((AbstractMinecart) entity).getMinecartType() == Type.RIDEABLE;
 
   public long lastHit;
 
@@ -201,7 +205,21 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
   }
 
   private void brokenByPlayer(DamageSource damageSource) {
-    ItemStack itemStack = new ItemStack(Items.ARMOR_STAND);
+
+    ItemStack toReturn = ItemStack.EMPTY;
+
+    if (this instanceof CopperStatue copperStatue) {
+      CopperStatue.Type type = copperStatue.getVariant();
+
+      toReturn = switch (type) {
+        case CREEPER -> new ItemStack(ModItems.COPPER_STATUE_CREEPER);
+        case SKELETON -> new ItemStack(ModItems.COPPER_STATUE_SKELETON);
+        case SPIDER -> new ItemStack(ModItems.COPPER_STATUE_SPIDER);
+        case ZOMBIE -> new ItemStack(ModItems.COPPER_STATUE_ZOMBIE);
+      };
+    }
+
+    ItemStack itemStack = toReturn;
     if (this.hasCustomName()) {
       itemStack.setHoverName(this.getCustomName());
     }
@@ -257,7 +275,7 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
 
   @Override
   public void kill() {
-    this.remove(Entity.RemovalReason.KILLED);
+    this.remove(RemovalReason.KILLED);
     this.gameEvent(GameEvent.ENTITY_DIE);
   }
 
@@ -282,8 +300,8 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
   }
 
   @Override
-  public LivingEntity.Fallsounds getFallSounds() {
-    return new LivingEntity.Fallsounds(SoundEvents.ARMOR_STAND_FALL, SoundEvents.ARMOR_STAND_FALL);
+  public Fallsounds getFallSounds() {
+    return new Fallsounds(SoundEvents.ARMOR_STAND_FALL, SoundEvents.ARMOR_STAND_FALL);
   }
 
   @Nullable

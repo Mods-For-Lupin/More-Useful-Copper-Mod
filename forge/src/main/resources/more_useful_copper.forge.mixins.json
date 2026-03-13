@@ -10,6 +10,7 @@
     "ForgeDiodeBlockMixin"
   ],
   "client": [
+    "ForgeBlockEntityWithoutLevelRendererMixin",
     "ForgeTitleScreenMixin"
   ],
   "server": [
