@@ -22,8 +22,7 @@ public class ModTabs {
         .title(Component.translatable("itemGroup.moreUsefulCopper"))
         .displayItems((itemDisplayParameters, output) -> {
           addItemsToTabOutput(output);
-        })
-        .build();
+        }).build();
 
     consumer.accept(MORE_USEFUL_COPPER, MoreUsefulCopper.identifier(Constants.MOD_ID));
   }
@@ -31,6 +30,7 @@ public class ModTabs {
   private static void addItemsToTabOutput(Output output) {
     output.accept(ModItems.WAX_SCRAPER);
     output.accept(ModItems.SPRAY_BOTTLE);
+    output.accept(ModItems.COPPER_BOTTOM_BOAT);
 
     output.accept(ModItems.COPPER_STATUE_CREEPER);
     output.accept(ModItems.COPPER_STATUE_SKELETON);

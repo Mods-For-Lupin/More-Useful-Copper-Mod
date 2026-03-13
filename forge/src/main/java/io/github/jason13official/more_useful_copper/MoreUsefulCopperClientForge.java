@@ -1,6 +1,7 @@
 package io.github.jason13official.more_useful_copper;
 
 import io.github.jason13official.more_useful_copper.api.client.rendering.BuiltinItemRendererRegistry;
+import io.github.jason13official.more_useful_copper.impl.client.model.CopperBottomBoatModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.CreeperStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.SkeletonStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.SpiderStatueModel;
@@ -8,6 +9,7 @@ import io.github.jason13official.more_useful_copper.impl.client.model.ZombieStat
 import io.github.jason13official.more_useful_copper.impl.client.model.geom.ModModelLayers;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.CopperStatueItemRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.blockentity.CopperBellRenderer;
+import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperBottomBoatRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperStatueRenderer;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue.Type;
@@ -53,10 +55,15 @@ public class MoreUsefulCopperClientForge {
 
     modEventBus.addListener((Consumer<EntityRenderersEvent.RegisterRenderers>) event -> {
       event.registerBlockEntityRenderer(ModTiles.COPPER_BELL, CopperBellRenderer::new);
+
       event.registerEntityRenderer(ModEntities.COPPER_STATUE, CopperStatueRenderer::new);
+      event.registerEntityRenderer(ModEntities.COPPER_BOTTOM_BOAT, CopperBottomBoatRenderer::new);
     });
 
     modEventBus.addListener((Consumer<EntityRenderersEvent.RegisterLayerDefinitions>) event -> {
+
+      event.registerLayerDefinition(CopperBottomBoatModel.LAYER_LOCATION, CopperBottomBoatModel::createBodyModel);
+
       for (Type type : Type.values()) {
         switch (type) {
           case CREEPER -> event.registerLayerDefinition(ModModelLayers.createBoatModelName(type), CreeperStatueModel::createBodyLayer);

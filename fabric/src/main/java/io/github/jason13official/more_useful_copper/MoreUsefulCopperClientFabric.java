@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper;
 
+import io.github.jason13official.more_useful_copper.impl.client.model.CopperBottomBoatModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.CreeperStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.SkeletonStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.SpiderStatueModel;
@@ -7,6 +8,7 @@ import io.github.jason13official.more_useful_copper.impl.client.model.ZombieStat
 import io.github.jason13official.more_useful_copper.impl.client.model.geom.ModModelLayers;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.CopperStatueItemRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.blockentity.CopperBellRenderer;
+import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperBottomBoatRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperStatueRenderer;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue;
@@ -36,6 +38,9 @@ public class MoreUsefulCopperClientFabric implements ClientModInitializer {
     BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SKELETON, CopperStatueItemRenderer.INSTANCE::renderByItem);
     BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SPIDER, CopperStatueItemRenderer.INSTANCE::renderByItem);
     BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_ZOMBIE, CopperStatueItemRenderer.INSTANCE::renderByItem);
+
+    EntityRendererRegistry.register(ModEntities.COPPER_BOTTOM_BOAT, CopperBottomBoatRenderer::new);
+    EntityModelLayerRegistry.registerModelLayer(CopperBottomBoatModel.LAYER_LOCATION, CopperBottomBoatModel::createBodyModel);
 
     EntityRendererRegistry.register(ModEntities.COPPER_STATUE, CopperStatueRenderer::new);
     for (Type type : Type.values()) {
