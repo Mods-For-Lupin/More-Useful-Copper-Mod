@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:string"
+    },
+    "I": {
+      "item": "minecraft:copper_ingot"
+    },
+    "S": {
+      "tag": "minecraft:stone_tool_materials"
+    }
+  },
+  "pattern": [
+    "#I#",
+    "I I",
+    "SSS"
+  ],
+  "result": {
+    "item": "more_useful_copper:copper_bell"
+  },
+  "show_notification": true
+}
