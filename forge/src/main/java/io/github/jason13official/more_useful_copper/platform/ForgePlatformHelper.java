@@ -17,6 +17,8 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.PressurePlateBlock;
+import net.minecraft.world.level.block.PressurePlateBlock.Sensitivity;
 import net.minecraft.world.level.block.WeightedPressurePlateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -95,5 +97,10 @@ public class ForgePlatformHelper implements IPlatformHelper {
   @Override
   public WeightedPressurePlateBlock createWeightedPressurePlateBlock(int maxWeight, BlockBehaviour.Properties properties, BlockSetType type) {
     return new WeightedPressurePlateBlock(maxWeight, properties, type);
+  }
+
+  @Override
+  public PressurePlateBlock createPressurePlateBlock(Sensitivity sensitivity, BlockBehaviour.Properties properties, BlockSetType type) {
+    return new PressurePlateBlock(sensitivity, properties, type);
   }
 }

@@ -9,6 +9,7 @@ import io.github.jason13official.more_useful_copper.impl.common.block.CopperReds
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneTorchBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRepeaterBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperWallRedstoneTorchBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.CopperWeightedPressurePlateBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.GardenStakeBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedButtonBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedComparatorBlock;
@@ -23,9 +24,11 @@ import io.github.jason13official.more_useful_copper.impl.common.block.sparkstone
 import io.github.jason13official.more_useful_copper.platform.Services;
 import java.util.function.BiConsumer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.BasePressurePlateBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChainBlock;
+import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -121,7 +124,7 @@ public class ModBlocks {
   public static void register(BiConsumer<Block, ResourceLocation> consumer) {
 
     COPPER_CHAIN = new ChainBlock(BlockBehaviour.Properties.copy(Blocks.CHAIN));
-    COPPER_PRESSURE_PLATE = Services.PLATFORM.createWeightedPressurePlateBlock(150, BlockBehaviour.Properties.copy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), BlockSetType.IRON);
+    COPPER_PRESSURE_PLATE = new CopperWeightedPressurePlateBlock(150, BlockBehaviour.Properties.copy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), BlockSetType.IRON);
 
     consumer.accept(COPPER_CHAIN, MoreUsefulCopper.identifier("copper_chain"));
     consumer.accept(COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("copper_pressure_plate"));

@@ -1,5 +1,6 @@
 {
   "itemGroup.moreUsefulCopper": "More Useful Copper",
+  "block.more_useful_copper.copper_pressure_plate": "Copper Pressure Plate",
   "block.more_useful_copper.copper_button": "Copper Button",
   "block.more_useful_copper.exposed_copper_button": "Exposed Copper Button",
   "block.more_useful_copper.weathered_copper_button": "Weathered Copper Button",
@@ -108,6 +109,8 @@
   "item.more_useful_copper.copper_statue_spider": "Statue: Spider",
   "block.more_useful_copper.copper_statue_zombie": "Statue: Zombie",
   "item.more_useful_copper.copper_statue_zombie": "Statue: Zombie",
+  "block.more_useful_copper.copper_chain": "Copper Chain",
+  "item.more_useful_copper.copper_chain": "Copper Chain",
   "item.more_useful_copper.wax_scraper": "Wax Scraper",
   "item.more_useful_copper.spray_bottle": "Spray Bottle",
   "item.more_useful_copper.lightning_bottle": "Bottle o' Lightning",
@@ -123,6 +126,15 @@
   "item.more_useful_copper.copper_sword": "Copper Sword",
   "item.more_useful_copper.copper_hoe": "Copper Hoe",
   "item.more_useful_copper.copper_shears": "Copper Shears",
+  "item.more_useful_copper.copper_helmet": "Copper Helmet",
+  "item.more_useful_copper.copper_chestplate": "Copper Chestplate",
+  "item.more_useful_copper.copper_leggings": "Copper Leggings",
+  "item.more_useful_copper.copper_boots": "Copper Boots",
+  "item.more_useful_copper.copper_nugget": "Copper Nugget",
+  "item.more_useful_copper.copper_golem_spawn_egg": "Copper Golem Spawn Egg",
   "item.more_useful_copper.copper_bottom_boat": "Copper Bottom Boat",
-  "entity.more_useful_copper.copper_bottom_boat": "Copper Bottom Boat"
+  "entity.more_useful_copper.copper_statue": "Copper Statue",
+  "entity.more_useful_copper.lightning_bottle": "Lightning Bottle",
+  "entity.more_useful_copper.copper_bottom_boat": "Copper Bottom Boat",
+  "entity.more_useful_copper.copper_golem": "Copper Golem"
 }

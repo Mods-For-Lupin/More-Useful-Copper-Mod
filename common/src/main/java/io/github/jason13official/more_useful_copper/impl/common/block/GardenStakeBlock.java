@@ -69,10 +69,6 @@ public class GardenStakeBlock extends Block {
 
           if (!alreadyChecked.contains(pos) && state.getBlock() instanceof BonemealableBlock block) {
 
-            if (Services.PLATFORM.isDevelopmentEnvironment()) {
-              Constants.LOG.info("Growing crops at {}", pos.toShortString());
-            }
-
             // Blocks.WHEAT -> CropBlock#performBonemeal -> CropBlock#growCrops
             block.performBonemeal(level, random, pos, state);
 

@@ -14,6 +14,7 @@ import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.WeightedPressurePlateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -84,4 +85,6 @@ public interface IPlatformHelper {
   SpawnEggItem createSpawnEggItem(Supplier<EntityType<? extends Mob>> entityTypeSupplier, int backgroundColor, int highlightColor, Properties properties);
 
   WeightedPressurePlateBlock createWeightedPressurePlateBlock(int maxWeight, BlockBehaviour.Properties properties, BlockSetType type);
+
+  PressurePlateBlock createPressurePlateBlock(PressurePlateBlock.Sensitivity sensitivity, BlockBehaviour.Properties properties, BlockSetType type);
 }
