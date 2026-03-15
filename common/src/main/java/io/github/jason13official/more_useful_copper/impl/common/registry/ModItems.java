@@ -32,7 +32,30 @@ public class ModItems {
   public static Item SPARKSTONE_TORCH;
   public static Item SPARKSTONE_RELAY;
 
+  public static Item COPPER_NUGGET;
+  public static Item COPPER_SHEARS;
+
+  public static Item COPPER_PICKAXE;
+  public static Item COPPER_AXE;
+  public static Item COPPER_HOE;
+  public static Item COPPER_SHOVEL;
+  public static Item COPPER_SWORD;
+
+  public static Item COPPER_HELMET;
+  public static Item COPPER_CHESTPLATE;
+  public static Item COPPER_LEGGINGS;
+  public static Item COPPER_BOOTS;
+
+  public static Item COPPER_CHAIN;
+  public static Item COPPER_GOLEM_SPAWN_EGG;
+  public static Item COPPER_HORSE_ARMOR;
+
+  public static Item COPPER_PRESSURE_PLATE;
+
   public static void register(BiConsumer<Item, ResourceLocation> consumer) {
+
+    registerLegacyItems(consumer);
+
     WAX_SCRAPER = new WaxScraperItem(new Properties().durability(64));
     SPRAY_BOTTLE = new SprayBottleItem(new Properties().durability(64));
     consumer.accept(SPRAY_BOTTLE, MoreUsefulCopper.identifier("spray_bottle"));
@@ -119,5 +142,40 @@ public class ModItems {
     consumer.accept(new BlockItem(ModBlocks.WAXED_EXPOSED_COPPER_REPEATER, new Properties()), MoreUsefulCopper.identifier("waxed_exposed_copper_repeater"));
     consumer.accept(new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_REPEATER, new Properties()), MoreUsefulCopper.identifier("waxed_weathered_copper_repeater"));
     consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_REPEATER, new Properties()), MoreUsefulCopper.identifier("waxed_oxidized_copper_repeater"));
+  }
+
+  private static void registerLegacyItems(BiConsumer<Item, ResourceLocation> consumer) {
+
+    COPPER_NUGGET = new Item(new Properties());
+    COPPER_SHEARS = new Item(new Properties());
+    COPPER_PICKAXE = new Item(new Properties());
+    COPPER_AXE = new Item(new Properties());
+    COPPER_HOE = new Item(new Properties());
+    COPPER_SHOVEL = new Item(new Properties());
+    COPPER_SWORD = new Item(new Properties());
+    COPPER_HELMET = new Item(new Properties());
+    COPPER_CHESTPLATE = new Item(new Properties());
+    COPPER_LEGGINGS = new Item(new Properties());
+    COPPER_BOOTS = new Item(new Properties());
+    COPPER_CHAIN = new Item(new Properties());
+    COPPER_GOLEM_SPAWN_EGG = new Item(new Properties());
+    COPPER_HORSE_ARMOR = new Item(new Properties());
+    COPPER_PRESSURE_PLATE = new Item(new Properties());
+
+    consumer.accept(COPPER_NUGGET, MoreUsefulCopper.identifier("copper_nugget"));
+    consumer.accept(COPPER_SHEARS, MoreUsefulCopper.identifier("copper_shears"));
+    consumer.accept(COPPER_PICKAXE, MoreUsefulCopper.identifier("copper_pickaxe"));
+    consumer.accept(COPPER_AXE, MoreUsefulCopper.identifier("copper_axe"));
+    consumer.accept(COPPER_HOE, MoreUsefulCopper.identifier("copper_hoe"));
+    consumer.accept(COPPER_SHOVEL, MoreUsefulCopper.identifier("copper_shovel"));
+    consumer.accept(COPPER_SWORD, MoreUsefulCopper.identifier("copper_sword"));
+    consumer.accept(COPPER_HELMET, MoreUsefulCopper.identifier("copper_helmet"));
+    consumer.accept(COPPER_CHESTPLATE, MoreUsefulCopper.identifier("copper_chestplate"));
+    consumer.accept(COPPER_LEGGINGS, MoreUsefulCopper.identifier("copper_leggings"));
+    consumer.accept(COPPER_BOOTS, MoreUsefulCopper.identifier("copper_boots"));
+    consumer.accept(COPPER_CHAIN, MoreUsefulCopper.identifier("copper_chain"));
+    consumer.accept(COPPER_GOLEM_SPAWN_EGG, MoreUsefulCopper.identifier("copper_golem_spawn_egg"));
+    consumer.accept(COPPER_HORSE_ARMOR, MoreUsefulCopper.identifier("copper_horse_armor"));
+    consumer.accept(COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("copper_pressure_plate"));
   }
 }
