@@ -9,6 +9,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -24,7 +27,7 @@ public class GardenStakeBlock extends Block {
   public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
   public GardenStakeBlock(Properties properties) {
-    super(properties.randomTicks());
+    super(properties);
     this.registerDefaultState(this.stateDefinition.any().setValue(LIT, false));
   }
 
@@ -34,41 +37,47 @@ public class GardenStakeBlock extends Block {
   }
 
   /// Ensures a tick gets fired soon after being activated
-  @Override
-  public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
-    level.scheduleTick(pos, state.getBlock(), 5);
-    return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
-  }
+//  @Override
+//  public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+//    level.scheduleTick(pos, state.getBlock(), 5);
+//    return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+//  }
 
   @Override
   public boolean isRandomlyTicking(BlockState state) {
     return state.getValue(LIT); // will use GardenStakeBlock#tick logic for random ticking via randomTick side effect
   }
 
-//  @Override
-//  public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-//    super.randomTick(state, level, pos, random); // only calls to tick which we override
-//  }
+  @Override
+  public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    // super.randomTick(state, level, pos, random); // only calls to tick which we override
+
+    this.tick(state, level, pos, random);
+  }
 
   @Override
   public void tick(BlockState selfState, ServerLevel level, BlockPos selfPos, RandomSource random) {
 
-    AABB box = new AABB(selfPos).inflate(5, 3, 5);
+    AABB box = new AABB(selfPos).inflate(2, 1, 2); // 5x3x5 bounding box centered on garden stake
     List<BlockPos> alreadyChecked = new ArrayList<>();
 
     iteration:
-    for (double x = box.minX; x < box.maxX; x++) {
-      for (double z = box.minZ; z < box.maxZ; z++) {
-        for (double y = box.minY; y < box.maxY; y++) {
+    for (int x = (int) box.minX; x < (int) box.maxX; x++) {
+      for (int z = (int) box.minZ; z < (int) box.maxZ; z++) {
+        for (int y = (int) box.minY; y < (int) box.maxY; y++) {
 
-          if (random.nextFloat() >= 0.1) {
+          if (random.nextFloat() >= 0.9) {
             continue iteration;
           }
 
-          BlockPos pos = BlockPos.containing(x, y, z);
+          BlockPos pos = BlockPos.containing((double) x, (double) y, (double) z);
           BlockState state = level.getBlockState(pos);
 
           if (!alreadyChecked.contains(pos) && state.getBlock() instanceof BonemealableBlock block) {
+
+            if (Services.PLATFORM.isDevelopmentEnvironment()) {
+              Constants.LOG.info("Growing crops at {}", pos.toShortString());
+            }
 
             // Blocks.WHEAT -> CropBlock#performBonemeal -> CropBlock#growCrops
             block.performBonemeal(level, random, pos, state);

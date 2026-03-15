@@ -120,8 +120,7 @@
   
   "block.more_useful_copper.copper_statue_zombie": "Statue: Zombie",
   "item.more_useful_copper.copper_statue_zombie": "Statue: Zombie",
-  
-  
+
   "item.more_useful_copper.wax_scraper": "Wax Scraper",
   "item.more_useful_copper.spray_bottle": "Spray Bottle",
   "item.more_useful_copper.lightning_bottle": "Bottle o' Lightning",
@@ -132,5 +131,6 @@
   "item.more_useful_copper.sparkstone_torch": "Sparkstone Torch",
   "item.more_useful_copper.sparkstone_relay": "Sparkstone Relay",
 
+  "item.more_useful_copper.copper_bottom_boat": "Copper Bottom Boat",
   "entity.more_useful_copper.copper_bottom_boat": "Copper Bottom Boat"
 }

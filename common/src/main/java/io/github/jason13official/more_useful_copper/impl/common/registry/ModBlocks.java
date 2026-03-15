@@ -116,7 +116,7 @@ public class ModBlocks {
 
   public static void register(BiConsumer<Block, ResourceLocation> consumer) {
 
-    GARDEN_STAKE = new GardenStakeBlock(BlockBehaviour.Properties.of().noOcclusion().noCollission().lightLevel(s -> s.getValue(GardenStakeBlock.LIT) ? 7 : 2));
+    GARDEN_STAKE = new GardenStakeBlock(BlockBehaviour.Properties.of().randomTicks().noOcclusion().noCollission().lightLevel(s -> s.getValue(GardenStakeBlock.LIT) ? 7 : 2));
     consumer.accept(GARDEN_STAKE, MoreUsefulCopper.identifier("garden_stake"));
 
     SPARKSTONE_TORCH = new SparkstoneTorchBlock(
