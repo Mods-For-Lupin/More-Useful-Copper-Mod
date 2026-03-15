@@ -1,7 +1,9 @@
 package io.github.jason13official.more_useful_copper.impl.common.registry;
 
 import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
-import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue.Type;
+import io.github.jason13official.more_useful_copper.api.common.item.ModArmorMaterials;
+import io.github.jason13official.more_useful_copper.api.common.item.ModTiers;
+import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue;
 import io.github.jason13official.more_useful_copper.impl.common.item.CopperBottomBoatItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.CopperStatueItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.GardenStakeBlockItem;
@@ -9,13 +11,21 @@ import io.github.jason13official.more_useful_copper.impl.common.item.LightningBo
 import io.github.jason13official.more_useful_copper.impl.common.item.MoistureCompassItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.SprayBottleItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.WaxScraperItem;
+import io.github.jason13official.more_useful_copper.platform.Services;
 import java.util.function.BiConsumer;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.level.block.Blocks;
 
 public class ModItems {
 
@@ -72,10 +82,10 @@ public class ModItems {
     COPPER_BOTTOM_BOAT = new CopperBottomBoatItem(new Properties().stacksTo(1));
     consumer.accept(COPPER_BOTTOM_BOAT, MoreUsefulCopper.identifier("copper_bottom_boat"));
 
-    COPPER_STATUE_CREEPER = new CopperStatueItem(Type.CREEPER, new Properties().stacksTo(16));
-    COPPER_STATUE_SKELETON = new CopperStatueItem(Type.SKELETON, new Properties().stacksTo(16));
-    COPPER_STATUE_SPIDER = new CopperStatueItem(Type.SPIDER, new Properties().stacksTo(16));
-    COPPER_STATUE_ZOMBIE = new CopperStatueItem(Type.ZOMBIE, new Properties().stacksTo(16));
+    COPPER_STATUE_CREEPER = new CopperStatueItem(CopperStatue.Type.CREEPER, new Properties().stacksTo(16));
+    COPPER_STATUE_SKELETON = new CopperStatueItem(CopperStatue.Type.SKELETON, new Properties().stacksTo(16));
+    COPPER_STATUE_SPIDER = new CopperStatueItem(CopperStatue.Type.SPIDER, new Properties().stacksTo(16));
+    COPPER_STATUE_ZOMBIE = new CopperStatueItem(CopperStatue.Type.ZOMBIE, new Properties().stacksTo(16));
     consumer.accept(COPPER_STATUE_CREEPER, MoreUsefulCopper.identifier("copper_statue_creeper"));
     consumer.accept(COPPER_STATUE_SKELETON, MoreUsefulCopper.identifier("copper_statue_skeleton"));
     consumer.accept(COPPER_STATUE_SPIDER, MoreUsefulCopper.identifier("copper_statue_spider"));
@@ -147,20 +157,24 @@ public class ModItems {
   private static void registerLegacyItems(BiConsumer<Item, ResourceLocation> consumer) {
 
     COPPER_NUGGET = new Item(new Properties());
-    COPPER_SHEARS = new Item(new Properties());
-    COPPER_PICKAXE = new Item(new Properties());
-    COPPER_AXE = new Item(new Properties());
-    COPPER_HOE = new Item(new Properties());
-    COPPER_SHOVEL = new Item(new Properties());
-    COPPER_SWORD = new Item(new Properties());
-    COPPER_HELMET = new Item(new Properties());
-    COPPER_CHESTPLATE = new Item(new Properties());
-    COPPER_LEGGINGS = new Item(new Properties());
-    COPPER_BOOTS = new Item(new Properties());
-    COPPER_CHAIN = new Item(new Properties());
-    COPPER_GOLEM_SPAWN_EGG = new Item(new Properties());
-    COPPER_HORSE_ARMOR = new Item(new Properties());
-    COPPER_PRESSURE_PLATE = new Item(new Properties());
+    COPPER_SHEARS = new ShearsItem((new Item.Properties()).durability(238));
+
+    COPPER_PICKAXE = Services.PLATFORM.createPickaxeItem(ModTiers.COPPER, 1, -2.8F, new Item.Properties().stacksTo(1));
+    COPPER_AXE = Services.PLATFORM.createAxeItem(ModTiers.COPPER, 6.0F, -3.0F, new Item.Properties().stacksTo(1));
+    COPPER_HOE = Services.PLATFORM.createHoeItem(ModTiers.COPPER, 0, -3.0F, new Item.Properties().stacksTo(1));
+    COPPER_SHOVEL = new ShovelItem(ModTiers.COPPER, 1.5F, -3.0F, new Item.Properties().stacksTo(1));
+    COPPER_SWORD = new SwordItem(ModTiers.COPPER, 3, -2.4F, new Item.Properties().stacksTo(1));
+
+    COPPER_HELMET = new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1));
+    COPPER_CHESTPLATE = new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1));
+    COPPER_LEGGINGS = new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, new Item.Properties().stacksTo(1));
+    COPPER_BOOTS = new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.BOOTS, new Item.Properties().stacksTo(1));
+
+    COPPER_CHAIN = new BlockItem(ModBlocks.COPPER_CHAIN, new Properties());
+    COPPER_GOLEM_SPAWN_EGG = Services.PLATFORM.createSpawnEggItem(() -> EntityType.ALLAY, 56063, 44543, new Item.Properties());
+    COPPER_HORSE_ARMOR = new HorseArmorItem(5, "copper", (new Item.Properties()).stacksTo(1));
+
+    COPPER_PRESSURE_PLATE = new BlockItem(ModBlocks.COPPER_PRESSURE_PLATE, new Properties());
 
     consumer.accept(COPPER_NUGGET, MoreUsefulCopper.identifier("copper_nugget"));
     consumer.accept(COPPER_SHEARS, MoreUsefulCopper.identifier("copper_shears"));

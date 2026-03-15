@@ -20,13 +20,16 @@ import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRedst
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRedstoneTorchBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRepeaterBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedWallRedstoneTorchBlock;
+import io.github.jason13official.more_useful_copper.platform.Services;
 import java.util.function.BiConsumer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.ChainBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
+import net.minecraft.world.level.block.WeightedPressurePlateBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -108,6 +111,9 @@ public class ModBlocks {
   public static Block WAXED_WEATHERED_COPPER_REPEATER;
   public static Block WAXED_OXIDIZED_COPPER_REPEATER;
 
+  public static Block COPPER_PRESSURE_PLATE;
+  public static Block COPPER_CHAIN;
+
   public static Block GARDEN_STAKE;
 
   public static SparkstoneTorchBlock SPARKSTONE_TORCH;
@@ -115,6 +121,12 @@ public class ModBlocks {
   public static SparkstoneRelayBlock SPARKSTONE_RELAY;
 
   public static void register(BiConsumer<Block, ResourceLocation> consumer) {
+
+    COPPER_CHAIN = new ChainBlock(BlockBehaviour.Properties.copy(Blocks.CHAIN));
+    COPPER_PRESSURE_PLATE = Services.PLATFORM.createWeightedPressurePlateBlock(150, BlockBehaviour.Properties.copy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), BlockSetType.IRON);
+
+    consumer.accept(COPPER_CHAIN, MoreUsefulCopper.identifier("copper_chain"));
+    consumer.accept(COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("copper_pressure_plate"));
 
     GARDEN_STAKE = new GardenStakeBlock(BlockBehaviour.Properties.of().randomTicks().noOcclusion().noCollission().lightLevel(s -> s.getValue(GardenStakeBlock.LIT) ? 7 : 2));
     consumer.accept(GARDEN_STAKE, MoreUsefulCopper.identifier("garden_stake"));

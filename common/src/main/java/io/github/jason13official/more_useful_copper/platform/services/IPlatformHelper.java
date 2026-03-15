@@ -2,12 +2,25 @@ package io.github.jason13official.more_useful_copper.platform.services;
 
 import java.nio.file.Path;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.WeightedPressurePlateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 
 public interface IPlatformHelper {
 
@@ -59,4 +72,17 @@ public interface IPlatformHelper {
   /// @param validBlocks blocks this entity type is valid for
   /// @return a new [BlockEntityType.Builder]
   <T extends BlockEntity> BlockEntityType.Builder<T> tileBuilder(BiFunction<BlockPos, BlockState, T> constructor, Block... validBlocks);
+
+  /// helper for private constructor
+  PickaxeItem createPickaxeItem(Tier tier, float attackDamageMod, float attackSpeedMod, Properties properties);
+
+  /// helper for private constructor
+  AxeItem createAxeItem(Tier tier, float attackDamageMod, float attackSpeedMod, Properties properties);
+
+  /// helper for private constructor
+  HoeItem createHoeItem(Tier tier, float attackDamageMod, float attackSpeedMod, Properties properties);
+
+  SpawnEggItem createSpawnEggItem(Supplier<EntityType<? extends Mob>> entityTypeSupplier, int backgroundColor, int highlightColor, Properties properties);
+
+  WeightedPressurePlateBlock createWeightedPressurePlateBlock(int maxWeight, BlockBehaviour.Properties properties, BlockSetType type);
 }

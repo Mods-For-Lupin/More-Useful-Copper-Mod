@@ -33,9 +33,9 @@ public class MoreUsefulCopperForge {
 
     bind(Registries.BLOCK, ModBlocks::register);
     bind(Registries.BLOCK_ENTITY_TYPE, ModTiles::register);
+    bind(Registries.ENTITY_TYPE, ModEntities::register);
     bind(Registries.ITEM, ModItems::register);
     bind(Registries.CREATIVE_MODE_TAB, ModTabs::register);
-    bind(Registries.ENTITY_TYPE, ModEntities::register);
 
     // after all RegisterEvents have fired, blocks/game object fields are guaranteed to be populated
     EVENT_BUS.addListener((Consumer<FMLCommonSetupEvent>) event -> MoreUsefulCopper.init());

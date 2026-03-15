@@ -21,9 +21,9 @@ public class MoreUsefulCopperFabric implements ModInitializer {
 
     bind(BuiltInRegistries.BLOCK, ModBlocks::register);
     bind(BuiltInRegistries.BLOCK_ENTITY_TYPE, ModTiles::register);
+    bind(BuiltInRegistries.ENTITY_TYPE, ModEntities::register);
     bind(BuiltInRegistries.ITEM, ModItems::register);
     bind(BuiltInRegistries.CREATIVE_MODE_TAB, ModTabs::register);
-    bind(BuiltInRegistries.ENTITY_TYPE, ModEntities::register);
 
     // after game object registration
     MoreUsefulCopper.init();
