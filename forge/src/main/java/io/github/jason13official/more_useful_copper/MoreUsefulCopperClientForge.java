@@ -2,6 +2,7 @@ package io.github.jason13official.more_useful_copper;
 
 import io.github.jason13official.more_useful_copper.api.client.rendering.BuiltinItemRendererRegistry;
 import io.github.jason13official.more_useful_copper.impl.client.model.CopperBottomBoatModel;
+import io.github.jason13official.more_useful_copper.impl.client.model.CopperGolemModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.CreeperStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.SkeletonStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.SpiderStatueModel;
@@ -10,6 +11,7 @@ import io.github.jason13official.more_useful_copper.impl.client.model.geom.ModMo
 import io.github.jason13official.more_useful_copper.impl.client.renderer.CopperStatueItemRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.blockentity.CopperBellRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperBottomBoatRenderer;
+import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperGolemRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperStatueRenderer;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue.Type;
@@ -64,6 +66,7 @@ public class MoreUsefulCopperClientForge {
   private void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
     event.registerEntityRenderer(ModEntities.COPPER_STATUE, CopperStatueRenderer::new);
     event.registerEntityRenderer(ModEntities.COPPER_BOTTOM_BOAT, CopperBottomBoatRenderer::new);
+    event.registerEntityRenderer(ModEntities.COPPER_GOLEM, CopperGolemRenderer::new);
     event.registerEntityRenderer(ModEntities.LIGHTNING_BOTTLE, ThrownItemRenderer::new);
   }
 
@@ -72,6 +75,7 @@ public class MoreUsefulCopperClientForge {
   }
 
   private void registerEntityModels(EntityRenderersEvent.RegisterLayerDefinitions event) {
+    event.registerLayerDefinition(CopperGolemModel.LAYER_LOCATION, CopperGolemModel::createBodyLayer);
     event.registerLayerDefinition(CopperBottomBoatModel.LAYER_LOCATION, CopperBottomBoatModel::createBodyModel);
 
     for (Type type : Type.values()) {

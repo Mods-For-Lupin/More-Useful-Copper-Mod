@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper;
 
+import io.github.jason13official.more_useful_copper.impl.common.entity.CopperGolem;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModBlocks;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
@@ -29,6 +30,7 @@ public class MoreUsefulCopperFabric implements ModInitializer {
     MoreUsefulCopper.init();
 
     FabricDefaultAttributeRegistry.register(ModEntities.COPPER_STATUE, LivingEntity.createLivingAttributes());
+    FabricDefaultAttributeRegistry.register(ModEntities.COPPER_GOLEM, CopperGolem.createAttributes());
 
     // on to client init
   }

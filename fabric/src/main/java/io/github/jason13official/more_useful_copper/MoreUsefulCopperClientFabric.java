@@ -1,6 +1,7 @@
 package io.github.jason13official.more_useful_copper;
 
 import io.github.jason13official.more_useful_copper.impl.client.model.CopperBottomBoatModel;
+import io.github.jason13official.more_useful_copper.impl.client.model.CopperGolemModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.CreeperStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.SkeletonStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.SpiderStatueModel;
@@ -10,6 +11,7 @@ import io.github.jason13official.more_useful_copper.impl.client.renderer.CopperS
 import io.github.jason13official.more_useful_copper.impl.client.renderer.blockentity.CopperBellRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperBottomBoatRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperStatueRenderer;
+import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperGolemRenderer;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue.Type;
 import io.github.jason13official.more_useful_copper.impl.common.item.MoistureCompassItem;
@@ -67,6 +69,7 @@ public class MoreUsefulCopperClientFabric implements ClientModInitializer {
   }
 
   private void registerEntityModels() {
+    EntityModelLayerRegistry.registerModelLayer(CopperGolemModel.LAYER_LOCATION, CopperGolemModel::createBodyLayer);
     EntityModelLayerRegistry.registerModelLayer(CopperBottomBoatModel.LAYER_LOCATION, CopperBottomBoatModel::createBodyModel);
 
     for (Type type : Type.values()) {
@@ -86,6 +89,7 @@ public class MoreUsefulCopperClientFabric implements ClientModInitializer {
   private void registerEntityRenderers() {
     EntityRendererRegistry.register(ModEntities.COPPER_STATUE, CopperStatueRenderer::new);
     EntityRendererRegistry.register(ModEntities.LIGHTNING_BOTTLE, ThrownItemRenderer::new);
+    EntityRendererRegistry.register(ModEntities.COPPER_GOLEM, CopperGolemRenderer::new);
     EntityRendererRegistry.register(ModEntities.COPPER_BOTTOM_BOAT, CopperBottomBoatRenderer::new);
   }
 

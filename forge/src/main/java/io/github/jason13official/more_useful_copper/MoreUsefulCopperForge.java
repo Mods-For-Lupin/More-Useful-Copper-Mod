@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper;
 
+import io.github.jason13official.more_useful_copper.impl.common.entity.CopperGolem;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModBlocks;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
@@ -42,6 +43,7 @@ public class MoreUsefulCopperForge {
 
     EVENT_BUS.addListener((Consumer<EntityAttributeCreationEvent>) event -> {
       event.put(ModEntities.COPPER_STATUE, LivingEntity.createLivingAttributes().build());
+      event.put(ModEntities.COPPER_GOLEM, CopperGolem.createAttributes().build());
     });
 
     // on to client init

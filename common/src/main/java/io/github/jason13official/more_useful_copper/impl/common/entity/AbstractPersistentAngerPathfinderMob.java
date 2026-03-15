@@ -10,7 +10,7 @@ import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class AbstractPersistentAngerPathfinderMob extends PathfinderMob implements NeutralMob {
+public abstract class AbstractPersistentAngerPathfinderMob extends PathfinderMob implements NeutralMob {
 
   /// mimicking [IronGolem] persistent anger
   private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
