@@ -17,7 +17,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.apache.commons.lang3.mutable.MutableInt;
@@ -35,12 +34,11 @@ public class CopperBellBlockEntity extends BlockEntity {
   public int ticks;
   public boolean shaking;
   public Direction clickDirection;
+  public int oxidization = 0;
   private long lastRingTimestamp;
   private List<LivingEntity> nearbyEntities;
   private boolean resonating;
   private int resonationTicks;
-
-  public int oxidization = 0;
 
   public CopperBellBlockEntity(BlockPos pos, BlockState blockState) {
     super(ModTiles.COPPER_BELL, pos, blockState);

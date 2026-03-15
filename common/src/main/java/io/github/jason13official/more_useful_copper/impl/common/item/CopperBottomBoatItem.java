@@ -1,7 +1,6 @@
 package io.github.jason13official.more_useful_copper.impl.common.item;
 
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperBottomBoat;
-import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
 import java.util.List;
 import java.util.function.Predicate;
 import net.minecraft.stats.Stats;

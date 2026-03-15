@@ -13,7 +13,8 @@ public class CopperStatueModel extends EntityModel<CopperStatue> {
 
   public static final ModelLayerLocation CREEPER_LAYER = new ModelLayerLocation(new ResourceLocation(Constants.MOD_ID, "creeper"), "main");
 
-  public CopperStatueModel(final ModelPart root) {}
+  public CopperStatueModel(final ModelPart root) {
+  }
 
   @Override
   public void setupAnim(CopperStatue copperStatue, float v, float v1, float v2, float v3, float v4) {

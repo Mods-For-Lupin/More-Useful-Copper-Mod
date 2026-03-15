@@ -102,8 +102,7 @@ public interface IOxidizableBlock extends ChangeOverTimeBlock<WeatherState> {
     return getNext(state.getBlock()).map((block) -> block.withPropertiesOf(state));
   }
 
-  /// Returns a multiplier applied to the random-tick oxidation chance.
-  /// `UNAFFECTED` blocks oxidize at 75% the normal rate; all other stages use 100%.
+  /// Returns a multiplier applied to the random-tick oxidation chance. `UNAFFECTED` blocks oxidize at 75% the normal rate; all other stages use 100%.
   ///
   /// @return `0.75` for `UNAFFECTED`, `1.0` otherwise
   default float getChanceModifier() {

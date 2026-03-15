@@ -11,25 +11,23 @@ import io.github.jason13official.more_useful_copper.impl.common.block.CopperRepe
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperWallRedstoneTorchBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.GardenStakeBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedButtonBlock;
-import io.github.jason13official.more_useful_copper.impl.common.block.sparkstone.SparkstoneRelayBlock;
-import io.github.jason13official.more_useful_copper.impl.common.block.sparkstone.SparkstoneTorchBlock;
-import io.github.jason13official.more_useful_copper.impl.common.block.sparkstone.SparkstoneWallTorchBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedComparatorBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedLeverBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRedstoneDustBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRedstoneTorchBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRepeaterBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedWallRedstoneTorchBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.sparkstone.SparkstoneRelayBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.sparkstone.SparkstoneTorchBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.sparkstone.SparkstoneWallTorchBlock;
 import io.github.jason13official.more_useful_copper.platform.Services;
 import java.util.function.BiConsumer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.ChainBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
-import net.minecraft.world.level.block.WeightedPressurePlateBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
@@ -146,7 +144,8 @@ public class ModBlocks {
     consumer.accept(SPARKSTONE_WALL_TORCH, MoreUsefulCopper.identifier("sparkstone_wall_torch"));
     consumer.accept(SPARKSTONE_RELAY, MoreUsefulCopper.identifier("sparkstone_relay"));
 
-    COPPER_BELL = new CopperBellBlock(Properties.of().mapColor(MapColor.GOLD).forceSolidOn().requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.ANVIL).pushReaction(PushReaction.DESTROY).noOcclusion());
+    COPPER_BELL = new CopperBellBlock(
+        Properties.of().mapColor(MapColor.GOLD).forceSolidOn().requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.ANVIL).pushReaction(PushReaction.DESTROY).noOcclusion());
     consumer.accept(COPPER_BELL, MoreUsefulCopper.identifier("copper_bell"));
 
     COPPER_BUTTON = weatheringCopperButton(WeatherState.UNAFFECTED, CopperButtonBlock.UNAFFECTED_PRESSED_TICKS);

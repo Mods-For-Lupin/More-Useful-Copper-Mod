@@ -5,15 +5,10 @@ import io.github.jason13official.more_useful_copper.platform.Services;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -42,7 +37,6 @@ public class GardenStakeBlock extends Block {
 //    level.scheduleTick(pos, state.getBlock(), 5);
 //    return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
 //  }
-
   @Override
   public boolean isRandomlyTicking(BlockState state) {
     return state.getValue(LIT); // will use GardenStakeBlock#tick logic for random ticking via randomTick side effect
@@ -70,7 +64,7 @@ public class GardenStakeBlock extends Block {
             continue iteration;
           }
 
-          BlockPos pos = BlockPos.containing((double) x, (double) y, (double) z);
+          BlockPos pos = BlockPos.containing(x, y, z);
           BlockState state = level.getBlockState(pos);
 
           if (!alreadyChecked.contains(pos) && state.getBlock() instanceof BonemealableBlock block) {

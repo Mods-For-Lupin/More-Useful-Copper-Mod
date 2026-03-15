@@ -31,9 +31,8 @@ public class CommonRedStoneWireBlockMixinLogic {
     }
   }
 
-  /// Mixin injection — HEAD of vanilla wire's power-calculation method.
-  /// Sets [CopperRedstoneDustBlock.isAnyWireCalculating] so copper wires suppress their `getSignal`
-  /// during `getBestNeighborSignal`, fixing the reverse-direction attenuation bug at copper→vanilla boundaries.
+  /// Mixin injection — HEAD of vanilla wire's power-calculation method. Sets [CopperRedstoneDustBlock.isAnyWireCalculating] so copper wires suppress their `getSignal` during `getBestNeighborSignal`,
+  /// fixing the reverse-direction attenuation bug at copper→vanilla boundaries.
   public static void injectedCalcHead() {
     CopperRedstoneDustBlock.isAnyWireCalculating = true;
   }
@@ -43,9 +42,8 @@ public class CommonRedStoneWireBlockMixinLogic {
     CopperRedstoneDustBlock.isAnyWireCalculating = false;
   }
 
-  /// Mixin injection: suppresses vanilla wire's `getSignal` while any wire type is calculating.
-  /// Without this, vanilla wire would contribute to `getBestNeighborSignal` directly instead of
-  /// only through the attenuated `j = getWireSignal` path, breaking vanilla→copper boundaries.
+  /// Mixin injection: suppresses vanilla wire's `getSignal` while any wire type is calculating. Without this, vanilla wire would contribute to `getBestNeighborSignal` directly instead of only through
+  /// the attenuated `j = getWireSignal` path, breaking vanilla→copper boundaries.
   ///
   /// @param cir set to `0` when suppression is active
   public static void injectedSuppressDuringCalc(CallbackInfoReturnable<Integer> cir) {

@@ -2,7 +2,6 @@ package io.github.jason13official.more_useful_copper.impl.common.item;
 
 import com.mojang.serialization.DataResult;
 import io.github.jason13official.more_useful_copper.Constants;
-import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
 import java.util.Optional;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
@@ -39,24 +38,6 @@ public class MoistureCompassItem extends Item {
     super(properties);
   }
 
-  @Override
-  public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-
-    ItemStack stack = player.getItemInHand(usedHand);
-
-    CompoundTag tag = stack.getTag();
-
-    if (tag != null && isMoistureCompass(stack)) {
-      tag.remove(TAG_MOISTURE_TRACKED);
-      tag.remove(TAG_MOISTURE_POS);
-      tag.remove(TAG_MOISTURE_DIMENSION);
-
-      tagClosestWaterPosition(stack, level, player);
-    }
-
-    return super.use(level, player, usedHand);
-  }
-
   public static boolean isMoistureCompass(ItemStack stack) {
     CompoundTag compoundtag = stack.getTag();
     return compoundtag != null && (compoundtag.contains(TAG_MOISTURE_DIMENSION) || compoundtag.contains(TAG_MOISTURE_TRACKED));
@@ -84,6 +65,24 @@ public class MoistureCompassItem extends Item {
   @Nullable
   public static GlobalPos getSpawnPosition(Level level) {
     return level.dimensionType().natural() ? GlobalPos.of(level.dimension(), level.getSharedSpawnPos()) : null;
+  }
+
+  @Override
+  public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+
+    ItemStack stack = player.getItemInHand(usedHand);
+
+    CompoundTag tag = stack.getTag();
+
+    if (tag != null && isMoistureCompass(stack)) {
+      tag.remove(TAG_MOISTURE_TRACKED);
+      tag.remove(TAG_MOISTURE_POS);
+      tag.remove(TAG_MOISTURE_DIMENSION);
+
+      tagClosestWaterPosition(stack, level, player);
+    }
+
+    return super.use(level, player, usedHand);
   }
 
   public boolean isFoil(ItemStack stack) {
@@ -115,8 +114,7 @@ public class MoistureCompassItem extends Item {
           compoundtag.remove(TAG_MOISTURE_POS);
         }
       }
-    }
-    else {
+    } else {
 
       // every 2 seconds, find the closest water position
       if (level.getGameTime() % 40 == 0 && !stack.getOrCreateTag().contains(TAG_MOISTURE_POS)) {
@@ -203,7 +201,6 @@ public class MoistureCompassItem extends Item {
   }
 
   private void addMoistureTags(ResourceKey<Level> moistureDimension, BlockPos moisturePos, CompoundTag compoundTag) {
-
 
     DataResult<Tag> result = Level.RESOURCE_KEY_CODEC.encodeStart(NbtOps.INSTANCE, moistureDimension);
     result.resultOrPartial(Constants.LOG::error).ifPresent((tag) -> compoundTag.put(TAG_MOISTURE_DIMENSION, tag));

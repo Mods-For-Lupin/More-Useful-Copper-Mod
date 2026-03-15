@@ -22,7 +22,7 @@ import org.joml.Quaternionf;
 
 public class CopperBottomBoatRenderer extends EntityRenderer<CopperBottomBoat> {
 
-//  private final Map<CopperBottomBoat.Type, Pair<ResourceLocation, ListModel<CopperBottomBoat>>> boatResources;
+  //  private final Map<CopperBottomBoat.Type, Pair<ResourceLocation, ListModel<CopperBottomBoat>>> boatResources;
   private final Pair<ResourceLocation, ListModel<CopperBottomBoat>> rlModelPair;
 
   public CopperBottomBoatRenderer(Context context) {

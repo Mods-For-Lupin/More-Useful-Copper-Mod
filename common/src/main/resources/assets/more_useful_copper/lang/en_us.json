@@ -1,6 +1,5 @@
 {
   "itemGroup.moreUsefulCopper": "More Useful Copper",
-  
   "block.more_useful_copper.copper_button": "Copper Button",
   "block.more_useful_copper.exposed_copper_button": "Exposed Copper Button",
   "block.more_useful_copper.weathered_copper_button": "Weathered Copper Button",
@@ -17,7 +16,6 @@
   "item.more_useful_copper.waxed_exposed_copper_button": "Waxed Exposed Copper Button",
   "item.more_useful_copper.waxed_weathered_copper_button": "Waxed Weathered Copper Button",
   "item.more_useful_copper.waxed_oxidized_copper_button": "Waxed Oxidized Copper Button",
-  
   "block.more_useful_copper.copper_lever": "Copper Lever",
   "block.more_useful_copper.exposed_copper_lever": "Exposed Copper Lever",
   "block.more_useful_copper.weathered_copper_lever": "Weathered Copper Lever",
@@ -34,7 +32,6 @@
   "item.more_useful_copper.waxed_exposed_copper_lever": "Waxed Exposed Copper Lever",
   "item.more_useful_copper.waxed_weathered_copper_lever": "Waxed Weathered Copper Lever",
   "item.more_useful_copper.waxed_oxidized_copper_lever": "Waxed Oxidized Copper Lever",
-  
   "block.more_useful_copper.copper_redstone_dust": "Copper Redstone Dust",
   "block.more_useful_copper.exposed_copper_redstone_dust": "Exposed Copper Redstone Dust",
   "block.more_useful_copper.weathered_copper_redstone_dust": "Weathered Copper Redstone Dust",
@@ -51,7 +48,6 @@
   "item.more_useful_copper.waxed_exposed_copper_redstone_dust": "Waxed Exposed Copper Redstone Dust",
   "item.more_useful_copper.waxed_weathered_copper_redstone_dust": "Waxed Weathered Copper Redstone Dust",
   "item.more_useful_copper.waxed_oxidized_copper_redstone_dust": "Waxed Oxidized Copper Redstone Dust",
-  
   "block.more_useful_copper.copper_redstone_torch": "Copper Redstone Torch",
   "block.more_useful_copper.exposed_copper_redstone_torch": "Exposed Copper Redstone Torch",
   "block.more_useful_copper.weathered_copper_redstone_torch": "Weathered Copper Redstone Torch",
@@ -68,7 +64,6 @@
   "item.more_useful_copper.waxed_exposed_copper_redstone_torch": "Waxed Exposed Copper Redstone Torch",
   "item.more_useful_copper.waxed_weathered_copper_redstone_torch": "Waxed Weathered Copper Redstone Torch",
   "item.more_useful_copper.waxed_oxidized_copper_redstone_torch": "Waxed Oxidized Copper Redstone Torch",
-  
   "block.more_useful_copper.copper_comparator": "Copper Comparator",
   "block.more_useful_copper.exposed_copper_comparator": "Exposed Copper Comparator",
   "block.more_useful_copper.weathered_copper_comparator": "Weathered Copper Comparator",
@@ -85,7 +80,6 @@
   "item.more_useful_copper.waxed_exposed_copper_comparator": "Waxed Exposed Copper Comparator",
   "item.more_useful_copper.waxed_weathered_copper_comparator": "Waxed Weathered Copper Comparator",
   "item.more_useful_copper.waxed_oxidized_copper_comparator": "Waxed Oxidized Copper Comparator",
-  
   "block.more_useful_copper.copper_repeater": "Copper Repeater",
   "block.more_useful_copper.exposed_copper_repeater": "Exposed Copper Repeater",
   "block.more_useful_copper.weathered_copper_repeater": "Weathered Copper Repeater",
@@ -102,43 +96,33 @@
   "item.more_useful_copper.waxed_exposed_copper_repeater": "Waxed Exposed Copper Repeater",
   "item.more_useful_copper.waxed_weathered_copper_repeater": "Waxed Weathered Copper Repeater",
   "item.more_useful_copper.waxed_oxidized_copper_repeater": "Waxed Oxidized Copper Repeater",
-  
   "block.more_useful_copper.garden_stake": "Garden Stake",
   "item.more_useful_copper.garden_stake": "Garden Stake",
-  
   "block.more_useful_copper.copper_bell": "Copper Bell",
   "item.more_useful_copper.copper_bell": "Copper Bell",
-  
   "block.more_useful_copper.copper_statue_creeper": "Statue: Creeper",
   "item.more_useful_copper.copper_statue_creeper": "Statue: Creeper",
-  
   "block.more_useful_copper.copper_statue_skeleton": "Statue: Skeleton",
   "item.more_useful_copper.copper_statue_skeleton": "Statue: Skeleton",
-  
   "block.more_useful_copper.copper_statue_spider": "Statue: Spider",
   "item.more_useful_copper.copper_statue_spider": "Statue: Spider",
-  
   "block.more_useful_copper.copper_statue_zombie": "Statue: Zombie",
   "item.more_useful_copper.copper_statue_zombie": "Statue: Zombie",
-
   "item.more_useful_copper.wax_scraper": "Wax Scraper",
   "item.more_useful_copper.spray_bottle": "Spray Bottle",
   "item.more_useful_copper.lightning_bottle": "Bottle o' Lightning",
   "item.more_useful_copper.moisture_compass": "Moisture Compass",
-
   "block.more_useful_copper.sparkstone_torch": "Sparkstone Torch",
   "block.more_useful_copper.sparkstone_wall_torch": "Sparkstone Wall Torch",
   "block.more_useful_copper.sparkstone_relay": "Sparkstone Relay",
   "item.more_useful_copper.sparkstone_torch": "Sparkstone Torch",
   "item.more_useful_copper.sparkstone_relay": "Sparkstone Relay",
-
   "item.more_useful_copper.copper_pickaxe": "Copper Pickaxe",
   "item.more_useful_copper.copper_axe": "Copper Axe",
   "item.more_useful_copper.copper_shovel": "Copper Shovel",
   "item.more_useful_copper.copper_sword": "Copper Sword",
   "item.more_useful_copper.copper_hoe": "Copper Hoe",
   "item.more_useful_copper.copper_shears": "Copper Shears",
-
   "item.more_useful_copper.copper_bottom_boat": "Copper Bottom Boat",
   "entity.more_useful_copper.copper_bottom_boat": "Copper Bottom Boat"
 }

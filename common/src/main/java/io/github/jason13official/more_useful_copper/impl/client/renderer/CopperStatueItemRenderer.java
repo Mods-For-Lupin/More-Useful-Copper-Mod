@@ -4,17 +4,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue;
-import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue.Type;
 import io.github.jason13official.more_useful_copper.impl.common.item.CopperStatueItem;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
-import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.entity.LivingEntity;
@@ -75,7 +71,7 @@ public class CopperStatueItemRenderer extends BlockEntityWithoutLevelRenderer {
 
   private LivingEntity getEntityFromItemStack(ItemStack pStack, ClientLevel level) {
 
-    CopperStatue entity =  ModEntities.COPPER_STATUE.create(level);
+    CopperStatue entity = ModEntities.COPPER_STATUE.create(level);
 
     if (entity != null && pStack.getItem() instanceof CopperStatueItem statueItem) {
       entity.setVariant(statueItem.type);

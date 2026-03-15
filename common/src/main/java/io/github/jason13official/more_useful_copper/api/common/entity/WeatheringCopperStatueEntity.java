@@ -54,20 +54,20 @@ public abstract class WeatheringCopperStatueEntity extends AbstractStatueEntity 
     return this.getEntityData().get(WAXED);
   }
 
-  public int getOxidizationLevel() {
-    return this.getEntityData().get(OXIDIZATION_LEVEL);
-  }
-
   public void setWaxed(boolean waxed) {
     this.getEntityData().set(WAXED, waxed);
   }
 
-  public void wax() {
-    this.setWaxed(true);
+  public int getOxidizationLevel() {
+    return this.getEntityData().get(OXIDIZATION_LEVEL);
   }
 
   public void setOxidizationLevel(int level) {
     this.getEntityData().set(OXIDIZATION_LEVEL, level);
+  }
+
+  public void wax() {
+    this.setWaxed(true);
   }
 
   /// Advances oxidation by one stage (0 = unaffected → 3 = oxidized). No-ops if already at max.
@@ -79,8 +79,7 @@ public abstract class WeatheringCopperStatueEntity extends AbstractStatueEntity 
     }
   }
 
-  /// Ticks oxidation on the server: 0.05% chance per tick to advance one oxidation stage,
-  /// unless the statue is waxed.
+  /// Ticks oxidation on the server: 0.05% chance per tick to advance one oxidation stage, unless the statue is waxed.
   @Override
   protected void serverAiStep() {
     ServerLevel level = (ServerLevel) this.level();

@@ -3,6 +3,7 @@ package io.github.jason13official.more_useful_copper.impl.common.block;
 import io.github.jason13official.more_useful_copper.api.common.util.BellShapes;
 import io.github.jason13official.more_useful_copper.impl.common.block.entity.CopperBellBlockEntity;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTiles;
+import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,21 +18,20 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.block.ChangeOverTimeBlock;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChangeOverTimeBlock;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -67,7 +67,9 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
 
   public CopperBellBlock(Properties properties) {
     super(properties);
-    this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(ATTACHMENT, BellAttachType.FLOOR).setValue(POWERED, false).setValue(WAXED, false).setValue(OXIDIZATION, 0).setValue(WATERLOGGED, false));
+    this.registerDefaultState(
+        this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(ATTACHMENT, BellAttachType.FLOOR).setValue(POWERED, false).setValue(WAXED, false).setValue(OXIDIZATION, 0)
+            .setValue(WATERLOGGED, false));
   }
 
   private static Direction getConnectedDirection(BlockState state) {
@@ -82,6 +84,13 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
         return state.getValue(FACING).getOpposite();
       }
     }
+  }
+
+  @Nullable
+  @SuppressWarnings("unchecked")
+  protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> serverType, BlockEntityType<E> clientType,
+      BlockEntityTicker<? super E> ticker) {
+    return clientType == serverType ? (BlockEntityTicker<A>) ticker : null;
   }
 
   public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
@@ -268,7 +277,8 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
       boolean flag = direction$axis == Axis.X && level.getBlockState(blockpos.west()).isFaceSturdy(level, blockpos.west(), Direction.EAST) && level.getBlockState(blockpos.east())
           .isFaceSturdy(level, blockpos.east(), Direction.WEST) || direction$axis == Axis.Z && level.getBlockState(blockpos.north()).isFaceSturdy(level, blockpos.north(), Direction.SOUTH)
           && level.getBlockState(blockpos.south()).isFaceSturdy(level, blockpos.south(), Direction.NORTH);
-      BlockState blockstate1 = this.defaultBlockState().setValue(FACING, direction.getOpposite()).setValue(ATTACHMENT, flag ? BellAttachType.DOUBLE_WALL : BellAttachType.SINGLE_WALL).setValue(WATERLOGGED, waterlogged);
+      BlockState blockstate1 = this.defaultBlockState().setValue(FACING, direction.getOpposite()).setValue(ATTACHMENT, flag ? BellAttachType.DOUBLE_WALL : BellAttachType.SINGLE_WALL)
+          .setValue(WATERLOGGED, waterlogged);
       if (blockstate1.canSurvive(context.getLevel(), context.getClickedPos())) {
         return blockstate1;
       }
@@ -344,24 +354,38 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
     int sameOrLess = 0;
 
     for (BlockPos nearPos : BlockPos.withinManhattan(pos, 4, 4, 4)) {
-      if (nearPos.distManhattan(pos) > 4) break;
-      if (nearPos.equals(pos)) continue;
+      if (nearPos.distManhattan(pos) > 4) {
+        break;
+      }
+      if (nearPos.equals(pos)) {
+        continue;
+      }
       BlockState nearState = level.getBlockState(nearPos);
       Block nearBlock = nearState.getBlock();
       if (nearBlock instanceof CopperBellBlock nearBell) {
         int nearAge = nearState.getValue(OXIDIZATION);
-        if (nearAge < currentAge) return;
-        if (nearAge > currentAge) moreOxidized++;
-        else sameOrLess++;
+        if (nearAge < currentAge) {
+          return;
+        }
+        if (nearAge > currentAge) {
+          moreOxidized++;
+        } else {
+          sameOrLess++;
+        }
       } else if (nearBlock instanceof ChangeOverTimeBlock<?> ctb) {
         int nearOrdinal = ctb.getAge().ordinal();
-        if (nearOrdinal < currentAge) return;
-        if (nearOrdinal > currentAge) moreOxidized++;
-        else sameOrLess++;
+        if (nearOrdinal < currentAge) {
+          return;
+        }
+        if (nearOrdinal > currentAge) {
+          moreOxidized++;
+        } else {
+          sameOrLess++;
+        }
       }
     }
 
-    float f = (float)(moreOxidized + 1) / (float)(moreOxidized + sameOrLess + 1);
+    float f = (float) (moreOxidized + 1) / (float) (moreOxidized + sameOrLess + 1);
     float chance = f * f * (currentAge == 0 ? 0.75F : 1.0F);
     if (random.nextFloat() < chance) {
       level.setBlock(pos, state.setValue(OXIDIZATION, currentAge + 1), Block.UPDATE_ALL_IMMEDIATE);
@@ -376,10 +400,5 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
 
   public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
     return false;
-  }
-
-  @Nullable @SuppressWarnings("unchecked")
-  protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> serverType, BlockEntityType<E> clientType, BlockEntityTicker<? super E> ticker) {
-    return clientType == serverType ? (BlockEntityTicker<A>) ticker : null;
   }
 }

@@ -9,7 +9,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.level.Level;
 
 public class CopperStatue extends WeatheringCopperStatueEntity {
@@ -30,12 +29,12 @@ public class CopperStatue extends WeatheringCopperStatueEntity {
     this.entityData.define(DATA_ID_TYPE, Type.CREEPER.ordinal());
   }
 
-  public void setVariant(CopperStatue.Type variant) {
-    this.entityData.set(DATA_ID_TYPE, variant.ordinal());
-  }
-
   public CopperStatue.Type getVariant() {
     return CopperStatue.Type.byId(this.entityData.get(DATA_ID_TYPE));
+  }
+
+  public void setVariant(CopperStatue.Type variant) {
+    this.entityData.set(DATA_ID_TYPE, variant.ordinal());
   }
 
   public enum Type implements StringRepresentable {

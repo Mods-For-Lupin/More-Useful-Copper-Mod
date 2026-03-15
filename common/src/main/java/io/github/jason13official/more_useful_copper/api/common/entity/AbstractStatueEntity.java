@@ -16,14 +16,12 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.AbstractMinecart.Type;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -77,8 +75,7 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
   protected void doPush(Entity entity) {
   }
 
-  /// Pushes any rideable minecarts that overlap this entity's bounding box.
-  /// Statues don't interact with regular entity push logic, so this is the only push they perform.
+  /// Pushes any rideable minecarts that overlap this entity's bounding box. Statues don't interact with regular entity push logic, so this is the only push they perform.
   @Override
   protected void pushEntities() {
     List<Entity> list = this.level().getEntities(this, this.getBoundingBox(), RIDABLE_MINECARTS);
@@ -141,8 +138,7 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
     return true;
   }
 
-  /// Handles fire and explosion damage types, mirroring vanilla armor-stand logic.
-  /// Explosions break immediately; fire damage is accumulated or sets the statue on fire.
+  /// Handles fire and explosion damage types, mirroring vanilla armor-stand logic. Explosions break immediately; fire damage is accumulated or sets the statue on fire.
   ///
   /// @return `true` if this method consumed the damage (caller should return early)
   private boolean damagedByFireOrExplosion(DamageSource source) {
@@ -164,16 +160,16 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
     return false;
   }
 
-  /// Returns `true` if damage should be silently ignored — either because the entity is already
-  /// dead/client-side, damage bypasses invulnerability and kills it, or it's invulnerable to this source.
+  /// Returns `true` if damage should be silently ignored — either because the entity is already dead/client-side, damage bypasses invulnerability and kills it, or it's invulnerable to this source.
   private boolean damagePersists(DamageSource source) {
     if (this.level().isClientSide || this.isRemoved()) {
       return true;
     } else if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
       this.kill();
       return true;
-    } else
+    } else {
       return this.isInvulnerableTo(source);
+    }
   }
 
   @Override
@@ -218,8 +214,7 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
     }
   }
 
-  /// Drops the appropriate statue item for the concrete variant, preserving any custom name,
-  /// then delegates to [brokenByAnything] for sound and loot drops.
+  /// Drops the appropriate statue item for the concrete variant, preserving any custom name, then delegates to [brokenByAnything] for sound and loot drops.
   private void brokenByPlayer(DamageSource damageSource) {
 
     ItemStack toReturn = ItemStack.EMPTY;

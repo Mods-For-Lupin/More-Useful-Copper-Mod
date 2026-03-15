@@ -61,6 +61,8 @@ public class CopperBottomBoat extends Boat {
   public static final int PADDLE_RIGHT = 1;
   public static final double PADDLE_SOUND_TIME = (float) Math.PI / 4F;
   public static final int BUBBLE_TIME = 60;
+  public static final EntityDataAccessor<Boolean> WAXED = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.BOOLEAN);
+  public static final EntityDataAccessor<Integer> OXIDIZATION_LEVEL = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.INT);
   private static final EntityDataAccessor<Integer> DATA_ID_HURT = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.INT);
   private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.INT);
   private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.FLOAT);
@@ -68,10 +70,6 @@ public class CopperBottomBoat extends Boat {
   private static final EntityDataAccessor<Boolean> DATA_ID_PADDLE_LEFT = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.BOOLEAN);
   private static final EntityDataAccessor<Boolean> DATA_ID_PADDLE_RIGHT = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.BOOLEAN);
   private static final EntityDataAccessor<Integer> DATA_ID_BUBBLE_TIME = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.INT);
-
-  public static final EntityDataAccessor<Boolean> WAXED = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.BOOLEAN);
-  public static final EntityDataAccessor<Integer> OXIDIZATION_LEVEL = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.INT);
-
   private static final int TIME_TO_EJECT = 60;
   private static final float PADDLE_SPEED = ((float) Math.PI / 8F);
 
@@ -303,7 +301,8 @@ public class CopperBottomBoat extends Boat {
 
       double speedReduction = this.getOxidizationLevel() * 0.25D;
 
-      if (this.getOxidizationLevel() == 3) {}
+      if (this.getOxidizationLevel() == 3) {
+      }
       speedReduction *= 2;
 
       this.move(MoverType.SELF, this.getDeltaMovement().multiply(2.0D - speedReduction, 2.0D - speedReduction, 2.0D - speedReduction));
@@ -441,8 +440,7 @@ public class CopperBottomBoat extends Boat {
     return this.getPaddleState(side) ? Mth.clampedLerp(this.paddlePositions[side] - ((float) Math.PI / 8F), this.paddlePositions[side], limbSwing) : 0.0F;
   }
 
-  /// Determines the boat's current movement medium in priority order:
-  /// fully submerged → in water → on land → in air.
+  /// Determines the boat's current movement medium in priority order: fully submerged → in water → on land → in air.
   ///
   /// @return the current [Status]
   private Status getStatus() {
@@ -596,8 +594,7 @@ public class CopperBottomBoat extends Boat {
     return flag ? Status.UNDER_WATER : null;
   }
 
-  /// Applies buoyancy, gravity, and friction each tick based on the current [Status].
-  /// Also snaps the boat to the water surface when transitioning from air to water.
+  /// Applies buoyancy, gravity, and friction each tick based on the current [Status]. Also snaps the boat to the water surface when transitioning from air to water.
   private void floatCopperBottomBoat() {
     double d0 = -0.04F;
     double d1 = this.isNoGravity() ? (double) 0.0F : (double) -0.04F;
@@ -639,8 +636,7 @@ public class CopperBottomBoat extends Boat {
 
   }
 
-  /// Translates player input (left/right/forward/back) into rotation and thrust each tick.
-  /// Oxidation level reduces the movement multiplier by 0.25 per stage (doubled at level 3).
+  /// Translates player input (left/right/forward/back) into rotation and thrust each tick. Oxidation level reduces the movement multiplier by 0.25 per stage (doubled at level 3).
   private void controlCopperBottomBoat() {
     if (this.isVehicle()) {
       float force = 0.0F;
@@ -774,20 +770,20 @@ public class CopperBottomBoat extends Boat {
     return this.getEntityData().get(WAXED);
   }
 
-  public int getOxidizationLevel() {
-    return this.getEntityData().get(OXIDIZATION_LEVEL);
-  }
-
   public void setWaxed(boolean waxed) {
     this.getEntityData().set(WAXED, waxed);
   }
 
-  public void wax() {
-    this.setWaxed(true);
+  public int getOxidizationLevel() {
+    return this.getEntityData().get(OXIDIZATION_LEVEL);
   }
 
   public void setOxidizationLevel(int level) {
     this.getEntityData().set(OXIDIZATION_LEVEL, level);
+  }
+
+  public void wax() {
+    this.setWaxed(true);
   }
 
   public void oxidize() {
@@ -799,7 +795,6 @@ public class CopperBottomBoat extends Boat {
   }
 
   public InteractionResult interact(Player player, InteractionHand hand) {
-
 
     if (player.isSecondaryUseActive()) {
 

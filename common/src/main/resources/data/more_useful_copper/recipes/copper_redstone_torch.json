@@ -2,10 +2,20 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "R": { "item": "minecraft:copper_ingot" },
-    "S": { "item": "minecraft:stick" }
+    "R": {
+      "item": "minecraft:copper_ingot"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
   },
-  "pattern": [ "R", "S" ],
-  "result": { "item": "more_useful_copper:copper_redstone_torch", "count": 4 },
+  "pattern": [
+    "R",
+    "S"
+  ],
+  "result": {
+    "item": "more_useful_copper:copper_redstone_torch",
+    "count": 4
+  },
   "show_notification": true
 }

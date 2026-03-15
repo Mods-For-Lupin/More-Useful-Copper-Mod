@@ -24,13 +24,11 @@ import net.minecraft.util.Mth;
 public class CopperBellRenderer implements BlockEntityRenderer<CopperBellBlockEntity> {
 
   public static final Material BELL_RESOURCE_LOCATION = new Material(TextureAtlas.LOCATION_BLOCKS, MoreUsefulCopper.identifier("entity/bell/bell_body"));
-  private static final String BELL_BODY = "bell_body";
-
   public static final ResourceLocation COPPER_BELL_TEXTURE = MoreUsefulCopper.identifier("textures/entity/bell/bell_body.png");
   public static final ResourceLocation EXPOSED_COPPER_BELL_TEXTURE = MoreUsefulCopper.identifier("textures/entity/bell/bell_body1.png");
   public static final ResourceLocation WEATHERED_COPPER_BELL_TEXTURE = MoreUsefulCopper.identifier("textures/entity/bell/bell_body2.png");
   public static final ResourceLocation OXIDIZED_COPPER_BELL_TEXTURE = MoreUsefulCopper.identifier("textures/entity/bell/bell_body3.png");
-
+  private static final String BELL_BODY = "bell_body";
   private final ModelPart bellBody;
 
   public CopperBellRenderer(BlockEntityRendererProvider.Context context) {

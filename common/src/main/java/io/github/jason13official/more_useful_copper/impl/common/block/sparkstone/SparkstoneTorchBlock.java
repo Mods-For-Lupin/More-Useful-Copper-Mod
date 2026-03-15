@@ -3,9 +3,9 @@ package io.github.jason13official.more_useful_copper.impl.common.block.sparkston
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,8 +25,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-/// Oscillating pulse source. Emits 1-tick redstone bursts at a configurable period.
-/// Right-click to cycle the oscillation period. Pauses when the support block is powered.
+/// Oscillating pulse source. Emits 1-tick redstone bursts at a configurable period. Right-click to cycle the oscillation period. Pauses when the support block is powered.
 public class SparkstoneTorchBlock extends Block {
 
   public static final EnumProperty<SparkstonePeriod> PERIOD = EnumProperty.create("period", SparkstonePeriod.class);
@@ -160,7 +159,9 @@ public class SparkstoneTorchBlock extends Block {
 
   @Override
   public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-    if (!state.getValue(LIT)) return;
+    if (!state.getValue(LIT)) {
+      return;
+    }
     double x = pos.getX() + 0.5;
     double y = pos.getY() + 0.7;
     double z = pos.getZ() + 0.5;

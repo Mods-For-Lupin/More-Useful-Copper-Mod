@@ -4,9 +4,9 @@ import io.github.jason13official.more_useful_copper.api.common.mixin.DispenserAc
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +18,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -29,8 +28,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-/// Directional pulse router. Accepts a rising-edge signal on any non-FACING face and
-/// re-emits a 1-tick pulse in the FACING direction. Right-click to rotate FACING clockwise.
+/// Directional pulse router. Accepts a rising-edge signal on any non-FACING face and re-emits a 1-tick pulse in the FACING direction. Right-click to rotate FACING clockwise.
 public class SparkstoneRelayBlock extends Block {
 
   public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -129,14 +127,17 @@ public class SparkstoneRelayBlock extends Block {
 
   /// Returns `true` if any face other than FACING (or from below) has a signal.
   ///
-  /// Uses `dir.getOpposite()` so we ask each neighbor what it emits *toward* this block.
-  /// Relay A facing EAST has `getSignal(..., EAST) = 15`; relay B to relay A's east
-  /// queries with dir=WEST → `getSignal(relayAPos, EAST)` correctly detects the output.
+  /// Uses `dir.getOpposite()` so we ask each neighbor what it emits *toward* this block. Relay A facing EAST has `getSignal(..., EAST) = 15`; relay B to relay A's east queries with dir=WEST →
+  /// `getSignal(relayAPos, EAST)` correctly detects the output.
   private boolean hasSignalOnNonFacingFaces(Level level, BlockPos pos, BlockState state) {
     Direction facing = state.getValue(FACING);
     for (Direction dir : Direction.Plane.HORIZONTAL) {
-      if (dir == facing) continue;
-      if (level.getSignal(pos.relative(dir), dir.getOpposite()) > 0) return true;
+      if (dir == facing) {
+        continue;
+      }
+      if (level.getSignal(pos.relative(dir), dir.getOpposite()) > 0) {
+        return true;
+      }
     }
     return level.getSignal(pos.below(), Direction.UP) > 0;
   }

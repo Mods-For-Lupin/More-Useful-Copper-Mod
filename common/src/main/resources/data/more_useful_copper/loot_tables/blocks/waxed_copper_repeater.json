@@ -3,8 +3,17 @@
   "pools": [
     {
       "bonus_rolls": 0.0,
-      "conditions": [{ "condition": "minecraft:survives_explosion" }],
-      "entries": [{ "type": "minecraft:item", "name": "more_useful_copper:waxed_copper_repeater" }],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "more_useful_copper:waxed_copper_repeater"
+        }
+      ],
       "rolls": 1.0
     }
   ],

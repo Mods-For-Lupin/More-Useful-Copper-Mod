@@ -3,9 +3,9 @@ package io.github.jason13official.more_useful_copper.impl.common.block.sparkston
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -27,8 +27,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-/// Wall-mounted variant of [SparkstoneTorchBlock].
-/// Paired with [SparkstoneTorchBlock] via `StandingAndWallBlockItem` so both share one item.
+/// Wall-mounted variant of [SparkstoneTorchBlock]. Paired with [SparkstoneTorchBlock] via `StandingAndWallBlockItem` so both share one item.
 public class SparkstoneWallTorchBlock extends Block {
 
   public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -37,8 +36,8 @@ public class SparkstoneWallTorchBlock extends Block {
 
   protected static final VoxelShape SHAPE_NORTH = Block.box(5.5, 3.0, 11.0, 10.5, 13.0, 16.0);
   protected static final VoxelShape SHAPE_SOUTH = Block.box(5.5, 3.0, 0.0, 10.5, 13.0, 5.0);
-  protected static final VoxelShape SHAPE_WEST  = Block.box(11.0, 3.0, 5.5, 16.0, 13.0, 10.5);
-  protected static final VoxelShape SHAPE_EAST  = Block.box(0.0, 3.0, 5.5, 5.0, 13.0, 10.5);
+  protected static final VoxelShape SHAPE_WEST = Block.box(11.0, 3.0, 5.5, 16.0, 13.0, 10.5);
+  protected static final VoxelShape SHAPE_EAST = Block.box(0.0, 3.0, 5.5, 5.0, 13.0, 10.5);
 
   public SparkstoneWallTorchBlock(Properties properties) {
     super(properties);
@@ -57,9 +56,9 @@ public class SparkstoneWallTorchBlock extends Block {
   public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
     return switch (state.getValue(FACING)) {
       case SOUTH -> SHAPE_SOUTH;
-      case WEST  -> SHAPE_WEST;
-      case EAST  -> SHAPE_EAST;
-      default    -> SHAPE_NORTH;
+      case WEST -> SHAPE_WEST;
+      case EAST -> SHAPE_EAST;
+      default -> SHAPE_NORTH;
     };
   }
 
@@ -174,7 +173,9 @@ public class SparkstoneWallTorchBlock extends Block {
 
   @Override
   public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-    if (!state.getValue(LIT)) return;
+    if (!state.getValue(LIT)) {
+      return;
+    }
     Direction facing = state.getValue(FACING);
     double x = pos.getX() + 0.5 + 0.27 * facing.getStepX();
     double y = pos.getY() + 0.7;

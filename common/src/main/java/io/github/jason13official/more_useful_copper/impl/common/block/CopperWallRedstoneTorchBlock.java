@@ -48,7 +48,9 @@ public class CopperWallRedstoneTorchBlock extends RedstoneWallTorchBlock impleme
   @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
     BlockState state = super.getStateForPlacement(context);
-    if (state == null) return null;
+    if (state == null) {
+      return null;
+    }
     FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
     return state.setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
   }

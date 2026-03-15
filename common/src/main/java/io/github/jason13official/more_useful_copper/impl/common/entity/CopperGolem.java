@@ -154,7 +154,7 @@ public class CopperGolem extends AbstractPersistentAngerPathfinderMob {
     if (!belowState.entityCanStandOn(pLevel, below, this)) {
       return false;
     } else {
-      for(int yOffset = 1; yOffset < 3; ++yOffset) {
+      for (int yOffset = 1; yOffset < 3; ++yOffset) {
         BlockPos above = pos.above(yOffset);
         BlockState aboveState = pLevel.getBlockState(above);
         if (!NaturalSpawner.isValidEmptySpawnBlock(pLevel, above, aboveState, aboveState.getFluidState(), EntityType.IRON_GOLEM)) {
@@ -168,7 +168,7 @@ public class CopperGolem extends AbstractPersistentAngerPathfinderMob {
 
   @Override
   public Vec3 getLeashOffset() {
-    return new Vec3((double)0.0F, (double)(0.875F * this.getEyeHeight()), (double)(this.getBbWidth() * 0.4F));
+    return new Vec3(0.0F, 0.875F * this.getEyeHeight(), this.getBbWidth() * 0.4F);
   }
 
   @Override
@@ -214,22 +214,21 @@ public class CopperGolem extends AbstractPersistentAngerPathfinderMob {
   @Override
   public boolean doHurtTarget(Entity pEntity) {
     this.attackAnimationTick = 10;
-    this.level().broadcastEntityEvent(this, (byte)4);
+    this.level().broadcastEntityEvent(this, (byte) 4);
     float damage = this.getAttackDamage();
-    float weightedDamage = (int)damage > 0 ? damage / 2.0F + (float)this.random.nextInt((int)damage) : damage;
+    float weightedDamage = (int) damage > 0 ? damage / 2.0F + (float) this.random.nextInt((int) damage) : damage;
     boolean didHurt = pEntity.hurt(this.damageSources().mobAttack(this), weightedDamage);
     if (didHurt) {
       double calculatedknockback;
-      if (pEntity instanceof LivingEntity) {
-        LivingEntity living = (LivingEntity)pEntity;
+      if (pEntity instanceof LivingEntity living) {
         calculatedknockback = living.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE);
       } else {
-        calculatedknockback = (double)0.0F;
+        calculatedknockback = 0.0F;
       }
 
       double knockback = calculatedknockback;
-      double weightedKnockback = Math.max((double)0.0F, (double)1.0F - knockback);
-      pEntity.setDeltaMovement(pEntity.getDeltaMovement().add((double)0.0F, (double)0.4F * weightedKnockback, (double)0.0F));
+      double weightedKnockback = Math.max(0.0F, (double) 1.0F - knockback);
+      pEntity.setDeltaMovement(pEntity.getDeltaMovement().add(0.0F, (double) 0.4F * weightedKnockback, 0.0F));
       this.doEnchantDamageEffects(this, pEntity);
     }
 
@@ -238,6 +237,6 @@ public class CopperGolem extends AbstractPersistentAngerPathfinderMob {
   }
 
   private float getAttackDamage() {
-    return (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+    return (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
   }
 }

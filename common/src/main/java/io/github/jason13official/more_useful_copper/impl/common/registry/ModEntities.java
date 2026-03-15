@@ -5,7 +5,6 @@ import io.github.jason13official.more_useful_copper.impl.common.entity.CopperBot
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperGolem;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue;
 import io.github.jason13official.more_useful_copper.impl.common.entity.ThrownLightningBottle;
-import io.github.jason13official.more_useful_copper.platform.Services;
 import java.util.function.BiConsumer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -26,7 +25,7 @@ public class ModEntities {
     COPPER_STATUE = EntityType.Builder.<CopperStatue>of(CopperStatue::new, MobCategory.MISC).sized(0.5F, 1.975F).clientTrackingRange(10).build(MoreUsefulCopper.identifier("copper_statue").toString());
     consumer.accept(COPPER_STATUE, MoreUsefulCopper.identifier("copper_statue"));
 
-    COPPER_GOLEM = EntityType.Builder.<CopperGolem>of(CopperGolem::new, MobCategory.MISC).sized(1.4F, 2.7F).clientTrackingRange(10).build(MoreUsefulCopper.identifier("copper_golem").toString());
+    COPPER_GOLEM = EntityType.Builder.of(CopperGolem::new, MobCategory.MISC).sized(1.4F, 2.7F).clientTrackingRange(10).build(MoreUsefulCopper.identifier("copper_golem").toString());
     consumer.accept(COPPER_GOLEM, MoreUsefulCopper.identifier("copper_golem"));
 
     COPPER_BOTTOM_BOAT = EntityType.Builder.<CopperBottomBoat>of(CopperBottomBoat::new, MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10)
