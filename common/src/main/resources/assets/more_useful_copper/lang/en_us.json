@@ -125,11 +125,19 @@
   "item.more_useful_copper.spray_bottle": "Spray Bottle",
   "item.more_useful_copper.lightning_bottle": "Bottle o' Lightning",
   "item.more_useful_copper.moisture_compass": "Moisture Compass",
+
   "block.more_useful_copper.sparkstone_torch": "Sparkstone Torch",
   "block.more_useful_copper.sparkstone_wall_torch": "Sparkstone Wall Torch",
   "block.more_useful_copper.sparkstone_relay": "Sparkstone Relay",
   "item.more_useful_copper.sparkstone_torch": "Sparkstone Torch",
   "item.more_useful_copper.sparkstone_relay": "Sparkstone Relay",
+
+  "item.more_useful_copper.copper_pickaxe": "Copper Pickaxe",
+  "item.more_useful_copper.copper_axe": "Copper Axe",
+  "item.more_useful_copper.copper_shovel": "Copper Shovel",
+  "item.more_useful_copper.copper_sword": "Copper Sword",
+  "item.more_useful_copper.copper_hoe": "Copper Hoe",
+  "item.more_useful_copper.copper_shears": "Copper Shears",
 
   "item.more_useful_copper.copper_bottom_boat": "Copper Bottom Boat",
   "entity.more_useful_copper.copper_bottom_boat": "Copper Bottom Boat"
