@@ -6,7 +6,6 @@ import io.github.jason13official.more_useful_copper.impl.common.registry.ModEnti
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
 import java.util.List;
 import java.util.function.IntFunction;
-import javax.annotation.Nullable;
 import net.minecraft.BlockUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -54,6 +53,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 public class CopperBottomBoat extends Boat {
 
