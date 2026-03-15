@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "waxed_copper_repeater",
+  "ingredients": [
+    {
+      "item": "more_useful_copper:exposed_copper_repeater"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "result": {
+    "item": "more_useful_copper:waxed_exposed_copper_repeater"
+  }
+}
