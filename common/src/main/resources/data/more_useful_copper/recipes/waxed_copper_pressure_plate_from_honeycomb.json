@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "waxed_copper_pressure_plate",
+  "ingredients": [
+    {
+      "item": "more_useful_copper:copper_pressure_plate"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "result": {
+    "item": "more_useful_copper:waxed_copper_pressure_plate"
+  }
+}

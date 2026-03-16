@@ -178,7 +178,7 @@ public class ModItems {
     COPPER_BOOTS = new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.BOOTS, new Item.Properties().stacksTo(1));
 
     COPPER_CHAIN = new BlockItem(ModBlocks.COPPER_CHAIN, new Properties());
-    COPPER_GOLEM_SPAWN_EGG = Services.PLATFORM.createSpawnEggItem(() -> ModEntities.COPPER_GOLEM, 56063, 44543, new Item.Properties());
+    COPPER_GOLEM_SPAWN_EGG = Services.PLATFORM.createSpawnEggItem(() -> ModEntities.COPPER_GOLEM, 0x8A4129, 0xFC9982, new Item.Properties());
     COPPER_HORSE_ARMOR = new HorseArmorItem(5, "copper", (new Item.Properties()).stacksTo(1));
 
     COPPER_PRESSURE_PLATE = new BlockItem(ModBlocks.COPPER_PRESSURE_PLATE, new Properties());
@@ -198,5 +198,19 @@ public class ModItems {
     consumer.accept(COPPER_GOLEM_SPAWN_EGG, MoreUsefulCopper.identifier("copper_golem_spawn_egg"));
     consumer.accept(COPPER_HORSE_ARMOR, MoreUsefulCopper.identifier("copper_horse_armor"));
     consumer.accept(COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("copper_pressure_plate"));
+    consumer.accept(new BlockItem(ModBlocks.EXPOSED_COPPER_PRESSURE_PLATE, new Properties()), MoreUsefulCopper.identifier("exposed_copper_pressure_plate"));
+    consumer.accept(new BlockItem(ModBlocks.WEATHERED_COPPER_PRESSURE_PLATE, new Properties()), MoreUsefulCopper.identifier("weathered_copper_pressure_plate"));
+    consumer.accept(new BlockItem(ModBlocks.OXIDIZED_COPPER_PRESSURE_PLATE, new Properties()), MoreUsefulCopper.identifier("oxidized_copper_pressure_plate"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_COPPER_PRESSURE_PLATE, new Properties()), MoreUsefulCopper.identifier("waxed_copper_pressure_plate"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_EXPOSED_COPPER_PRESSURE_PLATE, new Properties()), MoreUsefulCopper.identifier("waxed_exposed_copper_pressure_plate"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_PRESSURE_PLATE, new Properties()), MoreUsefulCopper.identifier("waxed_weathered_copper_pressure_plate"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_PRESSURE_PLATE, new Properties()), MoreUsefulCopper.identifier("waxed_oxidized_copper_pressure_plate"));
+    consumer.accept(new BlockItem(ModBlocks.EXPOSED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("exposed_copper_chain"));
+    consumer.accept(new BlockItem(ModBlocks.WEATHERED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("weathered_copper_chain"));
+    consumer.accept(new BlockItem(ModBlocks.OXIDIZED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("oxidized_copper_chain"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("waxed_copper_chain"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_EXPOSED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("waxed_exposed_copper_chain"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("waxed_weathered_copper_chain"));
+    consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("waxed_oxidized_copper_chain"));
   }
 }

@@ -3,17 +3,20 @@ package io.github.jason13official.more_useful_copper.impl.common.registry;
 import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperBellBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperButtonBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.CopperChainBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperComparatorBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperLeverBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.CopperPressurePlateBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneTorchBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRepeaterBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperWallRedstoneTorchBlock;
-import io.github.jason13official.more_useful_copper.impl.common.block.CopperWeightedPressurePlateBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.GardenStakeBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedButtonBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.WaxedChainBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedComparatorBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedLeverBlock;
+import io.github.jason13official.more_useful_copper.impl.common.block.WaxedPressurePlateBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRedstoneDustBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRedstoneTorchBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.WaxedRepeaterBlock;
@@ -24,11 +27,8 @@ import io.github.jason13official.more_useful_copper.impl.common.block.sparkstone
 import io.github.jason13official.more_useful_copper.platform.Services;
 import java.util.function.BiConsumer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.BasePressurePlateBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.ChainBlock;
-import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -112,8 +112,25 @@ public class ModBlocks {
   public static Block WAXED_WEATHERED_COPPER_REPEATER;
   public static Block WAXED_OXIDIZED_COPPER_REPEATER;
 
-  public static Block COPPER_PRESSURE_PLATE;
-  public static Block COPPER_CHAIN;
+  public static CopperPressurePlateBlock COPPER_PRESSURE_PLATE;
+  public static CopperPressurePlateBlock EXPOSED_COPPER_PRESSURE_PLATE;
+  public static CopperPressurePlateBlock WEATHERED_COPPER_PRESSURE_PLATE;
+  public static CopperPressurePlateBlock OXIDIZED_COPPER_PRESSURE_PLATE;
+
+  public static Block WAXED_COPPER_PRESSURE_PLATE;
+  public static Block WAXED_EXPOSED_COPPER_PRESSURE_PLATE;
+  public static Block WAXED_WEATHERED_COPPER_PRESSURE_PLATE;
+  public static Block WAXED_OXIDIZED_COPPER_PRESSURE_PLATE;
+
+  public static CopperChainBlock COPPER_CHAIN;
+  public static CopperChainBlock EXPOSED_COPPER_CHAIN;
+  public static CopperChainBlock WEATHERED_COPPER_CHAIN;
+  public static CopperChainBlock OXIDIZED_COPPER_CHAIN;
+
+  public static Block WAXED_COPPER_CHAIN;
+  public static Block WAXED_EXPOSED_COPPER_CHAIN;
+  public static Block WAXED_WEATHERED_COPPER_CHAIN;
+  public static Block WAXED_OXIDIZED_COPPER_CHAIN;
 
   public static Block GARDEN_STAKE;
 
@@ -123,11 +140,43 @@ public class ModBlocks {
 
   public static void register(BiConsumer<Block, ResourceLocation> consumer) {
 
-    COPPER_CHAIN = new ChainBlock(BlockBehaviour.Properties.copy(Blocks.CHAIN));
-    COPPER_PRESSURE_PLATE = new CopperWeightedPressurePlateBlock(150, BlockBehaviour.Properties.copy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), BlockSetType.IRON);
+    COPPER_CHAIN = copperChain(WeatherState.UNAFFECTED);
+    EXPOSED_COPPER_CHAIN = copperChain(WeatherState.EXPOSED);
+    WEATHERED_COPPER_CHAIN = copperChain(WeatherState.WEATHERED);
+    OXIDIZED_COPPER_CHAIN = copperChain(WeatherState.OXIDIZED);
+
+    WAXED_COPPER_CHAIN = waxedCopperChain();
+    WAXED_EXPOSED_COPPER_CHAIN = waxedCopperChain();
+    WAXED_WEATHERED_COPPER_CHAIN = waxedCopperChain();
+    WAXED_OXIDIZED_COPPER_CHAIN = waxedCopperChain();
 
     consumer.accept(COPPER_CHAIN, MoreUsefulCopper.identifier("copper_chain"));
+    consumer.accept(EXPOSED_COPPER_CHAIN, MoreUsefulCopper.identifier("exposed_copper_chain"));
+    consumer.accept(WEATHERED_COPPER_CHAIN, MoreUsefulCopper.identifier("weathered_copper_chain"));
+    consumer.accept(OXIDIZED_COPPER_CHAIN, MoreUsefulCopper.identifier("oxidized_copper_chain"));
+    consumer.accept(WAXED_COPPER_CHAIN, MoreUsefulCopper.identifier("waxed_copper_chain"));
+    consumer.accept(WAXED_EXPOSED_COPPER_CHAIN, MoreUsefulCopper.identifier("waxed_exposed_copper_chain"));
+    consumer.accept(WAXED_WEATHERED_COPPER_CHAIN, MoreUsefulCopper.identifier("waxed_weathered_copper_chain"));
+    consumer.accept(WAXED_OXIDIZED_COPPER_CHAIN, MoreUsefulCopper.identifier("waxed_oxidized_copper_chain"));
+
+    COPPER_PRESSURE_PLATE = copperPressurePlate(WeatherState.UNAFFECTED);
+    EXPOSED_COPPER_PRESSURE_PLATE = copperPressurePlate(WeatherState.EXPOSED);
+    WEATHERED_COPPER_PRESSURE_PLATE = copperPressurePlate(WeatherState.WEATHERED);
+    OXIDIZED_COPPER_PRESSURE_PLATE = copperPressurePlate(WeatherState.OXIDIZED);
+
+    WAXED_COPPER_PRESSURE_PLATE = waxedCopperPressurePlate();
+    WAXED_EXPOSED_COPPER_PRESSURE_PLATE = waxedCopperPressurePlate();
+    WAXED_WEATHERED_COPPER_PRESSURE_PLATE = waxedCopperPressurePlate();
+    WAXED_OXIDIZED_COPPER_PRESSURE_PLATE = waxedCopperPressurePlate();
+
     consumer.accept(COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("copper_pressure_plate"));
+    consumer.accept(EXPOSED_COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("exposed_copper_pressure_plate"));
+    consumer.accept(WEATHERED_COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("weathered_copper_pressure_plate"));
+    consumer.accept(OXIDIZED_COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("oxidized_copper_pressure_plate"));
+    consumer.accept(WAXED_COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("waxed_copper_pressure_plate"));
+    consumer.accept(WAXED_EXPOSED_COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("waxed_exposed_copper_pressure_plate"));
+    consumer.accept(WAXED_WEATHERED_COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("waxed_weathered_copper_pressure_plate"));
+    consumer.accept(WAXED_OXIDIZED_COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("waxed_oxidized_copper_pressure_plate"));
 
     GARDEN_STAKE = new GardenStakeBlock(BlockBehaviour.Properties.of().randomTicks().noOcclusion().noCollission().lightLevel(s -> s.getValue(GardenStakeBlock.LIT) ? 7 : 2));
     consumer.accept(GARDEN_STAKE, MoreUsefulCopper.identifier("garden_stake"));
@@ -347,5 +396,21 @@ public class ModBlocks {
 
   private static WaxedRepeaterBlock waxedCopperRepeater() {
     return new WaxedRepeaterBlock(Properties.of().instabreak().pushReaction(PushReaction.DESTROY));
+  }
+
+  private static CopperChainBlock copperChain(WeatherState weatherState) {
+    return new CopperChainBlock(BlockBehaviour.Properties.copy(Blocks.CHAIN), weatherState);
+  }
+
+  private static WaxedChainBlock waxedCopperChain() {
+    return new WaxedChainBlock(BlockBehaviour.Properties.copy(Blocks.CHAIN));
+  }
+
+  private static CopperPressurePlateBlock copperPressurePlate(WeatherState weatherState) {
+    return new CopperPressurePlateBlock(150, BlockBehaviour.Properties.copy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), BlockSetType.IRON, weatherState);
+  }
+
+  private static WaxedPressurePlateBlock waxedCopperPressurePlate() {
+    return new WaxedPressurePlateBlock(150, BlockBehaviour.Properties.copy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), BlockSetType.IRON);
   }
 }

@@ -57,13 +57,26 @@ public class ModTabs {
     output.accept(ModItems.COPPER_LEGGINGS);
     output.accept(ModItems.COPPER_BOOTS);
     output.accept(ModItems.COPPER_CHAIN);
+    output.accept(ModBlocks.EXPOSED_COPPER_CHAIN);
+    output.accept(ModBlocks.WEATHERED_COPPER_CHAIN);
+    output.accept(ModBlocks.OXIDIZED_COPPER_CHAIN);
+    output.accept(ModBlocks.WAXED_COPPER_CHAIN);
+    output.accept(ModBlocks.WAXED_EXPOSED_COPPER_CHAIN);
+    output.accept(ModBlocks.WAXED_WEATHERED_COPPER_CHAIN);
+    output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_CHAIN);
     output.accept(ModItems.COPPER_HORSE_ARMOR);
 
     // TODO create entity
     output.accept(ModItems.COPPER_GOLEM_SPAWN_EGG);
 
-    // TODO create block
     output.accept(ModItems.COPPER_PRESSURE_PLATE);
+    output.accept(ModBlocks.EXPOSED_COPPER_PRESSURE_PLATE);
+    output.accept(ModBlocks.WEATHERED_COPPER_PRESSURE_PLATE);
+    output.accept(ModBlocks.OXIDIZED_COPPER_PRESSURE_PLATE);
+    output.accept(ModBlocks.WAXED_COPPER_PRESSURE_PLATE);
+    output.accept(ModBlocks.WAXED_EXPOSED_COPPER_PRESSURE_PLATE);
+    output.accept(ModBlocks.WAXED_WEATHERED_COPPER_PRESSURE_PLATE);
+    output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_PRESSURE_PLATE);
 
     output.accept(ModBlocks.COPPER_BUTTON);
     output.accept(ModBlocks.EXPOSED_COPPER_BUTTON);

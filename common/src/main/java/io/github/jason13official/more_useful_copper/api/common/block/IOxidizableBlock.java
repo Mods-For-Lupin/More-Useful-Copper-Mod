@@ -52,6 +52,14 @@ public interface IOxidizableBlock extends ChangeOverTimeBlock<WeatherState> {
     addMapping(ModBlocks.COPPER_REPEATER, ModBlocks.EXPOSED_COPPER_REPEATER);
     addMapping(ModBlocks.EXPOSED_COPPER_REPEATER, ModBlocks.WEATHERED_COPPER_REPEATER);
     addMapping(ModBlocks.WEATHERED_COPPER_REPEATER, ModBlocks.OXIDIZED_COPPER_REPEATER);
+
+    addMapping(ModBlocks.COPPER_PRESSURE_PLATE, ModBlocks.EXPOSED_COPPER_PRESSURE_PLATE);
+    addMapping(ModBlocks.EXPOSED_COPPER_PRESSURE_PLATE, ModBlocks.WEATHERED_COPPER_PRESSURE_PLATE);
+    addMapping(ModBlocks.WEATHERED_COPPER_PRESSURE_PLATE, ModBlocks.OXIDIZED_COPPER_PRESSURE_PLATE);
+
+    addMapping(ModBlocks.COPPER_CHAIN, ModBlocks.EXPOSED_COPPER_CHAIN);
+    addMapping(ModBlocks.EXPOSED_COPPER_CHAIN, ModBlocks.WEATHERED_COPPER_CHAIN);
+    addMapping(ModBlocks.WEATHERED_COPPER_CHAIN, ModBlocks.OXIDIZED_COPPER_CHAIN);
   }
 
   /// Returns the less-oxidized block one step before `block` in the chain, if any.
