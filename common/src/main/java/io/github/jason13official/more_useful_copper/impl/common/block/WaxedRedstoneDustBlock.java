@@ -37,7 +37,7 @@ public class WaxedRedstoneDustBlock extends CopperRedstoneDustBlock {
     // Cross/dot toggle (same as vanilla RedStoneWireBlock)
     if (isCross(state) || isDot(state)) {
       BlockState newState = isCross(state) ? this.defaultBlockState() : this.crossState;
-      newState = newState.setValue(POWER, state.getValue(POWER));
+      newState = newState.setValue(POWER, state.getValue(POWER)).setValue(WATERLOGGED, state.getValue(WATERLOGGED));
       newState = this.getConnectionState(level, newState, pos);
       if (newState != state) {
         level.setBlock(pos, newState, 3);

@@ -194,7 +194,7 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     } else {
       RedstoneSide redstoneSide = this.getConnectingSide(level, pos, direction);
       return redstoneSide.isConnected() == state.getValue(PROPERTY_BY_DIRECTION.get(direction)).isConnected() && !isCross(state) ? state.setValue(PROPERTY_BY_DIRECTION.get(direction), redstoneSide)
-          : this.getConnectionState(level, this.crossState.setValue(POWER, state.getValue(POWER)).setValue(PROPERTY_BY_DIRECTION.get(direction), redstoneSide), pos);
+          : this.getConnectionState(level, this.crossState.setValue(POWER, state.getValue(POWER)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)).setValue(PROPERTY_BY_DIRECTION.get(direction), redstoneSide), pos);
     }
   }
 
@@ -222,7 +222,7 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
 
   protected BlockState getConnectionState(BlockGetter level, BlockState state, BlockPos pos) {
     boolean wasDot = isDot(state);
-    state = this.getMissingConnections(level, this.defaultBlockState().setValue(POWER, state.getValue(POWER)), pos);
+    state = this.getMissingConnections(level, this.defaultBlockState().setValue(POWER, state.getValue(POWER)).setValue(WATERLOGGED, state.getValue(WATERLOGGED)), pos);
     if (wasDot && isDot(state)) {
       return state;
     }
@@ -494,7 +494,7 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
     // Cross/dot toggle (same as vanilla RedStoneWireBlock)
     if (isCross(state) || isDot(state)) {
       BlockState newState = isCross(state) ? this.defaultBlockState() : this.crossState;
-      newState = newState.setValue(POWER, state.getValue(POWER));
+      newState = newState.setValue(POWER, state.getValue(POWER)).setValue(WATERLOGGED, state.getValue(WATERLOGGED));
       newState = this.getConnectionState(level, newState, pos);
       if (newState != state) {
         level.setBlock(pos, newState, 3);
