@@ -16,6 +16,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeverBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,7 +28,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class CopperLeverBlock extends LeverBlock implements IOxidizableBlock {
+public class CopperLeverBlock extends LeverBlock implements IOxidizableBlock, SimpleWaterloggedBlock {
 
   public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
