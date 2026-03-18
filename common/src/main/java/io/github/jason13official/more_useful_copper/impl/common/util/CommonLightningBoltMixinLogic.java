@@ -1,14 +1,29 @@
 package io.github.jason13official.more_useful_copper.impl.common.util;
 
 import io.github.jason13official.more_useful_copper.impl.common.block.GardenStakeBlock;
+import io.github.jason13official.more_useful_copper.impl.common.item.LightningArmorItem;
+import io.github.jason13official.more_useful_copper.impl.common.item.tool.LightningAxeItem;
+import io.github.jason13official.more_useful_copper.impl.common.item.tool.LightningHoeItem;
+import io.github.jason13official.more_useful_copper.impl.common.item.tool.LightningPickaxeItem;
+import io.github.jason13official.more_useful_copper.impl.common.item.tool.LightningShovelItem;
+import io.github.jason13official.more_useful_copper.impl.common.item.tool.LightningSwordItem;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModBlocks;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import oshi.util.tuples.Pair;
 
 public class CommonLightningBoltMixinLogic {
 
@@ -26,6 +41,8 @@ public class CommonLightningBoltMixinLogic {
     if (life != 2) {
       return;
     }
+
+    affectArmorOnEntities(self, level, strikePos);
 
     BlockState strikeState = level.getBlockState(strikePos);
 
@@ -74,5 +91,60 @@ public class CommonLightningBoltMixinLogic {
         }
       }
     }
+  }
+
+  /// iterate over armor and main/offhand items
+  private static void affectArmorOnEntities(LightningBolt self, ServerLevel level, BlockPos strikePos) {
+
+    List<Entity> struck = level.getEntities(self, new AABB(strikePos).inflate(0.5, 2, 0.5));
+
+    struck.stream().filter(entity -> entity instanceof LivingEntity).forEach(entity -> {
+      LivingEntity living = (LivingEntity) entity;
+
+      living.getArmorSlots().forEach(stack -> {
+
+        Item armorItem = stack.getItem();
+
+        if (!(armorItem instanceof LightningArmorItem lightningArmor)) {
+          return;
+        }
+
+        stack.getOrCreateTag().putBoolean("charged", true);
+
+        living.setItemSlot(lightningArmor.getType().getSlot(), stack);
+      });
+
+      if (isValid(living.getMainHandItem())) {
+        ItemStack stack = living.getMainHandItem();
+        stack.getOrCreateTag().putBoolean("charged", true);
+        living.setItemSlot(EquipmentSlot.MAINHAND, stack);
+      }
+
+      if (isValid(living.getOffhandItem())) {
+        ItemStack stack = living.getOffhandItem();
+        stack.getOrCreateTag().putBoolean("charged", true);
+        living.setItemSlot(EquipmentSlot.OFFHAND, stack);
+      }
+    });
+  }
+
+  private static boolean isValid(ItemStack stack) {
+    Item toolItem = stack.getItem();
+
+    boolean valid = false;
+
+    if (toolItem instanceof LightningSwordItem) {
+      valid = true;
+    }  else if (toolItem instanceof LightningShovelItem) {
+      valid = true;
+    }  else if (toolItem instanceof LightningAxeItem) {
+      valid = true;
+    }  else if (toolItem instanceof LightningPickaxeItem) {
+      valid = true;
+    }  else if (toolItem instanceof LightningHoeItem) {
+      valid = true;
+    }
+
+    return valid;
   }
 }
