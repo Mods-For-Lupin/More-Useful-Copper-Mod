@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.UnmodifiableIterator;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
+import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
 import java.util.List;
 import java.util.function.IntFunction;
 import net.minecraft.BlockUtil;
@@ -797,15 +798,26 @@ public class CopperBottomBoat extends Boat {
   public InteractionResult interact(Player player, InteractionHand hand) {
 
     if (player.isSecondaryUseActive()) {
-
       ItemStack stack = player.getItemInHand(hand);
 
-      if (!this.level().isClientSide() && stack.is(Items.HONEYCOMB)) {
+      if (!this.level().isClientSide()) {
+        if (stack.is(Items.HONEYCOMB) && !this.isWaxed()) {
+          this.wax();
+          stack.shrink(1);
+          player.setItemInHand(hand, stack);
+          return InteractionResult.CONSUME;
+        }
 
-        this.wax();
+        if (stack.is(ModItemTags.WAX_SCRAPER) && this.isWaxed()) {
+          this.setWaxed(false);
+          stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+          return InteractionResult.CONSUME;
+        }
 
-        stack.shrink(1);
-        player.setItemInHand(hand, stack);
+        if (stack.is(ModItemTags.MANUAL_OXIDIZER) && !this.isWaxed() && this.getOxidizationLevel() < 3) {
+          this.oxidize();
+          return InteractionResult.CONSUME;
+        }
       }
 
       return InteractionResult.PASS;

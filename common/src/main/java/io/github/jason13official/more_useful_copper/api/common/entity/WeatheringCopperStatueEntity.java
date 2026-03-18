@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper.api.common.entity;
 
+import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -91,21 +92,31 @@ public abstract class WeatheringCopperStatueEntity extends AbstractStatueEntity 
     }
   }
 
-  /// Applies wax when a player right-clicks with a honeycomb, consuming one item from the stack.
+  /// Handles wax application (honeycomb), wax removal ([ModItemTags.WAX_SCRAPER]), and manual oxidation ([ModItemTags.MANUAL_OXIDIZER]).
   @Override
   public InteractionResult interact(Player player, InteractionHand hand) {
-
     ItemStack stack = player.getItemInHand(hand);
 
-    if (!this.level().isClientSide() && stack.is(Items.HONEYCOMB)) {
+    if (!this.level().isClientSide()) {
+      if (stack.is(Items.HONEYCOMB) && !this.isWaxed()) {
+        this.wax();
+        stack.shrink(1);
+        player.setItemInHand(hand, stack);
+        return InteractionResult.CONSUME;
+      }
 
-      this.wax();
+      if (stack.is(ModItemTags.WAX_SCRAPER) && this.isWaxed()) {
+        this.setWaxed(false);
+        stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+        return InteractionResult.CONSUME;
+      }
 
-      stack.shrink(1);
-      player.setItemInHand(hand, stack);
+      if (stack.is(ModItemTags.MANUAL_OXIDIZER) && !this.isWaxed() && this.getOxidizationLevel() < 3) {
+        this.oxidize();
+        return InteractionResult.CONSUME;
+      }
     }
 
-    // return super.interact(player, hand);
     return InteractionResult.PASS;
   }
 }
