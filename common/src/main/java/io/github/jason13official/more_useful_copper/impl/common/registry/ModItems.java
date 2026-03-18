@@ -7,10 +7,16 @@ import io.github.jason13official.more_useful_copper.impl.common.entity.CopperSta
 import io.github.jason13official.more_useful_copper.impl.common.item.CopperBottomBoatItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.CopperStatueItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.GardenStakeBlockItem;
+import io.github.jason13official.more_useful_copper.impl.common.item.LightningArmorItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.LightningBottleItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.MoistureCompassItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.SprayBottleItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.WaxScraperItem;
+import io.github.jason13official.more_useful_copper.impl.common.item.tool.LightningAxeItem;
+import io.github.jason13official.more_useful_copper.impl.common.item.tool.LightningHoeItem;
+import io.github.jason13official.more_useful_copper.impl.common.item.tool.LightningPickaxeItem;
+import io.github.jason13official.more_useful_copper.impl.common.item.tool.LightningShovelItem;
+import io.github.jason13official.more_useful_copper.impl.common.item.tool.LightningSwordItem;
 import io.github.jason13official.more_useful_copper.platform.Services;
 import java.util.function.BiConsumer;
 import net.minecraft.core.Direction;
@@ -166,16 +172,16 @@ public class ModItems {
     COPPER_NUGGET = new Item(new Properties());
     COPPER_SHEARS = new ShearsItem((new Item.Properties()).durability(238));
 
-    COPPER_PICKAXE = Services.PLATFORM.createPickaxeItem(ModTiers.COPPER, 1, -2.8F, new Item.Properties().stacksTo(1));
-    COPPER_AXE = Services.PLATFORM.createAxeItem(ModTiers.COPPER, 6.0F, -3.0F, new Item.Properties().stacksTo(1));
-    COPPER_HOE = Services.PLATFORM.createHoeItem(ModTiers.COPPER, 0, -3.0F, new Item.Properties().stacksTo(1));
-    COPPER_SHOVEL = new ShovelItem(ModTiers.COPPER, 1.5F, -3.0F, new Item.Properties().stacksTo(1));
-    COPPER_SWORD = new SwordItem(ModTiers.COPPER, 3, -2.4F, new Item.Properties().stacksTo(1));
+    COPPER_PICKAXE = new LightningPickaxeItem(ModTiers.COPPER, 1, -2.8F, new Item.Properties().stacksTo(1));
+    COPPER_AXE = new LightningAxeItem(ModTiers.COPPER, 6.0F, -3.0F, new Item.Properties().stacksTo(1));
+    COPPER_HOE = new LightningHoeItem(ModTiers.COPPER, 0, -3.0F, new Item.Properties().stacksTo(1));
+    COPPER_SHOVEL = new LightningShovelItem(ModTiers.COPPER, 1.5F, -3.0F, new Item.Properties().stacksTo(1));
+    COPPER_SWORD = new LightningSwordItem(ModTiers.COPPER, 3, -2.4F, new Item.Properties().stacksTo(1));
 
-    COPPER_HELMET = new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1));
-    COPPER_CHESTPLATE = new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1));
-    COPPER_LEGGINGS = new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, new Item.Properties().stacksTo(1));
-    COPPER_BOOTS = new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.BOOTS, new Item.Properties().stacksTo(1));
+    COPPER_HELMET = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1));
+    COPPER_CHESTPLATE = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1));
+    COPPER_LEGGINGS = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, new Item.Properties().stacksTo(1));
+    COPPER_BOOTS = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.BOOTS, new Item.Properties().stacksTo(1));
 
     COPPER_CHAIN = new BlockItem(ModBlocks.COPPER_CHAIN, new Properties());
     COPPER_GOLEM_SPAWN_EGG = Services.PLATFORM.createSpawnEggItem(() -> ModEntities.COPPER_GOLEM, 0x8A4129, 0xFC9982, new Item.Properties());
