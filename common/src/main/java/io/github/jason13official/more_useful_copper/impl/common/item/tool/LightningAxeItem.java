@@ -1,10 +1,15 @@
 package io.github.jason13official.more_useful_copper.impl.common.item.tool;
 
+import java.util.List;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 public class LightningAxeItem extends AxeItem {
 
@@ -27,5 +32,15 @@ public class LightningAxeItem extends AxeItem {
     }
 
     return super.hurtEnemy(stack, target, attacker);
+  }
+
+  @Override
+  public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+
+    if (isFoil(stack)) {
+      tooltipComponents.add(Component.literal("Imbued with knockback from lightning..."));
+    }
+
+    super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
   }
 }
