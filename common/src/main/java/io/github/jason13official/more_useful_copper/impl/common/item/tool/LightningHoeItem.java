@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper.impl.common.item.tool;
 
+import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -34,6 +35,7 @@ public class LightningHoeItem extends HoeItem {
       BlockPos pos = player.blockPosition().above();
       level.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX(), pos.getY(), pos.getZ(), 0, 0.2, 0);
       player.heal(2.0f);
+      player.getCooldowns().addCooldown(ModItems.COPPER_HOE, 40);
     }
 
     return super.use(level, player, usedHand);
