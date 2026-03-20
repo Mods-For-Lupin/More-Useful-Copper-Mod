@@ -6,11 +6,13 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "ForgeAxeItemMixin",
+    "ForgeCarvedPumpkinBlockMixin",
     "ForgeDiodeBlockMixin",
     "ForgeDispenserBlockMixin",
     "ForgeLightningBoltMixin",
     "ForgeLightningRodBlockMixin",
-    "ForgeRedStoneWireBlockMixin"
+    "ForgeRedStoneWireBlockMixin",
+    "ForgeSheepMixin"
   ],
   "client": [
     "ForgeBlockEntityWithoutLevelRendererMixin",

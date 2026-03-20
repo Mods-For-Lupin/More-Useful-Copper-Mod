@@ -6,11 +6,13 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "FabricAxeItemMixin",
+    "FabricCarvedPumpkinBlockMixin",
     "FabricDiodeBlockMixin",
     "FabricDispenserBlockMixin",
     "FabricLightningBoltMixin",
     "FabricLightningRodBlockMixin",
-    "FabricRedStoneWireBlockMixin"
+    "FabricRedStoneWireBlockMixin",
+    "FabricSheepMixin"
   ],
   "client": [
     "FabricTitleScreenMixin"
