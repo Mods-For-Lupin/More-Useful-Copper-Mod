@@ -1,6 +1,7 @@
 package io.github.jason13official.more_useful_copper;
 
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperGolem;
+import io.github.jason13official.more_useful_copper.impl.common.registry.ForgeModLootTableModifiers;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModBlocks;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
@@ -40,6 +41,9 @@ public class MoreUsefulCopperForge {
 
     // after all RegisterEvents have fired, blocks/game object fields are guaranteed to be populated
     EVENT_BUS.addListener((Consumer<FMLCommonSetupEvent>) event -> MoreUsefulCopper.init());
+
+    // forge-specific, registers loot modifier types used in data files under `loot_modifiers`
+    ForgeModLootTableModifiers.register(EVENT_BUS);
 
     EVENT_BUS.addListener((Consumer<EntityAttributeCreationEvent>) event -> {
       event.put(ModEntities.COPPER_STATUE, LivingEntity.createLivingAttributes().build());

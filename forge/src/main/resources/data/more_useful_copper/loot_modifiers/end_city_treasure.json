@@ -1,0 +1,10 @@
+{
+  "type": "more_useful_copper:add_item",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/end_city_treasure"
+    }
+  ],
+  "item": "more_useful_copper:copper_horse_armor"
+}

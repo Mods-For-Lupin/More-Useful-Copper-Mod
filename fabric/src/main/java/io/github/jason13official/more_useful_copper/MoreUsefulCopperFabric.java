@@ -4,6 +4,7 @@ import io.github.jason13official.more_useful_copper.impl.common.entity.CopperGol
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModBlocks;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
+import io.github.jason13official.more_useful_copper.impl.common.registry.FabricModLootTableModifiers;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTabs;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTiles;
 import java.util.function.BiConsumer;
@@ -28,6 +29,9 @@ public class MoreUsefulCopperFabric implements ModInitializer {
 
     // after game object registration
     MoreUsefulCopper.init();
+
+    // fabric-specific, forge handles this via data files and a custom LootModifier
+    FabricModLootTableModifiers.register();
 
     FabricDefaultAttributeRegistry.register(ModEntities.COPPER_STATUE, LivingEntity.createLivingAttributes());
     FabricDefaultAttributeRegistry.register(ModEntities.COPPER_GOLEM, CopperGolem.createAttributes());

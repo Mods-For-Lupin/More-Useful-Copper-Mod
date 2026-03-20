@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "entries": [
+    "more_useful_copper:desert_pyramid",
+    "more_useful_copper:end_city_treasure",
+    "more_useful_copper:jungle_temple",
+    "more_useful_copper:nether_bridge",
+    "more_useful_copper:simple_dungeon",
+    "more_useful_copper:stronghold_corridor",
+    "more_useful_copper:village_weaponsmith"
+  ]
+}
