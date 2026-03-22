@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Sheep.class)
 public class FabricSheepMixin {
 
-  @Inject(at = @At("HEAD"), method = "mobInteract")
+  @Inject(at = @At("HEAD"), method = "mobInteract", cancellable = true)
   private void muc$mobInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
     Sheep self = (Sheep) (Object) this;
     CommonSheepMixinLogic.injectedMobInteract(self, player, hand, cir);
