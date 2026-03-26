@@ -21,7 +21,7 @@ public class LightningSwordItem extends SwordItem {
 
   @Override
   public boolean isFoil(ItemStack stack) {
-    return stack.getOrCreateTag().contains("charged");
+    return stack.getOrCreateTag().contains("charged") || super.isFoil(stack);
   }
 
   @Override
