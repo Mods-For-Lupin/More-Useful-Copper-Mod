@@ -1,6 +1,6 @@
-package io.github.jason13official.examplemod.platform;
+package io.github.jason13official.more_useful_copper.platform;
 
-import io.github.jason13official.examplemod.platform.services.IPlatformHelper;
+import io.github.jason13official.more_useful_copper.platform.services.IPlatformHelper;
 import java.nio.file.Path;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;

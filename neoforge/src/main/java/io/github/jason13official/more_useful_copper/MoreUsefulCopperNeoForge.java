@@ -1,4 +1,4 @@
-package io.github.jason13official.examplemod;
+package io.github.jason13official.more_useful_copper;
 
 
 import java.util.function.BiConsumer;
@@ -12,20 +12,20 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 @Mod(Constants.MOD_ID)
-public class ExampleModNeoForge {
+public class MoreUsefulCopperNeoForge {
 
   public static IEventBus EVENT_BUS;
 
-  public ExampleModNeoForge(IEventBus modEventBus, Dist dist) {
+  public MoreUsefulCopperNeoForge(IEventBus modEventBus, Dist dist) {
 
     EVENT_BUS = modEventBus;
 
     // after game object registration
-    ExampleMod.init();
+    MoreUsefulCopper.init();
 
     // on to client init
     if (dist == Dist.CLIENT) {
-      new ExampleModClientNeoForge(EVENT_BUS);
+      new MoreUsefulCopperClientNeoForge(EVENT_BUS);
     }
   }
 

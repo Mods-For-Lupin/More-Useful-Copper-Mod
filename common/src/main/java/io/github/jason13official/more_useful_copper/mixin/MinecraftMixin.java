@@ -1,7 +1,7 @@
-package io.github.jason13official.examplemod.mixin;
+package io.github.jason13official.more_useful_copper.mixin;
 
-import io.github.jason13official.examplemod.Constants;
-import io.github.jason13official.examplemod.platform.Services;
+import io.github.jason13official.more_useful_copper.Constants;
+import io.github.jason13official.more_useful_copper.platform.Services;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

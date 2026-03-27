@@ -1,16 +1,16 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "io.github.jason13official.examplemod.mixin",
+  "package": "io.github.jason13official.more_useful_copper.mixin",
   "refmap": "${mod_id}.refmap.json",
-  "compatibilityLevel": "JAVA_21",
+  "compatibilityLevel": "JAVA_18",
   "mixins": [],
   "client": [
-    "FabricTitleScreenMixin"
+    "MinecraftMixin"
   ],
   "server": [],
   "injectors": {
     "defaultRequire": 1
   }
 }
-  
+
