@@ -65,9 +65,7 @@ public class CopperBottomBoat extends Boat {
   public static final int BUBBLE_TIME = 60;
   public static final EntityDataAccessor<Boolean> WAXED = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.BOOLEAN);
   public static final EntityDataAccessor<Integer> OXIDIZATION_LEVEL = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.INT);
-  private static final EntityDataAccessor<Integer> DATA_ID_HURT = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.INT);
-  private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.INT);
-  private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.FLOAT);
+  // DATA_ID_HURT, DATA_ID_HURTDIR, DATA_ID_DAMAGE are inherited as protected from VehicleEntity
   private static final EntityDataAccessor<Integer> DATA_ID_TYPE = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.INT);
   private static final EntityDataAccessor<Boolean> DATA_ID_PADDLE_LEFT = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.BOOLEAN);
   private static final EntityDataAccessor<Boolean> DATA_ID_PADDLE_RIGHT = SynchedEntityData.defineId(CopperBottomBoat.class, EntityDataSerializers.BOOLEAN);
@@ -129,9 +127,7 @@ public class CopperBottomBoat extends Boat {
 
   @Override
   protected void defineSynchedData(SynchedEntityData.Builder builder) {
-    builder.define(DATA_ID_HURT, 0);
-    builder.define(DATA_ID_HURTDIR, 1);
-    builder.define(DATA_ID_DAMAGE, 0.0F);
+    super.defineSynchedData(builder); // registers Entity (0–6), VehicleEntity HURT/HURTDIR/DAMAGE (7–9), Boat TYPE/PADDLE/BUBBLE (10–13)
     builder.define(DATA_ID_TYPE, Type.OAK.ordinal());
     builder.define(DATA_ID_PADDLE_LEFT, false);
     builder.define(DATA_ID_PADDLE_RIGHT, false);
@@ -867,21 +863,7 @@ public class CopperBottomBoat extends Boat {
     return this.entityData.get(side == 0 ? DATA_ID_PADDLE_LEFT : DATA_ID_PADDLE_RIGHT) && this.getControllingPassenger() != null;
   }
 
-  public float getDamage() {
-    return this.entityData.get(DATA_ID_DAMAGE);
-  }
-
-  public void setDamage(float damageTaken) {
-    this.entityData.set(DATA_ID_DAMAGE, damageTaken);
-  }
-
-  public int getHurtTime() {
-    return this.entityData.get(DATA_ID_HURT);
-  }
-
-  public void setHurtTime(int hurtTime) {
-    this.entityData.set(DATA_ID_HURT, hurtTime);
-  }
+  // getDamage, setDamage, getHurtTime, setHurtTime are inherited from VehicleEntity
 
   private int getBubbleTime() {
     return this.entityData.get(DATA_ID_BUBBLE_TIME);
@@ -895,13 +877,7 @@ public class CopperBottomBoat extends Boat {
     return Mth.lerp(partialTicks, this.bubbleAngleO, this.bubbleAngle);
   }
 
-  public int getHurtDir() {
-    return this.entityData.get(DATA_ID_HURTDIR);
-  }
-
-  public void setHurtDir(int hurtDirection) {
-    this.entityData.set(DATA_ID_HURTDIR, hurtDirection);
-  }
+  // getHurtDir, setHurtDir are inherited from VehicleEntity
 
 //  public CopperBottomBoat.Type getVariant() {
 //    return CopperBottomBoat.Type.byId(this.entityData.get(DATA_ID_TYPE));

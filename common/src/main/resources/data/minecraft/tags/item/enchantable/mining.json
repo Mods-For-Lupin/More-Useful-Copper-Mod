@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "more_useful_copper:copper_pickaxe",
+    "more_useful_copper:copper_axe",
+    "more_useful_copper:copper_shovel",
+    "more_useful_copper:copper_hoe"
+  ]
+}
