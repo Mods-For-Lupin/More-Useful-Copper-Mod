@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:water_bucket"
+    },
+    "X": {
+      "item": "minecraft:glass_pane"
+    },
+    "C": {
+      "item": "minecraft:compass"
+    }
+  },
+  "pattern": [
+    " # ",
+    "#X#",
+    " C "
+  ],
+  "result": {
+    "id": "more_useful_copper:moisture_compass"
+  },
+  "show_notification": true
+}

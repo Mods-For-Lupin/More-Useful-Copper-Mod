@@ -1,0 +1,9 @@
+{
+  "render_type": "cutout",
+  "parent": "minecraft:block/comparator_subtract",
+  "textures": {
+    "slab": "minecraft:block/oxidized_copper",
+    "top": "more_useful_copper:block/oxidized_copper_comparator",
+    "particle": "more_useful_copper:block/oxidized_copper_comparator"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "more_useful_copper:waxed_exposed_copper_button"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "more_useful_copper:blocks/waxed_exposed_copper_button"
+}

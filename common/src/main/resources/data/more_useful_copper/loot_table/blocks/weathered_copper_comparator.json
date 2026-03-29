@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "more_useful_copper:weathered_copper_comparator"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "more_useful_copper:blocks/weathered_copper_comparator"
+}

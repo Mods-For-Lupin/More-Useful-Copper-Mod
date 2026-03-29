@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "boat",
+  "key": {
+    "#": {
+      "item": "minecraft:spruce_planks"
+    },
+    "I": {
+      "item": "minecraft:copper_ingot"
+    }
+  },
+  "pattern": [
+    "# #",
+    "III"
+  ],
+  "result": {
+    "id": "more_useful_copper:copper_bottom_boat"
+  },
+  "show_notification": true
+}

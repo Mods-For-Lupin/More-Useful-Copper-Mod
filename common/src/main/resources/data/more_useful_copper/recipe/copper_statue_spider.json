@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "IGI",
+    "IGI",
+    "IGI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:copper_ingot"
+    },
+    "G": {
+      "item": "minecraft:spider_eye"
+    }
+  },
+  "result": {
+    "id": "more_useful_copper:copper_statue_spider"
+  }
+}

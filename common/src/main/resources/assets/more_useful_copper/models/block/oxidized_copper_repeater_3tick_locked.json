@@ -1,0 +1,9 @@
+{
+  "render_type": "cutout",
+  "parent": "minecraft:block/repeater_3tick_locked",
+  "textures": {
+    "slab": "minecraft:block/oxidized_copper",
+    "top": "more_useful_copper:block/oxidized_copper_repeater",
+    "particle": "more_useful_copper:block/oxidized_copper_repeater"
+  }
+}

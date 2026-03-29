@@ -26,8 +26,6 @@ public class FabricModLootTableModifiers {
                 return;
             }
 
-            System.out.println(resourceKey.toString());
-
         }));
 
 //        LootTableEvents.MODIFY.register(((resourceManager, lootManager, id, tableBuilder, source) -> {

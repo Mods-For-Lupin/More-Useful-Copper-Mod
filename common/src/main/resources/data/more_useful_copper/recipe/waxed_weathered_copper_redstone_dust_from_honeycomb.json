@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "waxed_copper_redstone_dust",
+  "ingredients": [
+    {
+      "item": "more_useful_copper:weathered_copper_redstone_dust"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "result": {
+    "id": "more_useful_copper:waxed_weathered_copper_redstone_dust"
+  }
+}

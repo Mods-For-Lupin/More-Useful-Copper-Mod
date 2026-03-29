@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/lever_on",
+  "textures": {
+    "particle": "minecraft:block/exposed_copper",
+    "base": "minecraft:block/exposed_copper",
+    "lever": "more_useful_copper:block/exposed_copper_lever"
+  }
+}

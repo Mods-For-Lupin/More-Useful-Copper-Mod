@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "#": {
+      "item": "minecraft:redstone_torch"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "X": {
+      "item": "minecraft:quartz"
+    }
+  },
+  "pattern": [
+    " # ",
+    "#X#",
+    "CCC"
+  ],
+  "result": {
+    "id": "more_useful_copper:copper_comparator"
+  },
+  "show_notification": true
+}
