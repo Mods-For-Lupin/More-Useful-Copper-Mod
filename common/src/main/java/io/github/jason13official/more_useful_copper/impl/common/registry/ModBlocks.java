@@ -397,18 +397,18 @@ public class ModBlocks {
   }
 
   private static CopperChainBlock copperChain(WeatherState weatherState) {
-    return new CopperChainBlock(Properties.copy(Blocks.CHAIN), weatherState);
+    return new CopperChainBlock(Properties.ofFullCopy(Blocks.CHAIN), weatherState);
   }
 
   private static WaxedChainBlock waxedCopperChain() {
-    return new WaxedChainBlock(Properties.copy(Blocks.CHAIN));
+    return new WaxedChainBlock(Properties.ofFullCopy(Blocks.CHAIN));
   }
 
   private static CopperPressurePlateBlock copperPressurePlate(WeatherState weatherState) {
-    return new CopperPressurePlateBlock(150, Properties.copy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), BlockSetType.IRON, weatherState);
+    return new CopperPressurePlateBlock(150, Properties.ofFullCopy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), BlockSetType.IRON, weatherState);
   }
 
   private static WaxedPressurePlateBlock waxedCopperPressurePlate() {
-    return new WaxedPressurePlateBlock(150, Properties.copy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), BlockSetType.IRON);
+    return new WaxedPressurePlateBlock(150, Properties.ofFullCopy(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), BlockSetType.IRON);
   }
 }

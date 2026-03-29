@@ -30,6 +30,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
@@ -119,24 +120,24 @@ public class CopperBottomBoat extends Boat {
   }
 
   protected float getEyeHeight(Pose pose, EntityDimensions size) {
-    return size.height;
+    return size.height();
   }
 
   protected MovementEmission getMovementEmission() {
     return MovementEmission.EVENTS;
   }
 
-  protected void defineSynchedData() {
-    this.entityData.define(DATA_ID_HURT, 0);
-    this.entityData.define(DATA_ID_HURTDIR, 1);
-    this.entityData.define(DATA_ID_DAMAGE, 0.0F);
-    this.entityData.define(DATA_ID_TYPE, Type.OAK.ordinal());
-    this.entityData.define(DATA_ID_PADDLE_LEFT, false);
-    this.entityData.define(DATA_ID_PADDLE_RIGHT, false);
-    this.entityData.define(DATA_ID_BUBBLE_TIME, 0);
-
-    this.entityData.define(OXIDIZATION_LEVEL, 0);
-    this.entityData.define(WAXED, false);
+  @Override
+  protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    builder.define(DATA_ID_HURT, 0);
+    builder.define(DATA_ID_HURTDIR, 1);
+    builder.define(DATA_ID_DAMAGE, 0.0F);
+    builder.define(DATA_ID_TYPE, Type.OAK.ordinal());
+    builder.define(DATA_ID_PADDLE_LEFT, false);
+    builder.define(DATA_ID_PADDLE_RIGHT, false);
+    builder.define(DATA_ID_BUBBLE_TIME, 0);
+    builder.define(OXIDIZATION_LEVEL, 0);
+    builder.define(WAXED, false);
   }
 
   public boolean canCollideWith(Entity entity) {
@@ -151,7 +152,7 @@ public class CopperBottomBoat extends Boat {
     return true;
   }
 
-  protected Vec3 getRelativePortalPosition(Direction.Axis axis, BlockUtil.FoundRectangle portal) {
+  public Vec3 getRelativePortalPosition(Direction.Axis axis, BlockUtil.FoundRectangle portal) {
     return LivingEntity.resetForwardDirectionOfRelativePortalPosition(super.getRelativePortalPosition(axis, portal));
   }
 
@@ -679,7 +680,7 @@ public class CopperBottomBoat extends Boat {
   protected void positionRider(Entity passenger, MoveFunction callback) {
     if (this.hasPassenger(passenger)) {
       float f = this.getSinglePassengerXOffset();
-      float f1 = (float) ((this.isRemoved() ? (double) 0.01F : this.getPassengersRidingOffset()) + passenger.getMyRidingOffset());
+      float f1 = (float) (this.isRemoved() ? (double) 0.01F : this.getPassengersRidingOffset());
       if (this.getPassengers().size() > 1) {
         int i = this.getPassengers().indexOf(passenger);
         if (i == 0) {
@@ -810,7 +811,7 @@ public class CopperBottomBoat extends Boat {
 
         if (stack.is(ModItemTags.WAX_SCRAPER) && this.isWaxed()) {
           this.setWaxed(false);
-          stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+          stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
           return InteractionResult.CONSUME;
         }
 

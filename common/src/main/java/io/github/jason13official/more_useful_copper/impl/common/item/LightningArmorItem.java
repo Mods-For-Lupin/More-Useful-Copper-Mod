@@ -7,20 +7,24 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 
 public class LightningArmorItem extends ArmorItem {
 
-  public LightningArmorItem(ArmorMaterial material, Type type, Properties properties) {
+  public LightningArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
     super(material, type, properties);
   }
 
   @Override
   public boolean isFoil(ItemStack stack) {
-    return stack.getOrCreateTag().contains("charged") || super.isFoil(stack);
+    CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+    return (data != null && data.contains("charged")) || super.isFoil(stack);
   }
 
   @Override

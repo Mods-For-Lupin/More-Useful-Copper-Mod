@@ -4,7 +4,16 @@
   "package": "io.github.jason13official.more_useful_copper.mixin",
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "FabricAxeItemMixin",
+    "FabricCarvedPumpkinBlockMixin",
+    "FabricDiodeBlockMixin",
+    "FabricDispenserBlockMixin",
+    "FabricLightningBoltMixin",
+    "FabricLightningRodBlockMixin",
+    "FabricRedStoneWireBlockMixin",
+    "FabricSheepMixin"
+  ],
   "client": [
     "FabricTitleScreenMixin"
   ],

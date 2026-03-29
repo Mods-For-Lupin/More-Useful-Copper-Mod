@@ -17,6 +17,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -456,7 +457,7 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
 
   @Override
   public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-    this.onRandomTick(state, level, pos, random);
+    this.changeOverTime(state, level, pos, random);
   }
 
   @Override
@@ -467,29 +468,28 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   // --- Interaction ---
 
   @Override
-  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    if (!player.getAbilities().mayBuild) {
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+    if (stack.is(ModItemTags.MANUAL_OXIDIZER) && this.weatherState != WeatherState.OXIDIZED) {
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+    if (stack.is(ModItemTags.WAX_SCRAPER)) {
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+    InteractionResult waxResult = WaxableRegistry.tryWaxing(state, level, pos, player, stack);
+    if (waxResult != null) {
+      return waxResult == InteractionResult.PASS ? ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION : ItemInteractionResult.sidedSuccess(level.isClientSide);
+    }
+    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+  }
+
+  @Override
+  protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
     if (!player.getAbilities().mayBuild) {
       return InteractionResult.PASS;
     }
-    ItemStack stackInHand = player.getItemInHand(hand);
-
-    // Oxidize passthrough
-    if (stackInHand.is(ModItemTags.MANUAL_OXIDIZER) && this.weatherState != WeatherState.OXIDIZED) {
-      return InteractionResult.PASS;
-    }
-
-    // Wax scraper passthrough
-    if (stackInHand.is(ModItemTags.WAX_SCRAPER)) {
-      return InteractionResult.PASS;
-    }
-
-    // Apply wax
-    InteractionResult waxResult = WaxableRegistry.tryWaxing(state, level, pos, player, stackInHand);
-    if (waxResult != null) {
-      return waxResult;
-    }
-
-    // Cross/dot toggle (same as vanilla RedStoneWireBlock)
     if (isCross(state) || isDot(state)) {
       BlockState newState = isCross(state) ? this.defaultBlockState() : this.crossState;
       newState = newState.setValue(POWER, state.getValue(POWER)).setValue(WATERLOGGED, state.getValue(WATERLOGGED));

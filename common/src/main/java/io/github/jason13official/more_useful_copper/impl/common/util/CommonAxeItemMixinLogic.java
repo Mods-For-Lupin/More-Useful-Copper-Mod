@@ -9,6 +9,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -45,7 +47,7 @@ public class CommonAxeItemMixinLogic {
         level.setBlock(blockPos, result, Block.UPDATE_ALL_IMMEDIATE);
         level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, result));
         if (player != null) {
-          itemStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+          itemStack.hurtAndBreak(1, player, context.getHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
         }
       }
       cir.setReturnValue(InteractionResult.sidedSuccess(level.isClientSide));
@@ -64,7 +66,7 @@ public class CommonAxeItemMixinLogic {
         level.setBlock(blockPos, result, Block.UPDATE_ALL_IMMEDIATE);
         level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, result));
         if (player != null) {
-          itemStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+          itemStack.hurtAndBreak(1, player, context.getHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
         }
       }
       cir.setReturnValue(InteractionResult.sidedSuccess(level.isClientSide));

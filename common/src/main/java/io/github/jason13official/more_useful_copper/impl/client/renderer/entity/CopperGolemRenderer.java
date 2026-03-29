@@ -26,8 +26,8 @@ public class CopperGolemRenderer extends MobRenderer<CopperGolem, CopperGolemMod
   }
 
   @Override
-  protected void setupRotations(CopperGolem golem, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks) {
-    super.setupRotations(golem, poseStack, ageInTicks, rotationYaw, partialTicks);
+  protected void setupRotations(CopperGolem golem, PoseStack poseStack, float ageInTicks, float rotationYaw, float partialTicks, float scale) {
+    super.setupRotations(golem, poseStack, ageInTicks, rotationYaw, partialTicks, scale);
     if (!((double) golem.walkAnimation.speed() < 0.01)) {
       float f = 13.0F;
       float g = golem.walkAnimation.position(partialTicks) + 6.0F;

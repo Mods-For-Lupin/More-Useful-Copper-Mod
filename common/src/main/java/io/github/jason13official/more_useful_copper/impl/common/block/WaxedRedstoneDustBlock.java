@@ -4,6 +4,7 @@ import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -23,18 +24,18 @@ public class WaxedRedstoneDustBlock extends CopperRedstoneDustBlock {
   }
 
   @Override
-  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    if (stack.is(ModItemTags.WAX_SCRAPER)) {
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    }
+    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+  }
+
+  @Override
+  protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
     if (!player.getAbilities().mayBuild) {
       return InteractionResult.PASS;
     }
-    ItemStack stackInHand = player.getItemInHand(hand);
-
-    // Wax scraper passthrough
-    if (stackInHand.is(ModItemTags.WAX_SCRAPER)) {
-      return InteractionResult.PASS;
-    }
-
-    // Cross/dot toggle (same as vanilla RedStoneWireBlock)
     if (isCross(state) || isDot(state)) {
       BlockState newState = isCross(state) ? this.defaultBlockState() : this.crossState;
       newState = newState.setValue(POWER, state.getValue(POWER)).setValue(WATERLOGGED, state.getValue(WATERLOGGED));

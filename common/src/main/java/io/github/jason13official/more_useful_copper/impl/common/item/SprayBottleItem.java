@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -57,7 +58,7 @@ public class SprayBottleItem extends Item {
       level.levelEvent(null, LevelEvent.PARTICLES_SCRAPE, blockPos, 0);
       level.setBlock(blockPos, result, Block.UPDATE_ALL_IMMEDIATE);
       level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, result));
-      itemStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+      itemStack.hurtAndBreak(1, player, context.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
     }
 
     return InteractionResult.sidedSuccess(level.isClientSide);

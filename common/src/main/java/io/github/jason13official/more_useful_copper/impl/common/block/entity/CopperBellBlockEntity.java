@@ -5,11 +5,11 @@ import io.github.jason13official.more_useful_copper.impl.common.registry.ModTile
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.util.FastColor.ARGB32;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -109,10 +109,7 @@ public class CopperBellBlockEntity extends BlockEntity {
 
       for (int k = 0; k < j; ++k) {
         int l = mutableint.addAndGet(5);
-        double d3 = (double) ARGB32.red(l) / (double) 255.0F;
-        double d4 = (double) ARGB32.green(l) / (double) 255.0F;
-        double d5 = (double) ARGB32.blue(l) / (double) 255.0F;
-        level.addParticle(ParticleTypes.ENTITY_EFFECT, d1, (float) pos.getY() + 0.5F, d2, d3, d4, d5);
+        level.addParticle(ColorParticleOption.create(ParticleTypes.ENTITY_EFFECT, l), d1, (double) ((float) pos.getY() + 0.5F), d2, 0.0, 0.0, 0.0);
       }
 
     });

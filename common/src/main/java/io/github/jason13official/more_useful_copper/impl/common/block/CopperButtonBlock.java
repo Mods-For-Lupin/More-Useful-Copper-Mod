@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -22,7 +23,11 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.level.block.FaceAttachedHorizontalDirectionalBlock;
+import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.state.BlockState;
@@ -40,6 +45,21 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock implements IOxidizableBlock, SimpleWaterloggedBlock {
+
+  public static final MapCodec<CopperButtonBlock> CODEC = RecordCodecBuilder.mapCodec(
+    instance -> instance.group(
+      WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(CopperButtonBlock::getAge),
+      BlockSetType.CODEC.fieldOf("block_set_type").forGetter(b -> b.type),
+      Codec.intRange(1, 1024).fieldOf("ticks_to_stay_pressed").forGetter(b -> b.ticksToStayPressed),
+      Codec.BOOL.fieldOf("arrows_can_press").forGetter(b -> b.arrowsCanPress),
+      propertiesCodec()
+    ).apply(instance, (weatherState, type, ticks, arrows, props) -> new CopperButtonBlock(props, weatherState, type, ticks, arrows))
+  );
+
+  @Override
+  protected MapCodec<CopperButtonBlock> codec() {
+    return CODEC;
+  }
 
   public static final int UNAFFECTED_PRESSED_TICKS = 30;
   public static final int EXPOSED_PRESSED_TICKS = 45;
@@ -91,7 +111,7 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
 
   @Override
   public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-    this.onRandomTick(state, level, pos, random);
+    this.changeOverTime(state, level, pos, random);
   }
 
   @Override
@@ -104,31 +124,32 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
     return this.weatherState;
   }
 
-
   @Override
-  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-
-    // ignore all interactions if already pressed/powering redstone
-    if (state.getValue(POWERED)) {
-      return InteractionResult.CONSUME;
-    }
-
-    ItemStack stackInHand = player.getItemInHand(hand);
-
+  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
     // oxidize
-    if (stackInHand.is(ModItemTags.MANUAL_OXIDIZER) && this.weatherState != WeatherState.OXIDIZED) {
-      return InteractionResult.PASS;
+    if (stack.is(ModItemTags.MANUAL_OXIDIZER) && this.weatherState != WeatherState.OXIDIZED) {
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     // remove wax
-    if (stackInHand.is(ModItemTags.WAX_SCRAPER) && this.weatherState != WeatherState.UNAFFECTED) {
-      return InteractionResult.PASS;
+    if (stack.is(ModItemTags.WAX_SCRAPER) && this.weatherState != WeatherState.UNAFFECTED) {
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     // apply wax
-    InteractionResult waxedState = WaxableRegistry.tryWaxing(state, level, pos, player, stackInHand);
+    InteractionResult waxedState = WaxableRegistry.tryWaxing(state, level, pos, player, stack);
     if (waxedState != null) {
-      return waxedState;
+      return waxedState == InteractionResult.PASS ? ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION : ItemInteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+  }
+
+  @Override
+  protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+    // ignore all interactions if already pressed/powering redstone
+    if (state.getValue(POWERED)) {
+      return InteractionResult.CONSUME;
     }
 
     // vanilla logic for pressing/activation redstone

@@ -2,7 +2,6 @@ package io.github.jason13official.more_useful_copper.impl.common.item;
 
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
-import java.util.function.Consumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -56,8 +55,7 @@ public class CopperStatueItem extends Item {
 
   private @NotNull InteractionResult trySpawningStatue(UseOnContext context, Level level, ItemStack itemStack, BlockPos blockPos) {
     if (level instanceof ServerLevel serverLevel) {
-      Consumer<CopperStatue> consumer = EntityType.createDefaultStackConfig(serverLevel, itemStack, context.getPlayer());
-      CopperStatue statue = ModEntities.COPPER_STATUE.create(serverLevel, itemStack.getTag(), consumer, blockPos, MobSpawnType.SPAWN_EGG, true, true);
+      CopperStatue statue = ModEntities.COPPER_STATUE.create(serverLevel, EntityType.createDefaultStackConfig(serverLevel, itemStack, context.getPlayer()), blockPos, MobSpawnType.SPAWN_EGG, true, true);
 
       if (statue != null) {
         statue.setVariant(this.type);

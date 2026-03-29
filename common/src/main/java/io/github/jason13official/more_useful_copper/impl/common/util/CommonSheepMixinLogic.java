@@ -4,6 +4,7 @@ import io.github.jason13official.more_useful_copper.impl.common.registry.ModItem
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,9 +24,7 @@ public class CommonSheepMixinLogic {
     if (!self.level().isClientSide() && self.readyForShearing()) {
       self.shear(SoundSource.PLAYERS);
       self.gameEvent(GameEvent.SHEAR, player);
-      itemStack.hurtAndBreak(1, player, (playerx) -> {
-        playerx.broadcastBreakEvent(hand);
-      });
+      itemStack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
       // return InteractionResult.SUCCESS;
       cir.setReturnValue(InteractionResult.SUCCESS);
     } else {

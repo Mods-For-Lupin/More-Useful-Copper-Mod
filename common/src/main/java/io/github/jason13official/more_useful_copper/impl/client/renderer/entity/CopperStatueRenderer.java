@@ -84,7 +84,7 @@ public class CopperStatueRenderer extends EntityRenderer<CopperStatue> {
     EntityModel<CopperStatue> model = pair.getB();
 
     VertexConsumer vertexConsumer = buffer.getBuffer(model.renderType(resourceLocation));
-    model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+    model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
 
     poseStack.popPose();
 

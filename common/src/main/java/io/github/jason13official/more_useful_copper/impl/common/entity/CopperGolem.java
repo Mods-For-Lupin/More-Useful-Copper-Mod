@@ -26,8 +26,8 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
+import net.minecraft.world.entity.Crackiness;
 import net.minecraft.world.entity.animal.IronGolem;
-import net.minecraft.world.entity.animal.IronGolem.Crackiness;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
@@ -47,7 +47,11 @@ public class CopperGolem extends AbstractPersistentAngerPathfinderMob {
 
   public CopperGolem(EntityType<? extends AbstractPersistentAngerPathfinderMob> entityType, Level level) {
     super(entityType, level);
-    this.setMaxUpStep(1.0F);
+  }
+
+  @Override
+  public float maxUpStep() {
+    return 1.0F;
   }
 
   public static AttributeSupplier.Builder createAttributes() {
@@ -56,9 +60,9 @@ public class CopperGolem extends AbstractPersistentAngerPathfinderMob {
   }
 
   @Override
-  protected void defineSynchedData() {
-    super.defineSynchedData();
-    this.entityData.define(DATA_FLAGS_ID, (byte) 0);
+  protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    super.defineSynchedData(builder);
+    builder.define(DATA_FLAGS_ID, (byte) 0);
   }
 
   public void addAdditionalSaveData(CompoundTag pCompound) {
@@ -196,13 +200,13 @@ public class CopperGolem extends AbstractPersistentAngerPathfinderMob {
 
   }
 
-  public Crackiness getCrackiness() {
-    return IronGolem.Crackiness.byFraction(this.getHealth() / this.getMaxHealth());
+  public Crackiness.Level getCrackiness() {
+    return Crackiness.GOLEM.byFraction(this.getHealth() / this.getMaxHealth());
   }
 
   @Override
   public boolean hurt(DamageSource pSource, float pAmount) {
-    Crackiness crackAmount = this.getCrackiness();
+    Crackiness.Level crackAmount = this.getCrackiness();
     boolean wasHurt = super.hurt(pSource, pAmount);
     if (wasHurt && this.getCrackiness() != crackAmount) {
       this.playSound(SoundEvents.IRON_GOLEM_DAMAGE, 1.0F, 1.0F);
@@ -229,7 +233,6 @@ public class CopperGolem extends AbstractPersistentAngerPathfinderMob {
       double knockback = calculatedknockback;
       double weightedKnockback = Math.max(0.0F, (double) 1.0F - knockback);
       pEntity.setDeltaMovement(pEntity.getDeltaMovement().add(0.0F, (double) 0.4F * weightedKnockback, 0.0F));
-      this.doEnchantDamageEffects(this, pEntity);
     }
 
     this.playSound(SoundEvents.IRON_GOLEM_ATTACK, 1.0F, 1.0F);

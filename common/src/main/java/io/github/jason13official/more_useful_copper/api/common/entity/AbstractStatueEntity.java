@@ -24,6 +24,8 @@ import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.AbstractMinecart.Type;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -40,7 +42,11 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
 
   public AbstractStatueEntity(EntityType<? extends AbstractStatueEntity> entityType, Level level) {
     super(entityType, level);
-    this.setMaxUpStep(0.0f);
+  }
+
+  @Override
+  public float maxUpStep() {
+    return 0.0F;
   }
 
   public AbstractStatueEntity(EntityType<? extends AbstractStatueEntity> entityType, Level level, double x, double y, double z) {
@@ -150,7 +156,7 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
       if (this.isOnFire()) {
         this.causeDamage(source, 0.15F);
       } else {
-        this.setSecondsOnFire(5);
+        this.igniteForSeconds(5.0F);
       }
       return true;
     } else if (source.is(DamageTypeTags.BURNS_ARMOR_STANDS) && this.getHealth() > 0.5F) {
@@ -232,7 +238,7 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
 
     ItemStack itemStack = toReturn;
     if (this.hasCustomName()) {
-      itemStack.setHoverName(this.getCustomName());
+      itemStack.set(DataComponents.CUSTOM_NAME, this.getCustomName());
     }
 
     Block.popResource(this.level(), this.blockPosition(), itemStack);
@@ -241,7 +247,9 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
 
   private void brokenByAnything(DamageSource damageSource) {
     this.playBrokenSound();
-    this.dropAllDeathLoot(damageSource);
+    if (this.level() instanceof ServerLevel serverLevel) {
+      this.dropAllDeathLoot(serverLevel, damageSource);
+    }
   }
 
   private void playBrokenSound() {
@@ -253,16 +261,6 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
     this.yBodyRotO = this.yRotO;
     this.yBodyRot = this.getYRot();
     return 0.0F;
-  }
-
-  @Override
-  protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-    return dimensions.height * (this.isBaby() ? 0.5F : 0.9F);
-  }
-
-  @Override
-  public double getMyRidingOffset() {
-    return 0.1F;
   }
 
   @Override
@@ -291,7 +289,7 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
   }
 
   @Override
-  public boolean ignoreExplosion() {
+  public boolean ignoreExplosion(Explosion explosion) {
     return this.isInvisible();
   }
 

@@ -115,8 +115,9 @@ public class SparkstoneRelayBlock extends Block {
       Direction facing = state.getValue(FACING);
       BlockPos relative = pos.relative(facing);
 
-      if (level.getBlockState(relative).getBlock() instanceof DispenserBlock dispenser) {
-        ((DispenserAccessor) dispenser).more_useful_copper$doDispense(level, relative);
+      BlockState relativeState = level.getBlockState(relative);
+      if (relativeState.getBlock() instanceof DispenserBlock dispenser) {
+        ((DispenserAccessor) dispenser).more_useful_copper$doDispense(level, relativeState, relative);
       }
 
       // Falling edge: power off and notify downstream.
@@ -162,8 +163,7 @@ public class SparkstoneRelayBlock extends Block {
   // --- Interaction ---
 
   @Override
-  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
-      InteractionHand hand, BlockHitResult hit) {
+  protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
     if (!level.isClientSide) {
       Direction next = state.getValue(FACING).getClockWise();
       level.setBlock(pos, state.setValue(FACING, next), Block.UPDATE_ALL);

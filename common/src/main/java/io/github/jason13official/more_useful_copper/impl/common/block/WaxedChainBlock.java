@@ -3,7 +3,7 @@ package io.github.jason13official.more_useful_copper.impl.common.block;
 import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -23,13 +23,10 @@ public class WaxedChainBlock extends CopperChainBlock {
   }
 
   @Override
-  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-    ItemStack stackInHand = player.getItemInHand(hand);
-
-    if (stackInHand.is(ModItemTags.WAX_SCRAPER)) {
-      return InteractionResult.PASS;
+  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    if (stack.is(ModItemTags.WAX_SCRAPER)) {
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
-
-    return super.use(state, level, pos, player, hand, hit);
+    return super.useItemOn(stack, state, level, pos, player, hand, hit);
   }
 }

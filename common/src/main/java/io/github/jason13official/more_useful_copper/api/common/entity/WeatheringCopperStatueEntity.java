@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,11 +29,10 @@ public abstract class WeatheringCopperStatueEntity extends AbstractStatueEntity 
   }
 
   @Override
-  protected void defineSynchedData() {
-    super.defineSynchedData();
-
-    this.entityData.define(OXIDIZATION_LEVEL, 0);
-    this.entityData.define(WAXED, false);
+  protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    super.defineSynchedData(builder);
+    builder.define(OXIDIZATION_LEVEL, 0);
+    builder.define(WAXED, false);
   }
 
   @Override
@@ -107,7 +107,7 @@ public abstract class WeatheringCopperStatueEntity extends AbstractStatueEntity 
 
       if (stack.is(ModItemTags.WAX_SCRAPER) && this.isWaxed()) {
         this.setWaxed(false);
-        stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+        stack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
         return InteractionResult.CONSUME;
       }
 

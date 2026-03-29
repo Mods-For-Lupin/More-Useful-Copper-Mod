@@ -159,8 +159,7 @@ public class SparkstoneWallTorchBlock extends Block {
   // --- Interaction ---
 
   @Override
-  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
-      InteractionHand hand, BlockHitResult hit) {
+  protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
     if (!level.isClientSide) {
       SparkstonePeriod next = state.getValue(PERIOD).next();
       level.setBlock(pos, state.setValue(PERIOD, next), 3);

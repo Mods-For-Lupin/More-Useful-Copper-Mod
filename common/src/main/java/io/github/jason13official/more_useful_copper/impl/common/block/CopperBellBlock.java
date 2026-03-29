@@ -4,7 +4,7 @@ import io.github.jason13official.more_useful_copper.api.common.util.BellShapes;
 import io.github.jason13official.more_useful_copper.impl.common.block.entity.CopperBellBlockEntity;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTiles;
 import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -15,7 +15,9 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -111,8 +113,9 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
     this.onHit(level, state, hit, player, true);
   }
 
-  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-    ItemStack stack = player.getItemInHand(hand);
+  @Override
+  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 
     if (stack.is(ModItemTags.WAX_SCRAPER)) {
       if (state.getValue(WAXED)) {
@@ -122,10 +125,10 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
           level.setBlock(pos, state.setValue(WAXED, false), Block.UPDATE_ALL_IMMEDIATE);
           level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, state));
           if (!player.getAbilities().instabuild) {
-            stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+            stack.hurtAndBreak(1, player, slot);
           }
         }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
       } else if (state.getValue(OXIDIZATION) > 0) {
         if (!level.isClientSide) {
           BlockState newState = state.setValue(OXIDIZATION, state.getValue(OXIDIZATION) - 1);
@@ -134,12 +137,12 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
           level.levelEvent(null, LevelEvent.PARTICLES_SCRAPE, pos, 0);
           level.playSound(null, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
           if (!player.getAbilities().instabuild) {
-            stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+            stack.hurtAndBreak(1, player, slot);
           }
         }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
       }
-      return InteractionResult.PASS;
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     if (stack.is(ModItemTags.MANUAL_OXIDIZER) && !state.getValue(WAXED) && state.getValue(OXIDIZATION) < 3) {
@@ -150,10 +153,10 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
         level.levelEvent(null, LevelEvent.PARTICLES_SCRAPE, pos, 0);
         level.playSound(null, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
         if (!player.getAbilities().instabuild) {
-          stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+          stack.hurtAndBreak(1, player, slot);
         }
       }
-      return InteractionResult.sidedSuccess(level.isClientSide);
+      return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     if (stack.is(Items.HONEYCOMB) && !state.getValue(WAXED)) {
@@ -166,9 +169,14 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
           stack.shrink(1);
         }
       }
-      return InteractionResult.sidedSuccess(level.isClientSide);
+      return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
+    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+  }
+
+  @Override
+  protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
     return this.onHit(level, state, hit, player, true) ? InteractionResult.sidedSuccess(level.isClientSide) : InteractionResult.PASS;
   }
 
@@ -398,7 +406,8 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
     return blockEntity != null && blockEntity.triggerEvent(id, param);
   }
 
-  public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
+  @Override
+  protected boolean isPathfindable(BlockState state, PathComputationType type) {
     return false;
   }
 }

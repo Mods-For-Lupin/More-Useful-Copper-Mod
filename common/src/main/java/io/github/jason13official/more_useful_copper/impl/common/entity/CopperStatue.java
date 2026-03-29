@@ -24,9 +24,9 @@ public class CopperStatue extends WeatheringCopperStatueEntity {
   }
 
   @Override
-  protected void defineSynchedData() {
-    super.defineSynchedData();
-    this.entityData.define(DATA_ID_TYPE, Type.CREEPER.ordinal());
+  protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    super.defineSynchedData(builder);
+    builder.define(DATA_ID_TYPE, Type.CREEPER.ordinal());
   }
 
   public Type getVariant() {

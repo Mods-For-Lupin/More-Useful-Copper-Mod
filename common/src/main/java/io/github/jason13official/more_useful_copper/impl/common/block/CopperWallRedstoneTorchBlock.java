@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -68,28 +69,26 @@ public class CopperWallRedstoneTorchBlock extends RedstoneWallTorchBlock impleme
   }
 
   @Override
-  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-    ItemStack stackInHand = player.getItemInHand(hand);
-
-    if (stackInHand.is(ModItemTags.MANUAL_OXIDIZER) && this.weatherState != WeatherState.OXIDIZED) {
-      return InteractionResult.PASS;
+  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    if (stack.is(ModItemTags.MANUAL_OXIDIZER) && this.weatherState != WeatherState.OXIDIZED) {
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
-    if (stackInHand.is(ModItemTags.WAX_SCRAPER)) {
-      return InteractionResult.PASS;
+    if (stack.is(ModItemTags.WAX_SCRAPER)) {
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
-    InteractionResult waxResult = WaxableRegistry.tryWaxing(state, level, pos, player, stackInHand);
+    InteractionResult waxResult = WaxableRegistry.tryWaxing(state, level, pos, player, stack);
     if (waxResult != null) {
-      return waxResult;
+      return waxResult == InteractionResult.PASS ? ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION : ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
-    return InteractionResult.PASS;
+    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
   }
 
   @Override
   public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-    this.onRandomTick(state, level, pos, random);
+    this.changeOverTime(state, level, pos, random);
   }
 
   @Override

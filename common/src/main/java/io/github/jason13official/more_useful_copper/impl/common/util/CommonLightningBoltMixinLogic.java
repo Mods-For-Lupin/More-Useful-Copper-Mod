@@ -11,7 +11,10 @@ import io.github.jason13official.more_useful_copper.impl.common.registry.ModBloc
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LightningBolt;
@@ -105,20 +108,32 @@ public class CommonLightningBoltMixinLogic {
           return;
         }
 
-        stack.getOrCreateTag().putBoolean("charged", true);
+        stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, existing -> {
+          CompoundTag tag = existing.copyTag();
+          tag.putBoolean("charged", true);
+          return CustomData.of(tag);
+        });
 
         living.setItemSlot(lightningArmor.getType().getSlot(), stack);
       });
 
       if (isValid(living.getMainHandItem())) {
         ItemStack stack = living.getMainHandItem();
-        stack.getOrCreateTag().putBoolean("charged", true);
+        stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, existing -> {
+          CompoundTag tag = existing.copyTag();
+          tag.putBoolean("charged", true);
+          return CustomData.of(tag);
+        });
         living.setItemSlot(EquipmentSlot.MAINHAND, stack);
       }
 
       if (isValid(living.getOffhandItem())) {
         ItemStack stack = living.getOffhandItem();
-        stack.getOrCreateTag().putBoolean("charged", true);
+        stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, existing -> {
+          CompoundTag tag = existing.copyTag();
+          tag.putBoolean("charged", true);
+          return CustomData.of(tag);
+        });
         living.setItemSlot(EquipmentSlot.OFFHAND, stack);
       }
     });

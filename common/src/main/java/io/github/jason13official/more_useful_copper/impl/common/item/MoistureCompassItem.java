@@ -3,9 +3,10 @@ package io.github.jason13official.more_useful_copper.impl.common.item;
 import com.mojang.serialization.DataResult;
 import io.github.jason13official.more_useful_copper.Constants;
 import java.util.Optional;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.NbtUtils;
@@ -21,6 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -39,8 +41,9 @@ public class MoistureCompassItem extends Item {
   }
 
   public static boolean isMoistureCompass(ItemStack stack) {
-    CompoundTag compoundtag = stack.getTag();
-    return compoundtag != null && (compoundtag.contains(TAG_MOISTURE_DIMENSION) || compoundtag.contains(TAG_MOISTURE_TRACKED));
+    CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+    if (customData == null) return false;
+    return customData.contains(TAG_MOISTURE_DIMENSION) || customData.contains(TAG_MOISTURE_TRACKED);
   }
 
   private static Optional<ResourceKey<Level>> getMoistureDimension(CompoundTag compoundTag) {
@@ -48,14 +51,18 @@ public class MoistureCompassItem extends Item {
   }
 
   @Nullable
-  public static GlobalPos getMoisturePosition(CompoundTag tag) {
+  public static GlobalPos getMoisturePosition(ItemStack stack) {
+    CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
+    if (customData == null) return null;
+    CompoundTag tag = customData.copyTag();
     boolean flag = tag.contains(TAG_MOISTURE_POS);
     boolean flag1 = tag.contains(TAG_MOISTURE_DIMENSION);
     if (flag && flag1) {
       Optional<ResourceKey<Level>> optional = getMoistureDimension(tag);
       if (optional.isPresent()) {
-        BlockPos blockpos = NbtUtils.readBlockPos(tag.getCompound(TAG_MOISTURE_POS));
-        return GlobalPos.of(optional.get(), blockpos);
+        Optional<BlockPos> maybePos = NbtUtils.readBlockPos(tag, TAG_MOISTURE_POS);
+        if (maybePos.isEmpty()) return null;
+        return GlobalPos.of(optional.get(), maybePos.get());
       }
     }
 
@@ -72,12 +79,14 @@ public class MoistureCompassItem extends Item {
 
     ItemStack stack = player.getItemInHand(usedHand);
 
-    CompoundTag tag = stack.getTag();
-
-    if (tag != null && isMoistureCompass(stack)) {
-      tag.remove(TAG_MOISTURE_TRACKED);
-      tag.remove(TAG_MOISTURE_POS);
-      tag.remove(TAG_MOISTURE_DIMENSION);
+    if (isMoistureCompass(stack)) {
+      stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, existing -> {
+        CompoundTag tag = existing.copyTag();
+        tag.remove(TAG_MOISTURE_TRACKED);
+        tag.remove(TAG_MOISTURE_POS);
+        tag.remove(TAG_MOISTURE_DIMENSION);
+        return CustomData.of(tag);
+      });
 
       tagClosestWaterPosition(stack, level, player);
     }
@@ -102,22 +111,26 @@ public class MoistureCompassItem extends Item {
 
     if (isMoistureCompass(stack)) {
 
-      CompoundTag compoundtag = stack.getOrCreateTag();
+      CustomData existingData = stack.get(DataComponents.CUSTOM_DATA);
+      CompoundTag compoundtag = existingData != null ? existingData.copyTag() : new CompoundTag();
       if (compoundtag.contains(TAG_MOISTURE_TRACKED) && !compoundtag.getBoolean(TAG_MOISTURE_TRACKED)) {
         return;
       }
 
       Optional<ResourceKey<Level>> optional = getMoistureDimension(compoundtag);
       if (optional.isPresent() && optional.get() == level.dimension() && compoundtag.contains(TAG_MOISTURE_POS)) {
-        BlockPos blockpos = NbtUtils.readBlockPos(compoundtag.getCompound(TAG_MOISTURE_POS));
-        if (!level.isInWorldBounds(blockpos)) {
+        Optional<BlockPos> maybePos = NbtUtils.readBlockPos(compoundtag, TAG_MOISTURE_POS);
+        if (maybePos.isPresent() && !level.isInWorldBounds(maybePos.get())) {
           compoundtag.remove(TAG_MOISTURE_POS);
+          stack.set(DataComponents.CUSTOM_DATA, CustomData.of(compoundtag));
         }
       }
     } else {
 
       // every 2 seconds, find the closest water position
-      if (level.getGameTime() % 40 == 0 && !stack.getOrCreateTag().contains(TAG_MOISTURE_POS)) {
+      CustomData currentData = stack.get(DataComponents.CUSTOM_DATA);
+      boolean hasMoisturePos = currentData != null && currentData.contains(TAG_MOISTURE_POS);
+      if (level.getGameTime() % 40 == 0 && !hasMoisturePos) {
 
         tagClosestWaterPosition(stack, level, entity);
       }
@@ -151,9 +164,10 @@ public class MoistureCompassItem extends Item {
     }
 
     if (closestWaterPos != null) {
-      CompoundTag compoundtag = stack.hasTag() ? stack.getTag().copy() : new CompoundTag();
+      CustomData existing = stack.get(DataComponents.CUSTOM_DATA);
+      CompoundTag compoundtag = existing != null ? existing.copyTag() : new CompoundTag();
       this.addMoistureTags(level.dimension(), closestWaterPos, compoundtag);
-      stack.setTag(compoundtag);
+      stack.set(DataComponents.CUSTOM_DATA, CustomData.of(compoundtag));
     }
   }
 
@@ -164,7 +178,6 @@ public class MoistureCompassItem extends Item {
 
     BlockPlaceContext placeContext = new BlockPlaceContext(context);
 
-    // if (!level.getBlockState(blockpos).is(Blocks.WATER)) {
     if (!placeContext.getLevel().getBlockState(placeContext.getClickedPos()).is(Blocks.WATER)) {
       return super.useOn(context);
     } else {
@@ -177,15 +190,19 @@ public class MoistureCompassItem extends Item {
       boolean creativeOneItem = !player.getAbilities().instabuild && itemstack.getCount() == 1;
 
       if (creativeOneItem) {
-        this.addMoistureTags(level.dimension(), blockpos, itemstack.getOrCreateTag());
+        CustomData existing = itemstack.get(DataComponents.CUSTOM_DATA);
+        CompoundTag tag = existing != null ? existing.copyTag() : new CompoundTag();
+        this.addMoistureTags(level.dimension(), blockpos, tag);
+        itemstack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
       } else {
         ItemStack itemstack1 = new ItemStack(Items.COMPASS, 1);
 
-        CompoundTag compoundtag = itemstack.hasTag() ? itemstack.getTag().copy() : new CompoundTag();
+        CustomData existing = itemstack.get(DataComponents.CUSTOM_DATA);
+        CompoundTag compoundtag = existing != null ? existing.copyTag() : new CompoundTag();
 
         this.addMoistureTags(level.dimension(), blockpos, compoundtag);
 
-        itemstack1.setTag(compoundtag);
+        itemstack1.set(DataComponents.CUSTOM_DATA, CustomData.of(compoundtag));
 
         if (!player.getAbilities().instabuild) {
           itemstack.shrink(1);

@@ -11,8 +11,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -41,6 +45,18 @@ import org.jetbrains.annotations.Nullable;
 
 public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBlock, SimpleWaterloggedBlock, EntityBlock {
 
+  public static final MapCodec<CopperComparatorBlock> CODEC = RecordCodecBuilder.mapCodec(
+    instance -> instance.group(
+      WeatheringCopper.WeatherState.CODEC.fieldOf("weathering_state").forGetter(CopperComparatorBlock::getAge),
+      propertiesCodec()
+    ).apply(instance, (weatherState, props) -> new CopperComparatorBlock(props, weatherState))
+  );
+
+  @Override
+  protected MapCodec<CopperComparatorBlock> codec() {
+    return CODEC;
+  }
+
   public static final EnumProperty<ComparatorMode> MODE = BlockStateProperties.MODE_COMPARATOR;
   public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
@@ -62,7 +78,7 @@ public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBloc
 
   @Override
   public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-    this.onRandomTick(state, level, pos, random);
+    this.changeOverTime(state, level, pos, random);
   }
 
   @Override
@@ -224,27 +240,34 @@ public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBloc
   }
 
   @Override
-  public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
     if (!player.getAbilities().mayBuild) {
-      return InteractionResult.PASS;
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
-    ItemStack stackInHand = player.getItemInHand(hand);
-
     // oxidize
-    if (stackInHand.is(ModItemTags.MANUAL_OXIDIZER) && this.weatherState != WeatherState.OXIDIZED) {
-      return InteractionResult.PASS;
+    if (stack.is(ModItemTags.MANUAL_OXIDIZER) && this.weatherState != WeatherState.OXIDIZED) {
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     // remove wax / scrape oxidation
-    if (stackInHand.is(ModItemTags.WAX_SCRAPER)) {
-      return InteractionResult.PASS;
+    if (stack.is(ModItemTags.WAX_SCRAPER)) {
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     // apply wax
-    InteractionResult waxResult = WaxableRegistry.tryWaxing(state, level, pos, player, stackInHand);
+    InteractionResult waxResult = WaxableRegistry.tryWaxing(state, level, pos, player, stack);
     if (waxResult != null) {
-      return waxResult;
+      return waxResult == InteractionResult.PASS ? ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION : ItemInteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+  }
+
+  @Override
+  protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+    if (!player.getAbilities().mayBuild) {
+      return InteractionResult.PASS;
     }
 
     // cycle mode

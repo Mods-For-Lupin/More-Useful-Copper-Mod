@@ -3,8 +3,18 @@
   "minVersion": "0.8",
   "package": "io.github.jason13official.more_useful_copper.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "NeoForgeAxeItemMixin",
+    "NeoForgeCarvedPumpkinBlockMixin",
+    "NeoForgeDiodeBlockMixin",
+    "NeoForgeDispenserBlockMixin",
+    "NeoForgeLightningBoltMixin",
+    "NeoForgeLightningRodBlockMixin",
+    "NeoForgeRedStoneWireBlockMixin",
+    "NeoForgeSheepMixin"
+  ],
   "client": [
+    "NeoForgeBlockEntityWithoutLevelRendererMixin",
     "NeoForgeTitleScreenMixin"
   ],
   "server": [],
