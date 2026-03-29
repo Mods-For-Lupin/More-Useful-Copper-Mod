@@ -13,8 +13,8 @@ import net.minecraft.world.item.component.CustomData;
 
 public class LightningShovelItem extends ShovelItem {
 
-  public LightningShovelItem(Tier tier, float attackDamageModifier, float attackSpeedModifier, Properties properties) {
-    super(tier, properties.attributes(ShovelItem.createAttributes(tier, attackDamageModifier, attackSpeedModifier)));
+  public LightningShovelItem(Tier tier, Properties properties) {
+    super(tier, properties);
   }
 
   @Override

@@ -15,8 +15,8 @@ import net.minecraft.world.item.component.CustomData;
 
 public class LightningPickaxeItem extends PickaxeItem {
 
-  public LightningPickaxeItem(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
-    super(tier, properties.attributes(PickaxeItem.createAttributes(tier, (float) attackDamageModifier, attackSpeedModifier)));
+  public LightningPickaxeItem(Tier tier, Properties properties) {
+    super(tier, properties);
   }
 
   @Override

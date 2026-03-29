@@ -17,8 +17,8 @@ import net.minecraft.world.level.Level;
 
 public class LightningSwordItem extends SwordItem {
 
-  public LightningSwordItem(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
-    super(tier, properties.attributes(SwordItem.createAttributes(tier, attackDamageModifier, attackSpeedModifier)));
+  public LightningSwordItem(Tier tier, Properties properties) {
+    super(tier, properties);
   }
 
   @Override

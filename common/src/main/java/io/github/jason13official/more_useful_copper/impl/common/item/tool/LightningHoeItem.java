@@ -19,8 +19,8 @@ import net.minecraft.world.level.Level;
 
 public class LightningHoeItem extends HoeItem {
 
-  public LightningHoeItem(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
-    super(tier, properties.attributes(HoeItem.createAttributes(tier, (float) attackDamageModifier, attackSpeedModifier)));
+  public LightningHoeItem(Tier tier, Properties properties) {
+    super(tier, properties);
   }
 
   @Override

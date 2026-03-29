@@ -14,8 +14,8 @@ import net.minecraft.world.item.component.CustomData;
 
 public class LightningAxeItem extends AxeItem {
 
-  public LightningAxeItem(Tier tier, float attackDamageModifier, float attackSpeedModifier, Properties properties) {
-    super(tier, properties.attributes(AxeItem.createAttributes(tier, attackDamageModifier, attackSpeedModifier)));
+  public LightningAxeItem(Tier tier, Properties properties) {
+    super(tier, properties);
   }
 
   @Override

@@ -21,13 +21,18 @@ import io.github.jason13official.more_useful_copper.platform.Services;
 import java.util.function.BiConsumer;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.AnimalArmorItem;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.ShearsItem;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.item.SwordItem;
 
 public class ModItems {
 
@@ -169,16 +174,16 @@ public class ModItems {
     COPPER_NUGGET = new Item(new Properties());
     COPPER_SHEARS = new ShearsItem((new Properties()).durability(238));
 
-    COPPER_PICKAXE = new LightningPickaxeItem(ModTiers.COPPER, 1, -2.8F, new Properties().stacksTo(1));
-    COPPER_AXE = new LightningAxeItem(ModTiers.COPPER, 6.0F, -3.0F, new Properties().stacksTo(1));
-    COPPER_HOE = new LightningHoeItem(ModTiers.COPPER, 0, -3.0F, new Properties().stacksTo(1));
-    COPPER_SHOVEL = new LightningShovelItem(ModTiers.COPPER, 1.5F, -3.0F, new Properties().stacksTo(1));
-    COPPER_SWORD = new LightningSwordItem(ModTiers.COPPER, 3, -2.4F, new Properties().stacksTo(1));
+    COPPER_PICKAXE = new LightningPickaxeItem(ModTiers.COPPER, new Properties().attributes(PickaxeItem.createAttributes(ModTiers.COPPER, 1.0F, -2.8F)));
+    COPPER_AXE = new LightningAxeItem(ModTiers.COPPER, new Properties().attributes(AxeItem.createAttributes(ModTiers.COPPER, 6.0F, -3.0F)));
+    COPPER_HOE = new LightningHoeItem(ModTiers.COPPER, new Properties().attributes(HoeItem.createAttributes(ModTiers.COPPER, 0.0F, -3.0F)));
+    COPPER_SHOVEL = new LightningShovelItem(ModTiers.COPPER, new Properties().attributes(ShovelItem.createAttributes(ModTiers.COPPER, 1.5F, -3.0F)));
+    COPPER_SWORD = new LightningSwordItem(ModTiers.COPPER, new Properties().attributes(SwordItem.createAttributes(ModTiers.COPPER, 3, -2.4F)));
 
-    COPPER_HELMET = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.HELMET, new Properties().durability(ArmorItem.Type.HELMET.getDurability(7)).stacksTo(1));
-    COPPER_CHESTPLATE = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.CHESTPLATE, new Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(7)).stacksTo(1));
-    COPPER_LEGGINGS = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, new Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(7)).stacksTo(1));
-    COPPER_BOOTS = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.BOOTS, new Properties().durability(ArmorItem.Type.BOOTS.getDurability(7)).stacksTo(1));
+    COPPER_HELMET = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.HELMET, new Properties().durability(ArmorItem.Type.HELMET.getDurability(7)));
+    COPPER_CHESTPLATE = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.CHESTPLATE, new Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(7)));
+    COPPER_LEGGINGS = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, new Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(7)));
+    COPPER_BOOTS = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.BOOTS, new Properties().durability(ArmorItem.Type.BOOTS.getDurability(7)));
 
     COPPER_CHAIN = new BlockItem(ModBlocks.COPPER_CHAIN, new Properties());
     COPPER_GOLEM_SPAWN_EGG = Services.PLATFORM.createSpawnEggItem(() -> ModEntities.COPPER_GOLEM, 0x8A4129, 0xFC9982, new Properties());
