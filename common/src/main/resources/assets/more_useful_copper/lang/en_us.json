@@ -1,5 +1,9 @@
 {
   "itemGroup.moreUsefulCopper": "More Useful Copper",
+
+  "tag.item.more_useful_copper.manual_oxidizer": "Manual Oxidizer",
+  "tag.item.more_useful_copper.wax_scraper": "Wax Scraper",
+
   "block.more_useful_copper.copper_pressure_plate": "Copper Pressure Plate",
   "block.more_useful_copper.exposed_copper_pressure_plate": "Exposed Copper Pressure Plate",
   "block.more_useful_copper.weathered_copper_pressure_plate": "Weathered Copper Pressure Plate",

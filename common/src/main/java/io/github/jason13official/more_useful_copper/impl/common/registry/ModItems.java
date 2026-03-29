@@ -175,10 +175,10 @@ public class ModItems {
     COPPER_SHOVEL = new LightningShovelItem(ModTiers.COPPER, 1.5F, -3.0F, new Properties().stacksTo(1));
     COPPER_SWORD = new LightningSwordItem(ModTiers.COPPER, 3, -2.4F, new Properties().stacksTo(1));
 
-    COPPER_HELMET = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.HELMET, new Properties().stacksTo(1));
-    COPPER_CHESTPLATE = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.CHESTPLATE, new Properties().stacksTo(1));
-    COPPER_LEGGINGS = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, new Properties().stacksTo(1));
-    COPPER_BOOTS = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.BOOTS, new Properties().stacksTo(1));
+    COPPER_HELMET = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.HELMET, new Properties().durability(ArmorItem.Type.HELMET.getDurability(7)).stacksTo(1));
+    COPPER_CHESTPLATE = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.CHESTPLATE, new Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(7)).stacksTo(1));
+    COPPER_LEGGINGS = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, new Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(7)).stacksTo(1));
+    COPPER_BOOTS = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.BOOTS, new Properties().durability(ArmorItem.Type.BOOTS.getDurability(7)).stacksTo(1));
 
     COPPER_CHAIN = new BlockItem(ModBlocks.COPPER_CHAIN, new Properties());
     COPPER_GOLEM_SPAWN_EGG = Services.PLATFORM.createSpawnEggItem(() -> ModEntities.COPPER_GOLEM, 0x8A4129, 0xFC9982, new Properties());

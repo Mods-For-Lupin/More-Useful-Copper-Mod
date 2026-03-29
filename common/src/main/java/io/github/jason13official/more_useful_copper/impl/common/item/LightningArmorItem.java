@@ -28,6 +28,11 @@ public class LightningArmorItem extends ArmorItem {
   }
 
   @Override
+  public boolean isEnchantable(ItemStack stack) {
+    return super.isEnchantable(stack);
+  }
+
+  @Override
   public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
 
     if (!isFoil(stack)) {
