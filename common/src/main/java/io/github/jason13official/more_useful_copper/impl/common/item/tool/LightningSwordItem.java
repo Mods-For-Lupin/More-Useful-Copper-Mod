@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper.impl.common.item.tool;
 
+import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -27,13 +28,16 @@ public class LightningSwordItem extends SwordItem {
   @Override
   public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 
-    Level level = target.level();
+    if (ModConfig.get().lightningEffectsEnabled && isFoil(stack)) {
+      Level level = target.level();
 
-    LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level);
+      LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level);
 
-    if (bolt != null && level instanceof ServerLevel serverLevel) {
-      bolt.moveTo(target.position());
-      serverLevel.addFreshEntity(bolt);
+      if (bolt != null && level instanceof ServerLevel serverLevel) {
+        bolt.moveTo(target.position());
+        serverLevel.addFreshEntity(bolt);
+      }
+      stack.getOrCreateTag().remove("charged");
     }
 
     return super.hurtEnemy(stack, target, attacker);

@@ -1,10 +1,8 @@
 package io.github.jason13official.more_useful_copper.impl.common.item.tool;
 
+import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import java.util.List;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShovelItem;
@@ -27,7 +25,10 @@ public class LightningShovelItem extends ShovelItem {
   @Override
   public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 
-    attacker.setSecondsOnFire(4);
+    if (ModConfig.get().lightningEffectsEnabled && isFoil(stack)) {
+      attacker.setSecondsOnFire(4);
+      stack.getOrCreateTag().remove("charged");
+    }
 
     return super.hurtEnemy(stack, target, attacker);
   }

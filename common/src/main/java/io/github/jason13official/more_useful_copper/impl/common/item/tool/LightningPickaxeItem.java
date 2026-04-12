@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper.impl.common.item.tool;
 
+import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -26,7 +27,10 @@ public class LightningPickaxeItem extends PickaxeItem {
   @Override
   public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 
-    target.addEffect(new MobEffectInstance(MobEffects.WITHER, 40, 0));
+    if (ModConfig.get().lightningEffectsEnabled && isFoil(stack)) {
+      target.addEffect(new MobEffectInstance(MobEffects.WITHER, 40, 0));
+      stack.getOrCreateTag().remove("charged");
+    }
 
     return super.hurtEnemy(stack, target, attacker);
   }

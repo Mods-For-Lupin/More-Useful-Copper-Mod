@@ -1,19 +1,18 @@
 package io.github.jason13official.more_useful_copper.impl.common.item.tool;
 
+import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,11 +30,16 @@ public class LightningHoeItem extends HoeItem {
   @Override
   public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
 
-    if (level.getRandom().nextFloat() >= 0.5f && player.getHealth() < player.getMaxHealth()) {
-      BlockPos pos = player.blockPosition().above();
-      level.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX(), pos.getY(), pos.getZ(), 0, 0.2, 0);
-      player.heal(2.0f);
-      player.getCooldowns().addCooldown(ModItems.COPPER_HOE, 40);
+    ItemStack stack = player.getItemInHand(usedHand);
+
+    if (ModConfig.get().lightningEffectsEnabled && isFoil(stack)) {
+      if (level.getRandom().nextFloat() >= 0.5f && player.getHealth() < player.getMaxHealth()) {
+        BlockPos pos = player.blockPosition().above();
+        level.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX(), pos.getY(), pos.getZ(), 0, 0.2, 0);
+        player.heal(2.0f);
+        player.getCooldowns().addCooldown(ModItems.COPPER_HOE, 40);
+      }
+      stack.getOrCreateTag().remove("charged");
     }
 
     return super.use(level, player, usedHand);

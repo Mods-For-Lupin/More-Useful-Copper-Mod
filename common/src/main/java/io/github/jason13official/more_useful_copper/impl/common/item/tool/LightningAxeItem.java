@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper.impl.common.item.tool;
 
+import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -25,10 +26,10 @@ public class LightningAxeItem extends AxeItem {
   @Override
   public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 
-    float g = 2.0f;
-
-    if (isFoil(stack)) {
+    if (ModConfig.get().lightningEffectsEnabled && isFoil(stack)) {
+      float g = 2.0f;
       target.knockback(g, Mth.sin(attacker.getYRot() * (float) (Math.PI / 180.0)), -Mth.cos(attacker.getYRot() * (float) (Math.PI / 180.0)));
+      stack.getOrCreateTag().remove("charged");
     }
 
     return super.hurtEnemy(stack, target, attacker);
