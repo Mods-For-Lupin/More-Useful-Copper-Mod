@@ -2,31 +2,24 @@ package io.github.jason13official.more_useful_copper;
 
 import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperGolem;
+import io.github.jason13official.more_useful_copper.impl.common.registry.FabricModLootTableModifiers;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModBlocks;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
-import io.github.jason13official.more_useful_copper.impl.common.registry.FabricModLootTableModifiers;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTabs;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTiles;
 import io.github.jason13official.more_useful_copper.platform.Services;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
-import net.fabricmc.fabric.api.resource.SimpleResourceReloadListener;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
-import net.fabricmc.fabric.impl.resource.loader.ResourceManagerHelperImpl;
-import net.fabricmc.fabric.mixin.resource.loader.ReloadableResourceManagerImplMixin;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.LivingEntity;
 
 public class MoreUsefulCopperFabric implements ModInitializer {

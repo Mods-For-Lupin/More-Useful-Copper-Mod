@@ -19,6 +19,9 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.3"))
+
+    // Night Config — provided at runtime by the Fabric shadow and Forge's bundled copy
+    compileOnly 'com.electronwill.night-config:toml:3.6.0'
 }
 
 configurations {
