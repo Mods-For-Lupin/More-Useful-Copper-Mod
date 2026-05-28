@@ -12,6 +12,7 @@
     "FabricLightningBoltMixin",
     "FabricLightningRodBlockMixin",
     "FabricRedStoneWireBlockMixin",
+    "FabricRedstoneWireEvaluatorMixin",
     "FabricSheepMixin"
   ],
   "client": [

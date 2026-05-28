@@ -24,17 +24,12 @@ public class FabricRedStoneWireBlockMixin {
     CommonRedStoneWireBlockMixinLogic.injectedShouldConnectTo(state, direction, cir);
   }
 
-  @Inject(method = "getWireSignal", at = @At("HEAD"), cancellable = true)
-  private void muc$getWireSignal(BlockState state, CallbackInfoReturnable<Integer> cir) {
-    CommonRedStoneWireBlockMixinLogic.injectedGetWireSignal(state, cir);
-  }
-
-  @Inject(method = "calculateTargetStrength", at = @At("HEAD"))
+  @Inject(method = "getBlockSignal", at = @At("HEAD"))
   private void muc$calcHead(Level level, BlockPos pos, CallbackInfoReturnable<Integer> cir) {
     CommonRedStoneWireBlockMixinLogic.injectedCalcHead();
   }
 
-  @Inject(method = "calculateTargetStrength", at = @At("RETURN"))
+  @Inject(method = "getBlockSignal", at = @At("RETURN"))
   private void muc$calcReturn(Level level, BlockPos pos, CallbackInfoReturnable<Integer> cir) {
     CommonRedStoneWireBlockMixinLogic.injectedCalcReturn();
   }
