@@ -16,8 +16,8 @@ public class GardenStakeBlockItem extends BlockItem {
 
 
   @Override
-  public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-    super.appendHoverText(stack, context, tooltip, flag);
-    tooltip.add(Component.literal("After being struck by lightning, this causes nearby crops to grow faster."));
+  public void appendHoverText(ItemStack stack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay display, java.util.function.Consumer<Component> tooltipBuilder, TooltipFlag flag) {
+    super.appendHoverText(stack, context, display, tooltipBuilder, flag);
+    tooltipBuilder.accept(Component.literal("After being struck by lightning, this causes nearby crops to grow faster."));
   }
 }

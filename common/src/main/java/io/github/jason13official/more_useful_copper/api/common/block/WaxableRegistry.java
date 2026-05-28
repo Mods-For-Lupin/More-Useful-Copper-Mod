@@ -45,7 +45,7 @@ public class WaxableRegistry {
     if (itemStack.getItem() instanceof HoneycombItem) {
       Optional<BlockState> waxedState = getWaxed(state);
       if (waxedState.isPresent()) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
           BlockState blockstate = waxedState.get();
           if (player instanceof ServerPlayer sp) {
             CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(sp, pos, itemStack);
@@ -55,7 +55,7 @@ public class WaxableRegistry {
           level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, blockstate));
           level.levelEvent(null, LevelEvent.PARTICLES_AND_SOUND_WAX_ON, pos, 0);
         }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.SUCCESS;
       }
       return InteractionResult.PASS;
     }

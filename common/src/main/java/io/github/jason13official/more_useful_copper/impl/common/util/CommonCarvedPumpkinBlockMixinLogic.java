@@ -8,6 +8,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
@@ -33,7 +34,7 @@ public class CommonCarvedPumpkinBlockMixinLogic {
       return;
     }
 
-    CopperGolem golem = ModEntities.COPPER_GOLEM.create(level);
+    CopperGolem golem = ModEntities.COPPER_GOLEM.create(level, EntitySpawnReason.MOB_SUMMONED);
 
     if (golem != null) {
       clearBlocksInPatternAndSpawnEntity(level, blocksInPattern, golem, blocksInPattern.getBlock(1, 2, 0).getPos());
@@ -58,7 +59,7 @@ public class CommonCarvedPumpkinBlockMixinLogic {
 
     CarvedPumpkinBlock.clearPatternBlocks(level, blockPatternMatch);
 
-    entity.moveTo((double)blockPos.getX() + 0.5, (double)blockPos.getY() + 0.05, (double)blockPos.getZ() + 0.5, 0.0F, 0.0F);
+    entity.snapTo((double)blockPos.getX() + 0.5, (double)blockPos.getY() + 0.05, (double)blockPos.getZ() + 0.5, 0.0F, 0.0F);
 
     level.addFreshEntity(entity);
 

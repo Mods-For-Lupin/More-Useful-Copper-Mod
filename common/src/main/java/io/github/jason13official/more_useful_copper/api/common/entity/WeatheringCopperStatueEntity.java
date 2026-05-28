@@ -1,13 +1,15 @@
 package io.github.jason13official.more_useful_copper.api.common.entity;
 
 import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -36,19 +38,19 @@ public abstract class WeatheringCopperStatueEntity extends AbstractStatueEntity 
   }
 
   @Override
-  public void addAdditionalSaveData(CompoundTag compound) {
-    super.addAdditionalSaveData(compound);
+  protected void addAdditionalSaveData(ValueOutput output) {
+    super.addAdditionalSaveData(output);
 
-    compound.putInt("oxidization", this.getOxidizationLevel());
-    compound.putBoolean("waxed", this.isWaxed());
+    output.putInt("oxidization", this.getOxidizationLevel());
+    output.putBoolean("waxed", this.isWaxed());
   }
 
   @Override
-  public void readAdditionalSaveData(CompoundTag compound) {
-    super.readAdditionalSaveData(compound);
+  protected void readAdditionalSaveData(ValueInput input) {
+    super.readAdditionalSaveData(input);
 
-    this.setOxidizationLevel(compound.getInt("oxidization"));
-    this.setWaxed(compound.getBoolean("waxed"));
+    this.setOxidizationLevel(input.getIntOr("oxidization", 0));
+    this.setWaxed(input.getBooleanOr("waxed", false));
   }
 
   public boolean isWaxed() {
@@ -94,7 +96,7 @@ public abstract class WeatheringCopperStatueEntity extends AbstractStatueEntity 
 
   /// Handles wax application (honeycomb), wax removal ([ModItemTags.WAX_SCRAPER]), and manual oxidation ([ModItemTags.MANUAL_OXIDIZER]).
   @Override
-  public InteractionResult interact(Player player, InteractionHand hand) {
+  public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
     ItemStack stack = player.getItemInHand(hand);
 
     if (!this.level().isClientSide()) {

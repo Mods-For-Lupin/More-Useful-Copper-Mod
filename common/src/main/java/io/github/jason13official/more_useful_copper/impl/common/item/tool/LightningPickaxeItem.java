@@ -8,34 +8,32 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 
-public class LightningPickaxeItem extends PickaxeItem {
+public class LightningPickaxeItem extends Item {
 
-  public LightningPickaxeItem(Tier tier, Properties properties) {
-    super(tier, properties);
+  public LightningPickaxeItem(Properties properties) {
+    super(properties);
   }
 
   @Override
   public boolean isFoil(ItemStack stack) {
     CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-    return (data != null && data.contains("charged")) || super.isFoil(stack);
+    return (data != null && data.copyTag().contains("charged")) || super.isFoil(stack);
   }
 
   @Override
-  public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+  public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
     target.addEffect(new MobEffectInstance(MobEffects.WITHER, 40, 0));
-    return super.hurtEnemy(stack, target, attacker);
+    super.hurtEnemy(stack, target, attacker);
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+  public void appendHoverText(ItemStack stack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay display, java.util.function.Consumer<Component> tooltipComponentsBuilder, TooltipFlag isAdvanced) {
     if (isFoil(stack)) {
-      tooltipComponents.add(Component.literal("Holds lightning that withers enemies..."));
+      tooltipComponentsBuilder.accept(Component.literal("Holds lightning that withers enemies..."));
     }
-    super.appendHoverText(stack, context, tooltipComponents, isAdvanced);
+    super.appendHoverText(stack, context, display, tooltipComponentsBuilder, isAdvanced);
   }
 }

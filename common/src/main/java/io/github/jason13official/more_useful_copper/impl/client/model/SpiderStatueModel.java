@@ -1,9 +1,7 @@
 package io.github.jason13official.more_useful_copper.impl.client.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -11,9 +9,8 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
 
-public class SpiderStatueModel extends EntityModel<CopperStatue> {
+public class SpiderStatueModel extends EntityModel<EntityRenderState> {
 
   private final ModelPart spider_statue;
   private final ModelPart head;
@@ -31,7 +28,7 @@ public class SpiderStatueModel extends EntityModel<CopperStatue> {
   private final ModelPart leg7;
 
   public SpiderStatueModel(final ModelPart root) {
-    super(RenderType::entityCutoutNoCull);
+    super(root);
 
     this.spider_statue = root.getChild("spider_statue");
     this.head = this.spider_statue.getChild("head");
@@ -96,12 +93,7 @@ public class SpiderStatueModel extends EntityModel<CopperStatue> {
   }
 
   @Override
-  public void setupAnim(CopperStatue entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+  public void setupAnim(EntityRenderState state) {
     // no-op
-  }
-
-  @Override
-  public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-    spider_statue.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
   }
 }

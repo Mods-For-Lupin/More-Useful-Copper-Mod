@@ -6,13 +6,9 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item.Properties;
-import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.WeightedPressurePlateBlock;
@@ -66,22 +62,13 @@ public interface IPlatformHelper {
 
   CreativeModeTab.Builder tabBuilder();
 
-  /// Creates a [BlockEntityType.Builder] mimicking `BlockEntityType`'s private `BlockEntitySupplier`.
+  /// Creates a [BlockEntityType] for the given constructor and valid blocks.
   ///
   /// @param <T>         the block entity type
   /// @param constructor factory function taking position and state
   /// @param validBlocks blocks this entity type is valid for
-  /// @return a new [BlockEntityType.Builder]
-  <T extends BlockEntity> BlockEntityType.Builder<T> tileBuilder(BiFunction<BlockPos, BlockState, T> constructor, Block... validBlocks);
-
-  /// helper for private constructor
-  PickaxeItem createPickaxeItem(Tier tier, Properties properties);
-
-  /// helper for private constructor
-  AxeItem createAxeItem(Tier tier, Properties properties);
-
-  /// helper for private constructor
-  HoeItem createHoeItem(Tier tier, Properties properties);
+  /// @return a new [BlockEntityType]
+  <T extends BlockEntity> BlockEntityType<T> tileBuilder(BiFunction<BlockPos, BlockState, T> constructor, Block... validBlocks);
 
   SpawnEggItem createSpawnEggItem(Supplier<EntityType<? extends Mob>> entityTypeSupplier, int backgroundColor, int highlightColor, Properties properties);
 

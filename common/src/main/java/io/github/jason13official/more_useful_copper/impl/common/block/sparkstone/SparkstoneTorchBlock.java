@@ -14,8 +14,12 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.redstone.Orientation;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -64,20 +68,19 @@ public class SparkstoneTorchBlock extends Block {
   }
 
   @Override
-  public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
-      LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+  protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
     if (!canSurvive(state, level, pos)) {
-      level.destroyBlock(pos, true);
+      return Blocks.AIR.defaultBlockState();
     }
-    return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+    return super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
   }
 
   // --- Oscillation lifecycle ---
 
   @Override
   public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
-    if (!level.isClientSide) {
-      level.scheduleTick(pos, this, state.getValue(PERIOD).period);
+    if (!level.isClientSide()) {
+      ((ServerLevel) level).scheduleTick(pos, this, state.getValue(PERIOD).period);
     }
   }
 
@@ -109,14 +112,14 @@ public class SparkstoneTorchBlock extends Block {
 
   @Override
   public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block,
-      BlockPos fromPos, boolean isMoving) {
+      @Nullable Orientation orientation, boolean isMoving) {
     if (!canSurvive(state, level, pos)) {
       level.destroyBlock(pos, true);
       return;
     }
-    if (!isAttachedBlockPowered(level, pos)
-        && !level.getBlockTicks().hasScheduledTick(pos, this)) {
-      level.scheduleTick(pos, this, state.getValue(PERIOD).period);
+    if (!level.isClientSide() && !isAttachedBlockPowered(level, pos)
+        && !((ServerLevel) level).getBlockTicks().hasScheduledTick(pos, this)) {
+      ((ServerLevel) level).scheduleTick(pos, this, state.getValue(PERIOD).period);
     }
   }
 
@@ -146,12 +149,12 @@ public class SparkstoneTorchBlock extends Block {
 
   @Override
   protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-    if (!level.isClientSide) {
+    if (!level.isClientSide()) {
       SparkstonePeriod next = state.getValue(PERIOD).next();
       level.setBlock(pos, state.setValue(PERIOD, next), Block.UPDATE_ALL);
       level.playSound(null, pos, SoundEvents.STONE_BUTTON_CLICK_ON, SoundSource.BLOCKS, 0.3f, 0.6f);
     }
-    return InteractionResult.sidedSuccess(level.isClientSide);
+    return InteractionResult.SUCCESS;
   }
 
   // --- Visual ---

@@ -3,17 +3,13 @@ package io.github.jason13official.more_useful_copper.impl.common.entity.ai.goal;
 import java.util.EnumSet;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
 public class FollowPlayerGoal extends Goal {
 
-  private static final TargetingConditions TEMP_TARGETING = TargetingConditions.forNonCombat().range(10.0).ignoreLineOfSight();
-
   private final PathfinderMob mob;
   private final double speedModifier;
-  private final TargetingConditions targetingConditions;
 
   private int calmDown;
   @Nullable
@@ -25,7 +21,6 @@ public class FollowPlayerGoal extends Goal {
     this.mob = mob;
     this.speedModifier = speedModifier;
     this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
-    this.targetingConditions = TEMP_TARGETING.copy().selector(livingEntity -> livingEntity instanceof Player);
   }
 
   @Override
@@ -35,7 +30,7 @@ public class FollowPlayerGoal extends Goal {
       --this.calmDown;
       return false;
     } else {
-      this.player = this.mob.level().getNearestPlayer(this.targetingConditions, this.mob);
+      this.player = this.mob.level().getNearestPlayer(this.mob, 10.0);
       return this.player != null;
     }
   }

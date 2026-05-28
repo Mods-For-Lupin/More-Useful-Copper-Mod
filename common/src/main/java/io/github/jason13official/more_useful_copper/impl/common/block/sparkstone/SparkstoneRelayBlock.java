@@ -15,14 +15,17 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.redstone.Orientation;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -31,7 +34,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 /// Directional pulse router. Accepts a rising-edge signal on any non-FACING face and re-emits a 1-tick pulse in the FACING direction. Right-click to rotate FACING clockwise.
 public class SparkstoneRelayBlock extends Block {
 
-  public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+  public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   public static final EnumProperty<SparkstonePeriod> PERIOD = EnumProperty.create("period", SparkstonePeriod.class);
 
@@ -75,19 +78,18 @@ public class SparkstoneRelayBlock extends Block {
   }
 
   @Override
-  public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
-      LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+  protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
     if (!canSurvive(state, level, pos)) {
-      level.destroyBlock(pos, true);
+      ticks.scheduleTick(pos, this, 1);
     }
-    return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+    return super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
   }
 
   // --- Pulse routing ---
 
   @Override
   public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block,
-      BlockPos fromPos, boolean isMoving) {
+      @Nullable Orientation orientation, boolean isMoving) {
     if (!canSurvive(state, level, pos)) {
       level.destroyBlock(pos, true);
       return;
@@ -95,7 +97,7 @@ public class SparkstoneRelayBlock extends Block {
     // Only schedule — don't power on or notify neighbors yet.
     // The tick handles the rising edge so downstream relays fire one tick later,
     // producing a cascade wave instead of simultaneous triggering.
-    if (!level.isClientSide && !state.getValue(POWERED)
+    if (!level.isClientSide() && !state.getValue(POWERED)
         && hasSignalOnNonFacingFaces(level, pos, state)
         && !((ServerLevel) level).getBlockTicks().hasScheduledTick(pos, this)) {
       // level.scheduleTick(pos, this, 1);
@@ -164,12 +166,12 @@ public class SparkstoneRelayBlock extends Block {
 
   @Override
   protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-    if (!level.isClientSide) {
+    if (!level.isClientSide()) {
       Direction next = state.getValue(FACING).getClockWise();
       level.setBlock(pos, state.setValue(FACING, next), Block.UPDATE_ALL);
       level.updateNeighborsAt(pos, this);
       level.playSound(null, pos, SoundEvents.STONE_BUTTON_CLICK_ON, SoundSource.BLOCKS, 0.3f, 0.6f);
     }
-    return InteractionResult.sidedSuccess(level.isClientSide);
+    return InteractionResult.SUCCESS;
   }
 }

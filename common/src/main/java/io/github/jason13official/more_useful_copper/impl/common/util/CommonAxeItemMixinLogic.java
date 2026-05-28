@@ -37,7 +37,7 @@ public class CommonAxeItemMixinLogic {
     ItemStack itemStack = context.getItemInHand();
 
     if (unwaxedState.isPresent()) {
-      if (!level.isClientSide) {
+      if (!level.isClientSide()) {
         if (player instanceof ServerPlayer) {
           CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockPos, itemStack);
         }
@@ -50,13 +50,13 @@ public class CommonAxeItemMixinLogic {
           itemStack.hurtAndBreak(1, player, context.getHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
         }
       }
-      cir.setReturnValue(InteractionResult.sidedSuccess(level.isClientSide));
+      cir.setReturnValue(InteractionResult.SUCCESS);
       return;
     }
 
     Optional<BlockState> scrapedState = IOxidizableBlock.getPrevious(blockState);
     if (scrapedState.isPresent()) {
-      if (!level.isClientSide) {
+      if (!level.isClientSide()) {
         if (player instanceof ServerPlayer) {
           CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockPos, itemStack);
         }
@@ -69,7 +69,7 @@ public class CommonAxeItemMixinLogic {
           itemStack.hurtAndBreak(1, player, context.getHand() == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
         }
       }
-      cir.setReturnValue(InteractionResult.sidedSuccess(level.isClientSide));
+      cir.setReturnValue(InteractionResult.SUCCESS);
     }
   }
 }

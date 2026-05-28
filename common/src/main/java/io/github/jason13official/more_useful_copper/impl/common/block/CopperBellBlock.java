@@ -15,7 +15,6 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -27,6 +26,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChangeOverTimeBlock;
@@ -44,7 +44,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BellAttachType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -59,7 +59,7 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
 
   public static final int EVENT_BELL_RING = 1;
 
-  public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+  public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
   public static final EnumProperty<BellAttachType> ATTACHMENT = BlockStateProperties.BELL_ATTACHMENT;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   public static final BooleanProperty WAXED = BooleanProperty.create("waxed");
@@ -114,12 +114,12 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
   }
 
   @Override
-  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+  protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
     EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
 
     if (stack.is(ModItemTags.WAX_SCRAPER)) {
       if (state.getValue(WAXED)) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
           level.playSound(null, pos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
           level.levelEvent(null, LevelEvent.PARTICLES_WAX_OFF, pos, 0);
           level.setBlock(pos, state.setValue(WAXED, false), Block.UPDATE_ALL_IMMEDIATE);
@@ -128,9 +128,9 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
             stack.hurtAndBreak(1, player, slot);
           }
         }
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.SUCCESS;
       } else if (state.getValue(OXIDIZATION) > 0) {
-        if (!level.isClientSide) {
+        if (!level.isClientSide()) {
           BlockState newState = state.setValue(OXIDIZATION, state.getValue(OXIDIZATION) - 1);
           level.setBlock(pos, newState, Block.UPDATE_ALL_IMMEDIATE);
           level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, newState));
@@ -140,13 +140,13 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
             stack.hurtAndBreak(1, player, slot);
           }
         }
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        return InteractionResult.SUCCESS;
       }
-      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+      return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     if (stack.is(ModItemTags.MANUAL_OXIDIZER) && !state.getValue(WAXED) && state.getValue(OXIDIZATION) < 3) {
-      if (!level.isClientSide) {
+      if (!level.isClientSide()) {
         BlockState newState = state.setValue(OXIDIZATION, state.getValue(OXIDIZATION) + 1);
         level.setBlock(pos, newState, Block.UPDATE_ALL_IMMEDIATE);
         level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, newState));
@@ -156,11 +156,11 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
           stack.hurtAndBreak(1, player, slot);
         }
       }
-      return ItemInteractionResult.sidedSuccess(level.isClientSide);
+      return InteractionResult.SUCCESS;
     }
 
     if (stack.is(Items.HONEYCOMB) && !state.getValue(WAXED)) {
-      if (!level.isClientSide) {
+      if (!level.isClientSide()) {
         BlockState newState = state.setValue(WAXED, true);
         level.setBlock(pos, newState, Block.UPDATE_ALL_IMMEDIATE);
         level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, newState));
@@ -169,15 +169,15 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
           stack.shrink(1);
         }
       }
-      return ItemInteractionResult.sidedSuccess(level.isClientSide);
+      return InteractionResult.SUCCESS;
     }
 
-    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    return InteractionResult.TRY_WITH_EMPTY_HAND;
   }
 
   @Override
   protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-    return this.onHit(level, state, hit, player, true) ? InteractionResult.sidedSuccess(level.isClientSide) : InteractionResult.PASS;
+    return this.onHit(level, state, hit, player, true) ? InteractionResult.SUCCESS : InteractionResult.PASS;
   }
 
   public boolean onHit(Level level, BlockState state, BlockHitResult result, Player player, boolean canRingBell) {
@@ -222,7 +222,7 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
 
   public boolean attemptToRing(Entity entity, Level level, BlockPos pos, Direction direction) {
     BlockEntity blockentity = level.getBlockEntity(pos);
-    if (!level.isClientSide && blockentity instanceof CopperBellBlockEntity) {
+    if (!level.isClientSide() && blockentity instanceof CopperBellBlockEntity) {
       if (direction == null) {
         direction = level.getBlockState(pos).getValue(FACING);
       }
@@ -301,27 +301,28 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
     return null;
   }
 
-  public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+  @Override
+  protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction directionToNeighbour, BlockPos neighbourPos, BlockState neighbourState, RandomSource random) {
     if (state.getValue(WATERLOGGED)) {
-      level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+      ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
     }
 
     BellAttachType bellattachtype = state.getValue(ATTACHMENT);
     Direction direction = getConnectedDirection(state).getOpposite();
-    if (direction == facing && !state.canSurvive(level, currentPos) && bellattachtype != BellAttachType.DOUBLE_WALL) {
+    if (direction == directionToNeighbour && !state.canSurvive(level, pos) && bellattachtype != BellAttachType.DOUBLE_WALL) {
       return Blocks.AIR.defaultBlockState();
     } else {
-      if (facing.getAxis() == state.getValue(FACING).getAxis()) {
-        if (bellattachtype == BellAttachType.DOUBLE_WALL && !facingState.isFaceSturdy(level, facingPos, facing)) {
-          return state.setValue(ATTACHMENT, BellAttachType.SINGLE_WALL).setValue(FACING, facing.getOpposite());
+      if (directionToNeighbour.getAxis() == state.getValue(FACING).getAxis()) {
+        if (bellattachtype == BellAttachType.DOUBLE_WALL && !neighbourState.isFaceSturdy(level, neighbourPos, directionToNeighbour)) {
+          return state.setValue(ATTACHMENT, BellAttachType.SINGLE_WALL).setValue(FACING, directionToNeighbour.getOpposite());
         }
 
-        if (bellattachtype == BellAttachType.SINGLE_WALL && direction.getOpposite() == facing && facingState.isFaceSturdy(level, facingPos, state.getValue(FACING))) {
+        if (bellattachtype == BellAttachType.SINGLE_WALL && direction.getOpposite() == directionToNeighbour && neighbourState.isFaceSturdy(level, neighbourPos, state.getValue(FACING))) {
           return state.setValue(ATTACHMENT, BellAttachType.DOUBLE_WALL);
         }
       }
 
-      return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+      return super.updateShape(state, level, ticks, pos, directionToNeighbour, neighbourPos, neighbourState, random);
     }
   }
 
@@ -343,7 +344,7 @@ public class CopperBellBlock extends Block implements EntityBlock, SimpleWaterlo
   }
 
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-    return createTickerHelper(blockEntityType, ModTiles.COPPER_BELL, level.isClientSide ? CopperBellBlockEntity::clientTick : CopperBellBlockEntity::serverTick);
+    return createTickerHelper(blockEntityType, ModTiles.COPPER_BELL, level.isClientSide() ? CopperBellBlockEntity::clientTick : CopperBellBlockEntity::serverTick);
   }
 
   public boolean isRandomlyTicking(BlockState state) {

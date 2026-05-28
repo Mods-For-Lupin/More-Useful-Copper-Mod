@@ -19,9 +19,9 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.entity.vehicle.AbstractMinecart.Type;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.vehicle.minecart.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.core.component.DataComponents;
@@ -36,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
 
   /// Matches only rideable minecarts — used in [pushEntities] to replicate [ArmorStand] push behaviour.
-  private static final Predicate<Entity> RIDABLE_MINECARTS = entity -> entity instanceof AbstractMinecart && ((AbstractMinecart) entity).getMinecartType() == Type.RIDEABLE;
+  private static final Predicate<Entity> RIDABLE_MINECARTS = entity -> entity instanceof AbstractMinecart minecart && minecart.isRideable();
 
   public long lastHit;
 
@@ -101,13 +101,13 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
   ///
   /// @return `true` if the damage was accepted (including wobble-only hits)
   @Override
-  public boolean hurt(DamageSource source, float amount) {
+  public boolean hurtServer(ServerLevel serverLevel, DamageSource source, float amount) {
 
-    if (damagePersists(source)) {
+    if (damagePersists(serverLevel, source)) {
       return false;
     }
 
-    if (damagedByFireOrExplosion(source)) {
+    if (damagedByFireOrExplosion(serverLevel, source)) {
       return false;
     }
 
@@ -126,7 +126,7 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
     if (source.isCreativePlayer()) {
       this.playBrokenSound();
       this.showBreakingParticles();
-      this.kill();
+      this.kill(serverLevel);
       return arrowHasPiercing;
     }
 
@@ -138,7 +138,7 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
     } else {
       this.brokenByPlayer(source);
       this.showBreakingParticles();
-      this.kill();
+      this.kill(serverLevel);
     }
 
     return true;
@@ -147,41 +147,41 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
   /// Handles fire and explosion damage types, mirroring vanilla armor-stand logic. Explosions break immediately; fire damage is accumulated or sets the statue on fire.
   ///
   /// @return `true` if this method consumed the damage (caller should return early)
-  private boolean damagedByFireOrExplosion(DamageSource source) {
+  private boolean damagedByFireOrExplosion(ServerLevel serverLevel, DamageSource source) {
     if (source.is(DamageTypeTags.IS_EXPLOSION)) {
-      this.brokenByAnything(source);
-      this.kill();
+      this.brokenByAnything(serverLevel, source);
+      this.kill(serverLevel);
       return true;
     } else if (source.is(DamageTypeTags.IGNITES_ARMOR_STANDS)) {
       if (this.isOnFire()) {
-        this.causeDamage(source, 0.15F);
+        this.causeDamage(serverLevel, source, 0.15F);
       } else {
         this.igniteForSeconds(5.0F);
       }
       return true;
     } else if (source.is(DamageTypeTags.BURNS_ARMOR_STANDS) && this.getHealth() > 0.5F) {
-      this.causeDamage(source, 4.0F);
+      this.causeDamage(serverLevel, source, 4.0F);
       return true;
     }
     return false;
   }
 
   /// Returns `true` if damage should be silently ignored — either because the entity is already dead/client-side, damage bypasses invulnerability and kills it, or it's invulnerable to this source.
-  private boolean damagePersists(DamageSource source) {
-    if (this.level().isClientSide || this.isRemoved()) {
+  private boolean damagePersists(ServerLevel serverLevel, DamageSource source) {
+    if (this.isRemoved()) {
       return true;
     } else if (source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-      this.kill();
+      this.kill(serverLevel);
       return true;
     } else {
-      return this.isInvulnerableTo(source);
+      return this.isInvulnerableTo(serverLevel, source);
     }
   }
 
   @Override
   public void handleEntityEvent(byte id) {
     if (id == EntityEvent.ARMORSTAND_WOBBLE) {
-      if (this.level().isClientSide) {
+      if (this.level().isClientSide()) {
         this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.ARMOR_STAND_HIT, this.getSoundSource(), 0.3F, 1.0F, false);
         this.lastHit = this.level().getGameTime();
       }
@@ -208,12 +208,12 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
     }
   }
 
-  private void causeDamage(DamageSource damageSource, float amount) {
+  private void causeDamage(ServerLevel serverLevel, DamageSource damageSource, float amount) {
     float f = this.getHealth();
     f -= amount;
     if (f <= 0.5F) {
-      this.brokenByAnything(damageSource);
-      this.kill();
+      this.brokenByAnything(serverLevel, damageSource);
+      this.kill(serverLevel);
     } else {
       this.setHealth(f);
       this.gameEvent(GameEvent.ENTITY_DAMAGE, damageSource.getEntity());
@@ -242,13 +242,14 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
     }
 
     Block.popResource(this.level(), this.blockPosition(), itemStack);
-    this.brokenByAnything(damageSource);
+    this.brokenByAnything(null, damageSource);
   }
 
-  private void brokenByAnything(DamageSource damageSource) {
+  private void brokenByAnything(ServerLevel serverLevel, DamageSource damageSource) {
     this.playBrokenSound();
-    if (this.level() instanceof ServerLevel serverLevel) {
-      this.dropAllDeathLoot(serverLevel, damageSource);
+    ServerLevel level = serverLevel != null ? serverLevel : (this.level() instanceof ServerLevel sl ? sl : null);
+    if (level != null) {
+      this.dropAllDeathLoot(level, damageSource);
     }
   }
 
@@ -257,10 +258,9 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
   }
 
   @Override
-  protected float tickHeadTurn(float yRot, float animStep) {
+  protected void tickHeadTurn(float yBodyRotT) {
     this.yBodyRotO = this.yRotO;
     this.yBodyRot = this.getYRot();
-    return 0.0F;
   }
 
   @Override
@@ -283,7 +283,7 @@ public abstract class AbstractStatueEntity extends NoInventoryLivingEntity {
   }
 
   @Override
-  public void kill() {
+  public void kill(ServerLevel level) {
     this.remove(RemovalReason.KILLED);
     this.gameEvent(GameEvent.ENTITY_DIE);
   }

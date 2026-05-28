@@ -16,14 +16,15 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DiodeBlock;
 import net.minecraft.world.level.block.EntityBlock;
@@ -100,11 +101,11 @@ public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBloc
   }
 
   @Override
-  public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+  protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
     if (state.getValue(WATERLOGGED)) {
-      level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+      ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
     }
-    return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+    return super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
   }
 
   // --- EntityBlock ---
@@ -161,14 +162,14 @@ public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBloc
     BlockPos blockPos = pos.relative(direction);
     BlockState blockState = level.getBlockState(blockPos);
     if (blockState.hasAnalogOutputSignal()) {
-      i = blockState.getAnalogOutputSignal(level, blockPos);
+      i = blockState.getAnalogOutputSignal(level, blockPos, direction.getOpposite());
     } else if (i < 15 && blockState.isRedstoneConductor(level, blockPos)) {
       blockPos = blockPos.relative(direction);
       blockState = level.getBlockState(blockPos);
       ItemFrame itemFrame = this.getItemFrame(level, direction, blockPos);
       int j = Math.max(
           itemFrame == null ? Integer.MIN_VALUE : itemFrame.getAnalogOutput(),
-          blockState.hasAnalogOutputSignal() ? blockState.getAnalogOutputSignal(level, blockPos) : Integer.MIN_VALUE
+          blockState.hasAnalogOutputSignal() ? blockState.getAnalogOutputSignal(level, blockPos, direction.getOpposite()) : Integer.MIN_VALUE
       );
       if (j != Integer.MIN_VALUE) {
         i = j;
@@ -240,28 +241,28 @@ public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBloc
   }
 
   @Override
-  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+  protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
     if (!player.getAbilities().mayBuild) {
-      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+      return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     // oxidize
     if (stack.is(ModItemTags.MANUAL_OXIDIZER) && this.weatherState != WeatherState.OXIDIZED) {
-      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+      return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     // remove wax / scrape oxidation
     if (stack.is(ModItemTags.WAX_SCRAPER)) {
-      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+      return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     // apply wax
     InteractionResult waxResult = WaxableRegistry.tryWaxing(state, level, pos, player, stack);
     if (waxResult != null) {
-      return waxResult == InteractionResult.PASS ? ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION : ItemInteractionResult.sidedSuccess(level.isClientSide);
+      return waxResult == InteractionResult.PASS ? InteractionResult.TRY_WITH_EMPTY_HAND : InteractionResult.SUCCESS;
     }
 
-    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    return InteractionResult.TRY_WITH_EMPTY_HAND;
   }
 
   @Override
@@ -276,6 +277,6 @@ public class CopperComparatorBlock extends DiodeBlock implements IOxidizableBloc
     level.playSound(player, pos, SoundEvents.COMPARATOR_CLICK, SoundSource.BLOCKS, 0.3F, f);
     level.setBlock(pos, state, 2);
     this.refreshOutputState(level, pos, state);
-    return InteractionResult.sidedSuccess(level.isClientSide);
+    return InteractionResult.SUCCESS;
   }
 }

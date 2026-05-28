@@ -1,12 +1,13 @@
 package io.github.jason13official.more_useful_copper.impl.common.entity;
 
-import java.util.UUID;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,12 +16,10 @@ public abstract class AbstractPersistentAngerPathfinderMob extends PathfinderMob
   /// mimicking [IronGolem] persistent anger
   private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
 
-  /// mimicking [IronGolem] persistent anger
-  private int remainingPersistentAngerTime;
+  private long persistentAngerEndTime;
 
-  /// mimicking [IronGolem] persistent anger
   @Nullable
-  private UUID persistentAngerTarget;
+  private EntityReference<LivingEntity> persistentAngerTarget;
 
   public AbstractPersistentAngerPathfinderMob(EntityType<? extends AbstractPersistentAngerPathfinderMob> entityType, Level level) {
     super(entityType, level);
@@ -28,26 +27,26 @@ public abstract class AbstractPersistentAngerPathfinderMob extends PathfinderMob
 
   @Override
   public void startPersistentAngerTimer() {
-    this.setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(this.random));
+    this.setTimeToRemainAngry(PERSISTENT_ANGER_TIME.sample(this.random));
   }
 
   @Override
-  public int getRemainingPersistentAngerTime() {
-    return this.remainingPersistentAngerTime;
+  public long getPersistentAngerEndTime() {
+    return this.persistentAngerEndTime;
   }
 
   @Override
-  public void setRemainingPersistentAngerTime(int amount) {
-    this.remainingPersistentAngerTime = amount;
+  public void setPersistentAngerEndTime(long endTime) {
+    this.persistentAngerEndTime = endTime;
   }
 
   @Override
-  public UUID getPersistentAngerTarget() {
+  public @Nullable EntityReference<LivingEntity> getPersistentAngerTarget() {
     return this.persistentAngerTarget;
   }
 
   @Override
-  public void setPersistentAngerTarget(@Nullable UUID pTarget) {
-    this.persistentAngerTarget = pTarget;
+  public void setPersistentAngerTarget(@Nullable EntityReference<LivingEntity> target) {
+    this.persistentAngerTarget = target;
   }
 }

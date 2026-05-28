@@ -6,7 +6,9 @@ import io.github.jason13official.more_useful_copper.impl.common.entity.CopperGol
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue;
 import io.github.jason13official.more_useful_copper.impl.common.entity.ThrownLightningBottle;
 import java.util.function.BiConsumer;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 
@@ -22,18 +24,18 @@ public class ModEntities {
 
   public static void register(BiConsumer<EntityType<?>, Identifier> consumer) {
 
-    COPPER_STATUE = EntityType.Builder.<CopperStatue>of(CopperStatue::new, MobCategory.MISC).sized(0.5F, 1.975F).clientTrackingRange(10).build(MoreUsefulCopper.identifier("copper_statue").toString());
+    COPPER_STATUE = EntityType.Builder.<CopperStatue>of(CopperStatue::new, MobCategory.MISC).sized(0.5F, 1.975F).clientTrackingRange(10).build(ResourceKey.create(Registries.ENTITY_TYPE, MoreUsefulCopper.identifier("copper_statue")));
     consumer.accept(COPPER_STATUE, MoreUsefulCopper.identifier("copper_statue"));
 
-    COPPER_GOLEM = EntityType.Builder.of(CopperGolem::new, MobCategory.MISC).sized(1.4F, 2.7F).clientTrackingRange(10).build(MoreUsefulCopper.identifier("copper_golem").toString());
+    COPPER_GOLEM = EntityType.Builder.of(CopperGolem::new, MobCategory.MISC).sized(1.4F, 2.7F).clientTrackingRange(10).build(ResourceKey.create(Registries.ENTITY_TYPE, MoreUsefulCopper.identifier("copper_golem")));
     consumer.accept(COPPER_GOLEM, MoreUsefulCopper.identifier("copper_golem"));
 
     COPPER_BOTTOM_BOAT = EntityType.Builder.<CopperBottomBoat>of(CopperBottomBoat::new, MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10)
-        .build(MoreUsefulCopper.identifier("copper_bottom_boat").toString());
+        .build(ResourceKey.create(Registries.ENTITY_TYPE, MoreUsefulCopper.identifier("copper_bottom_boat")));
     consumer.accept(COPPER_BOTTOM_BOAT, MoreUsefulCopper.identifier("copper_bottom_boat"));
 
     LIGHTNING_BOTTLE = EntityType.Builder.<ThrownLightningBottle>of(ThrownLightningBottle::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10)
-        .build(MoreUsefulCopper.identifier("lightning_bottle").toString());
+        .build(ResourceKey.create(Registries.ENTITY_TYPE, MoreUsefulCopper.identifier("lightning_bottle")));
     consumer.accept(LIGHTNING_BOTTLE, MoreUsefulCopper.identifier("lightning_bottle"));
   }
 }

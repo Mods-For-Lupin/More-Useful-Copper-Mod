@@ -3,7 +3,7 @@ package io.github.jason13official.more_useful_copper.impl.common.block;
 import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,9 +24,9 @@ public class WaxedButtonBlock extends CopperButtonBlock {
   }
 
   @Override
-  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+  protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
     if (stack.is(ModItemTags.WAX_SCRAPER)) {
-      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+      return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
     return super.useItemOn(stack, state, level, pos, player, hand, hit);
   }

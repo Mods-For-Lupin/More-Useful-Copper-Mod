@@ -9,14 +9,14 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -43,7 +43,8 @@ public class MoistureCompassItem extends Item {
   public static boolean isMoistureCompass(ItemStack stack) {
     CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
     if (customData == null) return false;
-    return customData.contains(TAG_MOISTURE_DIMENSION) || customData.contains(TAG_MOISTURE_TRACKED);
+    CompoundTag isMoistureTag = customData.copyTag();
+    return isMoistureTag.contains(TAG_MOISTURE_DIMENSION) || isMoistureTag.contains(TAG_MOISTURE_TRACKED);
   }
 
   private static Optional<ResourceKey<Level>> getMoistureDimension(CompoundTag compoundTag) {
@@ -60,9 +61,8 @@ public class MoistureCompassItem extends Item {
     if (flag && flag1) {
       Optional<ResourceKey<Level>> optional = getMoistureDimension(tag);
       if (optional.isPresent()) {
-        Optional<BlockPos> maybePos = NbtUtils.readBlockPos(tag, TAG_MOISTURE_POS);
-        if (maybePos.isEmpty()) return null;
-        return GlobalPos.of(optional.get(), maybePos.get());
+        BlockPos pos = BlockPos.of(tag.getLongOr(TAG_MOISTURE_POS, 0L));
+        return GlobalPos.of(optional.get(), pos);
       }
     }
 
@@ -71,11 +71,11 @@ public class MoistureCompassItem extends Item {
 
   @Nullable
   public static GlobalPos getSpawnPosition(Level level) {
-    return level.dimensionType().natural() ? GlobalPos.of(level.dimension(), level.getSharedSpawnPos()) : null;
+    return level.dimension() == Level.OVERWORLD ? GlobalPos.of(level.dimension(), level.getLevelData().getRespawnData().pos()) : null;
   }
 
   @Override
-  public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+  public InteractionResult use(Level level, Player player, InteractionHand usedHand) {
 
     ItemStack stack = player.getItemInHand(usedHand);
 
@@ -99,7 +99,7 @@ public class MoistureCompassItem extends Item {
   }
 
   @Override
-  public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot, boolean isSelected) {
+  public void inventoryTick(ItemStack stack, net.minecraft.server.level.ServerLevel level, Entity entity, @Nullable net.minecraft.world.entity.EquipmentSlot equipSlot) {
 
     if (!(entity instanceof Player)) {
       return;
@@ -113,14 +113,14 @@ public class MoistureCompassItem extends Item {
 
       CustomData existingData = stack.get(DataComponents.CUSTOM_DATA);
       CompoundTag compoundtag = existingData != null ? existingData.copyTag() : new CompoundTag();
-      if (compoundtag.contains(TAG_MOISTURE_TRACKED) && !compoundtag.getBoolean(TAG_MOISTURE_TRACKED)) {
+      if (compoundtag.contains(TAG_MOISTURE_TRACKED) && !compoundtag.getBooleanOr(TAG_MOISTURE_TRACKED, false)) {
         return;
       }
 
       Optional<ResourceKey<Level>> optional = getMoistureDimension(compoundtag);
       if (optional.isPresent() && optional.get() == level.dimension() && compoundtag.contains(TAG_MOISTURE_POS)) {
-        Optional<BlockPos> maybePos = NbtUtils.readBlockPos(compoundtag, TAG_MOISTURE_POS);
-        if (maybePos.isPresent() && !level.isInWorldBounds(maybePos.get())) {
+        BlockPos maybePos = BlockPos.of(compoundtag.getLongOr(TAG_MOISTURE_POS, 0L));
+        if (!level.isInWorldBounds(maybePos)) {
           compoundtag.remove(TAG_MOISTURE_POS);
           stack.set(DataComponents.CUSTOM_DATA, CustomData.of(compoundtag));
         }
@@ -129,7 +129,7 @@ public class MoistureCompassItem extends Item {
 
       // every 2 seconds, find the closest water position
       CustomData currentData = stack.get(DataComponents.CUSTOM_DATA);
-      boolean hasMoisturePos = currentData != null && currentData.contains(TAG_MOISTURE_POS);
+      boolean hasMoisturePos = currentData != null && currentData.copyTag().contains(TAG_MOISTURE_POS);
       if (level.getGameTime() % 40 == 0 && !hasMoisturePos) {
 
         tagClosestWaterPosition(stack, level, entity);
@@ -213,7 +213,7 @@ public class MoistureCompassItem extends Item {
         }
       }
 
-      return InteractionResult.sidedSuccess(level.isClientSide);
+      return InteractionResult.SUCCESS;
     }
   }
 
@@ -224,10 +224,11 @@ public class MoistureCompassItem extends Item {
 
     compoundTag.putBoolean(TAG_MOISTURE_TRACKED, true);
 
-    compoundTag.put(TAG_MOISTURE_POS, NbtUtils.writeBlockPos(moisturePos));
+    compoundTag.putLong(TAG_MOISTURE_POS, moisturePos.asLong());
   }
 
-  public String getDescriptionId(ItemStack stack) {
-    return isMoistureCompass(stack) ? "item.more_useful_copper.moisture_compass" : super.getDescriptionId(stack);
+  @Override
+  public Component getName(ItemStack stack) {
+    return isMoistureCompass(stack) ? Component.translatable("item.more_useful_copper.moisture_compass") : super.getName(stack);
   }
 }

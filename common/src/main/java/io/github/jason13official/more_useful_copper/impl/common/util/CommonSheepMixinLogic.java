@@ -1,11 +1,12 @@
 package io.github.jason13official.more_useful_copper.impl.common.util;
 
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -22,7 +23,7 @@ public class CommonSheepMixinLogic {
     }
 
     if (!self.level().isClientSide() && self.readyForShearing()) {
-      self.shear(SoundSource.PLAYERS);
+      self.shear((ServerLevel) self.level(), SoundSource.PLAYERS, itemStack);
       self.gameEvent(GameEvent.SHEAR, player);
       itemStack.hurtAndBreak(1, player, hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
       // return InteractionResult.SUCCESS;

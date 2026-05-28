@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import java.util.List;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +12,6 @@ import org.jetbrains.annotations.Nullable;
 public class DefendPlayerTargetGoal extends TargetGoal {
 
   private final CopperGolem golem;
-  private final TargetingConditions attackTargeting = TargetingConditions.forCombat().range(64.0);
   @Nullable
   private LivingEntity potentialTarget;
 
@@ -32,7 +30,7 @@ public class DefendPlayerTargetGoal extends TargetGoal {
   public boolean canUse() {
 
     AABB golemBoundingBox = this.golem.getBoundingBox().inflate(10.0, 8.0, 10.0);
-    List<Player> playersNearby = this.golem.level().getNearbyPlayers(this.attackTargeting, this.golem, golemBoundingBox);
+    List<Player> playersNearby = this.golem.level().getEntitiesOfClass(Player.class, golemBoundingBox);
 
     for (Player player : playersNearby) {
       LivingEntity lastAttacker = player.getLastAttacker() == null ? player.getLastAttacker() : null;

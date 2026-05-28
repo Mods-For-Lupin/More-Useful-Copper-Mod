@@ -13,19 +13,21 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.ObserverBlock;
@@ -106,10 +108,10 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   public static int getColorForPower(int power, WeatherState weatherState) {
     float f = power / 15.0F;
     return switch (weatherState) {
-      case EXPOSED -> Mth.color(f * 0.38F + 0.26F, f * 0.29F + 0.20F, f * 0.25F + 0.16F);
-      case WEATHERED -> Mth.color(f * 0.26F + 0.17F, f * 0.36F + 0.24F, f * 0.26F + 0.18F);
-      case OXIDIZED -> Mth.color(f * 0.20F + 0.13F, f * 0.39F + 0.26F, f * 0.32F + 0.21F);
-      default -> Mth.color(f * 0.46F + 0.30F, f * 0.26F + 0.17F, f * 0.19F + 0.13F);
+      case EXPOSED -> ARGB.color(new Vec3(f * 0.38F + 0.26F, f * 0.29F + 0.20F, f * 0.25F + 0.16F));
+      case WEATHERED -> ARGB.color(new Vec3(f * 0.26F + 0.17F, f * 0.36F + 0.24F, f * 0.26F + 0.18F));
+      case OXIDIZED -> ARGB.color(new Vec3(f * 0.20F + 0.13F, f * 0.39F + 0.26F, f * 0.32F + 0.21F));
+      default -> ARGB.color(new Vec3(f * 0.46F + 0.30F, f * 0.26F + 0.17F, f * 0.19F + 0.13F));
     };
   }
 
@@ -182,9 +184,9 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   }
 
   @Override
-  public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+  protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
     if (state.getValue(WATERLOGGED)) {
-      level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+      ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
     }
     if (direction == Direction.DOWN) {
       return state;
@@ -207,13 +209,13 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
         BlockState blockState = level.getBlockState(mutableBlockPos);
         if (blockState.is(this)) {
           BlockPos blockPos = mutableBlockPos.relative(direction.getOpposite());
-          level.neighborShapeChanged(direction.getOpposite(), level.getBlockState(blockPos), mutableBlockPos, blockPos, flags, recursionLeft);
+          level.neighborShapeChanged(direction.getOpposite(), blockPos, mutableBlockPos, level.getBlockState(mutableBlockPos), flags, recursionLeft);
         }
         mutableBlockPos.setWithOffset(pos, direction).move(Direction.UP);
         BlockState blockState2 = level.getBlockState(mutableBlockPos);
         if (blockState2.is(this)) {
           BlockPos blockPos2 = mutableBlockPos.relative(direction.getOpposite());
-          level.neighborShapeChanged(direction.getOpposite(), level.getBlockState(blockPos2), mutableBlockPos, blockPos2, flags, recursionLeft);
+          level.neighborShapeChanged(direction.getOpposite(), blockPos2, mutableBlockPos, level.getBlockState(mutableBlockPos), flags, recursionLeft);
         }
       }
     }
@@ -362,14 +364,14 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
       BlockPos blockPos = pos.relative(direction);
       if (oldState.getValue(PROPERTY_BY_DIRECTION.get(direction)).isConnected() != newState.getValue(PROPERTY_BY_DIRECTION.get(direction)).isConnected() && level.getBlockState(blockPos)
           .isRedstoneConductor(level, blockPos)) {
-        level.updateNeighborsAtExceptFromFacing(blockPos, newState.getBlock(), direction.getOpposite());
+        level.updateNeighborsAtExceptFromFacing(blockPos, newState.getBlock(), direction.getOpposite(), null);
       }
     }
   }
 
   @Override
   public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
-    if (!oldState.is(state.getBlock()) && !level.isClientSide) {
+    if (!oldState.is(state.getBlock()) && !level.isClientSide()) {
       this.updatePowerStrength(level, pos, state);
       for (Direction direction : Direction.Plane.VERTICAL) {
         level.updateNeighborsAt(pos.relative(direction), this);
@@ -379,24 +381,21 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   }
 
   @Override
-  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-    if (!movedByPiston && !state.is(newState.getBlock())) {
-      super.onRemove(state, level, pos, newState, movedByPiston);
-      if (!level.isClientSide) {
-        for (Direction direction : Direction.values()) {
-          level.updateNeighborsAt(pos.relative(direction), this);
-        }
-        this.updatePowerStrength(level, pos, state);
-        this.updateNeighborsOfNeighboringWires(level, pos);
+  protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+    if (!movedByPiston) {
+      for (Direction direction : Direction.values()) {
+        level.updateNeighborsAt(pos.relative(direction), this);
       }
+      this.updatePowerStrength(level, pos, state);
+      this.updateNeighborsOfNeighboringWires(level, pos);
     }
   }
 
   // --- Signal output ---
 
   @Override
-  public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
-    if (!level.isClientSide) {
+  public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
+    if (!level.isClientSide()) {
       if (state.canSurvive(level, pos)) {
         this.updatePowerStrength(level, pos, state);
       } else {
@@ -468,21 +467,21 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
   // --- Interaction ---
 
   @Override
-  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+  protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
     if (!player.getAbilities().mayBuild) {
-      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+      return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
     if (stack.is(ModItemTags.MANUAL_OXIDIZER) && this.weatherState != WeatherState.OXIDIZED) {
-      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+      return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
     if (stack.is(ModItemTags.WAX_SCRAPER)) {
-      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+      return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
     InteractionResult waxResult = WaxableRegistry.tryWaxing(state, level, pos, player, stack);
     if (waxResult != null) {
-      return waxResult == InteractionResult.PASS ? ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION : ItemInteractionResult.sidedSuccess(level.isClientSide);
+      return waxResult == InteractionResult.PASS ? InteractionResult.TRY_WITH_EMPTY_HAND : InteractionResult.SUCCESS;
     }
-    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    return InteractionResult.TRY_WITH_EMPTY_HAND;
   }
 
   @Override
@@ -553,7 +552,7 @@ public class CopperRedstoneDustBlock extends Block implements IOxidizableBlock, 
       double d = 0.5 + (double) (g * (float) xDirection.getStepX()) + (double) (h * (float) zDirection.getStepX());
       double e = 0.5 + (double) (g * (float) xDirection.getStepY()) + (double) (h * (float) zDirection.getStepY());
       double k = 0.5 + (double) (g * (float) xDirection.getStepZ()) + (double) (h * (float) zDirection.getStepZ());
-      level.addParticle(new DustParticleOptions(particleVec.toVector3f(), 1.0F), (double) pos.getX() + d, (double) pos.getY() + e, (double) pos.getZ() + k, 0.0, 0.0, 0.0);
+      level.addParticle(new DustParticleOptions(ARGB.color(particleVec), 1.0F), (double) pos.getX() + d, (double) pos.getY() + e, (double) pos.getZ() + k, 0.0, 0.0, 0.0);
     }
   }
 }

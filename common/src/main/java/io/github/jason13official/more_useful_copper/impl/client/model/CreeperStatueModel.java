@@ -1,9 +1,7 @@
 package io.github.jason13official.more_useful_copper.impl.client.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -11,16 +9,15 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
 
-public class CreeperStatueModel extends EntityModel<CopperStatue> {
+public class CreeperStatueModel extends EntityModel<EntityRenderState> {
 
   private final ModelPart creeper_statue;
   private final ModelPart head;
   private final ModelPart legs;
 
   public CreeperStatueModel(final ModelPart root) {
-    super(RenderType::entityCutoutNoCull);
+    super(root);
 
     this.creeper_statue = root.getChild("creeper_statue");
     this.head = this.creeper_statue.getChild("head");
@@ -46,12 +43,7 @@ public class CreeperStatueModel extends EntityModel<CopperStatue> {
   }
 
   @Override
-  public void setupAnim(CopperStatue entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+  public void setupAnim(EntityRenderState state) {
     // no-op
-  }
-
-  @Override
-  public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-    creeper_statue.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
   }
 }

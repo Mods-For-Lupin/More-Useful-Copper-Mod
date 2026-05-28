@@ -48,7 +48,7 @@ public class WaxScraperItem extends Item {
     ItemStack itemStack = context.getItemInHand();
 
     if (unwaxedState.isPresent()) {
-      if (!level.isClientSide) {
+      if (!level.isClientSide()) {
         if (player instanceof ServerPlayer) {
           CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockPos, itemStack);
         }
@@ -61,7 +61,7 @@ public class WaxScraperItem extends Item {
           itemStack.hurtAndBreak(1, player, context.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
         }
       }
-      return InteractionResult.sidedSuccess(level.isClientSide);
+      return InteractionResult.SUCCESS;
     }
 
     // check our oxidation registry, then vanilla
@@ -71,7 +71,7 @@ public class WaxScraperItem extends Item {
     }
 
     if (scrapedState.isPresent()) {
-      if (!level.isClientSide) {
+      if (!level.isClientSide()) {
         if (player instanceof ServerPlayer) {
           CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockPos, itemStack);
         }
@@ -84,7 +84,7 @@ public class WaxScraperItem extends Item {
           itemStack.hurtAndBreak(1, player, context.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
         }
       }
-      return InteractionResult.sidedSuccess(level.isClientSide);
+      return InteractionResult.SUCCESS;
     }
 
     return InteractionResult.PASS;

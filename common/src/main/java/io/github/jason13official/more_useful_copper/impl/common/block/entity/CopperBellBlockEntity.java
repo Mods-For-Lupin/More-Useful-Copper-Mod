@@ -85,7 +85,7 @@ public class CopperBellBlockEntity extends BlockEntity {
 
   private static boolean areRaidersNearby(BlockPos pos, List<LivingEntity> raiders) {
     for (LivingEntity livingentity : raiders) {
-      if (livingentity.isAlive() && !livingentity.isRemoved() && pos.closerToCenterThan(livingentity.position(), 32.0F) && livingentity.getType().is(EntityTypeTags.RAIDERS)) {
+      if (livingentity.isAlive() && !livingentity.isRemoved() && pos.closerToCenterThan(livingentity.position(), 32.0F) && livingentity.is(EntityTypeTags.RAIDERS)) {
         return true;
       }
     }
@@ -116,7 +116,7 @@ public class CopperBellBlockEntity extends BlockEntity {
   }
 
   private static boolean isRaiderWithinRange(BlockPos pos, LivingEntity raider) {
-    return raider.isAlive() && !raider.isRemoved() && pos.closerToCenterThan(raider.position(), 48.0F) && raider.getType().is(EntityTypeTags.RAIDERS);
+    return raider.isAlive() && !raider.isRemoved() && pos.closerToCenterThan(raider.position(), 48.0F) && raider.is(EntityTypeTags.RAIDERS);
   }
 
   private static void glow(LivingEntity entity) {
@@ -156,7 +156,7 @@ public class CopperBellBlockEntity extends BlockEntity {
       this.nearbyEntities = this.level.getEntitiesOfClass(LivingEntity.class, aabb);
     }
 
-    if (!this.level.isClientSide) {
+    if (!this.level.isClientSide()) {
       for (LivingEntity livingentity : this.nearbyEntities) {
         if (livingentity.isAlive() && !livingentity.isRemoved() && blockpos.closerToCenterThan(livingentity.position(), 32.0F)) {
           livingentity.getBrain().setMemory(MemoryModuleType.HEARD_BELL_TIME, this.level.getGameTime());

@@ -24,9 +24,9 @@ public class ModTiles {
         ModBlocks.WAXED_EXPOSED_COPPER_COMPARATOR,
         ModBlocks.WAXED_WEATHERED_COPPER_COMPARATOR,
         ModBlocks.WAXED_OXIDIZED_COPPER_COMPARATOR
-    ).build(null);
+    );
 
-    COPPER_BELL = Services.PLATFORM.tileBuilder(CopperBellBlockEntity::new, ModBlocks.COPPER_BELL).build(null);
+    COPPER_BELL = Services.PLATFORM.tileBuilder(CopperBellBlockEntity::new, ModBlocks.COPPER_BELL);
 
     consumer.accept(COPPER_COMPARATOR, MoreUsefulCopper.identifier("copper_comparator"));
     consumer.accept(COPPER_BELL, MoreUsefulCopper.identifier("copper_bell"));

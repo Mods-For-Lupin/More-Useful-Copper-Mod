@@ -1,8 +1,8 @@
 package io.github.jason13official.more_useful_copper.impl.client.model;
 
 import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
-import io.github.jason13official.more_useful_copper.impl.common.entity.CopperGolem;
-import net.minecraft.client.model.HierarchicalModel;
+import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.state.CopperGolemRenderState;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -13,11 +13,10 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 
-public class CopperGolemModel<T extends CopperGolem> extends HierarchicalModel<T> {
+public class CopperGolemModel extends EntityModel<CopperGolemRenderState> {
 
   public static ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(MoreUsefulCopper.identifier("copper_golem"), "main");
 
-  private final ModelPart root;
   private final ModelPart head;
   private final ModelPart rightArm;
   private final ModelPart leftArm;
@@ -25,7 +24,7 @@ public class CopperGolemModel<T extends CopperGolem> extends HierarchicalModel<T
   private final ModelPart leftLeg;
 
   public CopperGolemModel(ModelPart root) {
-    this.root = root;
+    super(root);
     this.head = root.getChild("head");
     this.rightArm = root.getChild("right_arm");
     this.leftArm = root.getChild("left_arm");
@@ -49,30 +48,26 @@ public class CopperGolemModel<T extends CopperGolem> extends HierarchicalModel<T
   }
 
   @Override
-  public ModelPart root() {
-    return this.root;
-  }
+  public void setupAnim(CopperGolemRenderState state) {
+    super.setupAnim(state);
+    float attackTick = state.attackTicksRemaining;
+    if (attackTick > 0.0F) {
+      this.rightArm.xRot = -2.0F + 1.5F * Mth.triangleWave(attackTick, 10.0F);
+      this.leftArm.xRot = -2.0F + 1.5F * Mth.triangleWave(attackTick, 10.0F);
+    } else {
+      this.rightArm.xRot = (-0.2F + 1.5F * Mth.triangleWave(state.walkAnimationPos, 13.0F)) * state.walkAnimationSpeed;
+      this.leftArm.xRot = (-0.2F - 1.5F * Mth.triangleWave(state.walkAnimationPos, 13.0F)) * state.walkAnimationSpeed;
+    }
 
-  @Override
-  public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-    this.head.yRot = netHeadYaw * ((float) Math.PI / 180F);
-    this.head.xRot = headPitch * ((float) Math.PI / 180F);
-    this.rightLeg.xRot = -1.5F * Mth.triangleWave(limbSwing, 13.0F) * limbSwingAmount;
-    this.leftLeg.xRot = 1.5F * Mth.triangleWave(limbSwing, 13.0F) * limbSwingAmount;
+    this.head.yRot = state.yRot * (float) (Math.PI / 180.0);
+    this.head.xRot = state.xRot * (float) (Math.PI / 180.0);
+    this.rightLeg.xRot = -1.5F * Mth.triangleWave(state.walkAnimationPos, 13.0F) * state.walkAnimationSpeed;
+    this.leftLeg.xRot = 1.5F * Mth.triangleWave(state.walkAnimationPos, 13.0F) * state.walkAnimationSpeed;
     this.rightLeg.yRot = 0.0F;
     this.leftLeg.yRot = 0.0F;
   }
 
-  @Override
-  public void prepareMobModel(T entity, float limbSwing, float limbSwingAmount, float partialTick) {
-    int i = entity.getAttackAnimationTick();
-    if (i > 0) {
-      this.rightArm.xRot = -2.0F + 1.5F * Mth.triangleWave((float) i - partialTick, 10.0F);
-      this.leftArm.xRot = -2.0F + 1.5F * Mth.triangleWave((float) i - partialTick, 10.0F);
-    }
-  }
-
-  public ModelPart getFlowerHoldingArm() {
+  public ModelPart getRightArm() {
     return this.rightArm;
   }
 }

@@ -49,7 +49,7 @@ public class SprayBottleItem extends Item {
     Player player = context.getPlayer();
     ItemStack itemStack = context.getItemInHand();
 
-    if (!level.isClientSide) {
+    if (!level.isClientSide()) {
       if (player instanceof ServerPlayer) {
         CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockPos, itemStack);
       }
@@ -61,6 +61,6 @@ public class SprayBottleItem extends Item {
       itemStack.hurtAndBreak(1, player, context.getHand() == net.minecraft.world.InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
     }
 
-    return InteractionResult.sidedSuccess(level.isClientSide);
+    return InteractionResult.SUCCESS;
   }
 }

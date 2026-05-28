@@ -10,7 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -55,7 +55,7 @@ public class CopperStatueItem extends Item {
 
   private @NotNull InteractionResult trySpawningStatue(UseOnContext context, Level level, ItemStack itemStack, BlockPos blockPos) {
     if (level instanceof ServerLevel serverLevel) {
-      CopperStatue statue = ModEntities.COPPER_STATUE.create(serverLevel, EntityType.createDefaultStackConfig(serverLevel, itemStack, context.getPlayer()), blockPos, MobSpawnType.SPAWN_EGG, true, true);
+      CopperStatue statue = ModEntities.COPPER_STATUE.create(serverLevel, EntityType.createDefaultStackConfig(serverLevel, itemStack, context.getPlayer()), blockPos, EntitySpawnReason.SPAWN_ITEM_USE, true, true);
 
       if (statue != null) {
         statue.setVariant(this.type);
@@ -64,13 +64,13 @@ public class CopperStatueItem extends Item {
       }
 
       float f = (float) Mth.floor((Mth.wrapDegrees(context.getRotation() - 180.0F) + 22.5F) / 45.0F) * 45.0F;
-      statue.moveTo(statue.getX(), statue.getY(), statue.getZ(), f, 0.0F);
+      statue.snapTo(statue.getX(), statue.getY(), statue.getZ(), f, 0.0F);
       serverLevel.addFreshEntityWithPassengers(statue);
       level.playSound(null, statue.getX(), statue.getY(), statue.getZ(), SoundEvents.ARMOR_STAND_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
       statue.gameEvent(GameEvent.ENTITY_PLACE, context.getPlayer());
     }
 
     itemStack.shrink(1);
-    return InteractionResult.sidedSuccess(level.isClientSide);
+    return InteractionResult.SUCCESS;
   }
 }

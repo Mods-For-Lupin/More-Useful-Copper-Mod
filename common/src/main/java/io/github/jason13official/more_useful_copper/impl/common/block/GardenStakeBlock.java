@@ -29,12 +29,6 @@ public class GardenStakeBlock extends Block {
     builder.add(LIT);
   }
 
-  /// Ensures a tick gets fired soon after being activated
-//  @Override
-//  public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
-//    level.scheduleTick(pos, state.getBlock(), 5);
-//    return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
-//  }
   @Override
   public boolean isRandomlyTicking(BlockState state) {
     return state.getValue(LIT); // will use GardenStakeBlock#tick logic for random ticking via randomTick side effect
@@ -76,7 +70,7 @@ public class GardenStakeBlock extends Block {
       }
     }
 
-    // level.scheduleTick(selfPos, selfState.getBlock(), 5);
+    // ticks.scheduleTick(selfPos, selfState.getBlock(), 5);
   }
 
   @Override

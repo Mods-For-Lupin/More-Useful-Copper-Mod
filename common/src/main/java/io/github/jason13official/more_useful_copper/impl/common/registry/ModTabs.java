@@ -7,7 +7,6 @@ import java.util.function.BiConsumer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTab.Output;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -27,7 +26,7 @@ public class ModTabs {
     consumer.accept(MORE_USEFUL_COPPER, MoreUsefulCopper.identifier(Constants.MOD_ID));
   }
 
-  private static void addItemsToTabOutput(Output output) {
+  private static void addItemsToTabOutput(CreativeModeTab.Output output) {
     // output.accept(ModItems.SPARKSTONE_TORCH);
     // output.accept(ModItems.SPARKSTONE_RELAY);
 

@@ -13,15 +13,16 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -97,11 +98,11 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
   }
 
   @Override
-  public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+  protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
     if (state.getValue(WATERLOGGED)) {
-      level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+      ticks.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
     }
-    return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+    return super.updateShape(state, level, ticks, pos, direction, neighborPos, neighborState, random);
   }
 
   @Override
@@ -125,24 +126,24 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
   }
 
   @Override
-  protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+  protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
     // oxidize
     if (stack.is(ModItemTags.MANUAL_OXIDIZER) && this.weatherState != WeatherState.OXIDIZED) {
-      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+      return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     // remove wax
     if (stack.is(ModItemTags.WAX_SCRAPER) && this.weatherState != WeatherState.UNAFFECTED) {
-      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+      return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
     // apply wax
     InteractionResult waxedState = WaxableRegistry.tryWaxing(state, level, pos, player, stack);
     if (waxedState != null) {
-      return waxedState == InteractionResult.PASS ? ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION : ItemInteractionResult.sidedSuccess(level.isClientSide);
+      return waxedState == InteractionResult.PASS ? InteractionResult.TRY_WITH_EMPTY_HAND : InteractionResult.SUCCESS;
     }
 
-    return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+    return InteractionResult.TRY_WITH_EMPTY_HAND;
   }
 
   @Override
@@ -156,7 +157,7 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
     this.press(state, level, pos);
     this.playSound(player, level, pos, true);
     level.gameEvent(player, GameEvent.BLOCK_ACTIVATE, pos);
-    return InteractionResult.sidedSuccess(level.isClientSide);
+    return InteractionResult.SUCCESS;
   }
 
   public void press(BlockState state, Level level, BlockPos pos) {
@@ -171,18 +172,6 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
 
   protected SoundEvent getSound(boolean isOn) {
     return isOn ? this.type.buttonClickOn() : this.type.buttonClickOff();
-  }
-
-  @Override
-  public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-    if (!isMoving && !state.is(newState.getBlock())) {
-      if (state.getValue(POWERED)) {
-        this.updateNeighbours(state, level, pos);
-      }
-
-      super.onRemove(state, level, pos, newState, isMoving);
-    }
-
   }
 
   @Override
@@ -209,11 +198,10 @@ public class CopperButtonBlock extends FaceAttachedHorizontalDirectionalBlock im
   }
 
   @Override
-  public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-    if (!level.isClientSide && this.arrowsCanPress && !(Boolean) state.getValue(POWERED)) {
+  protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, net.minecraft.world.entity.InsideBlockEffectApplier effectApplier, boolean isPrecise) {
+    if (!level.isClientSide() && this.arrowsCanPress && !(Boolean) state.getValue(POWERED)) {
       this.checkPressed(state, level, pos);
     }
-
   }
 
   protected void checkPressed(BlockState state, Level level, BlockPos pos) {

@@ -8,36 +8,36 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 
 public class LightningAxeItem extends AxeItem {
 
-  public LightningAxeItem(Tier tier, Properties properties) {
-    super(tier, properties);
+  public LightningAxeItem(ToolMaterial material, float attackDamage, float attackSpeed, Properties properties) {
+    super(material, attackDamage, attackSpeed, properties);
   }
 
   @Override
   public boolean isFoil(ItemStack stack) {
     CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-    return (data != null && data.contains("charged")) || super.isFoil(stack);
+    return (data != null && data.copyTag().contains("charged")) || super.isFoil(stack);
   }
 
   @Override
-  public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+  public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
     float g = 2.0f;
     if (isFoil(stack)) {
       target.knockback(g, Mth.sin(attacker.getYRot() * (float) (Math.PI / 180.0)), -Mth.cos(attacker.getYRot() * (float) (Math.PI / 180.0)));
     }
-    return super.hurtEnemy(stack, target, attacker);
+    super.hurtEnemy(stack, target, attacker);
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+  public void appendHoverText(ItemStack stack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay display, java.util.function.Consumer<Component> tooltipComponentsBuilder, TooltipFlag isAdvanced) {
     if (isFoil(stack)) {
-      tooltipComponents.add(Component.literal("Imbued with knockback from lightning..."));
+      tooltipComponentsBuilder.accept(Component.literal("Imbued with knockback from lightning..."));
     }
-    super.appendHoverText(stack, context, tooltipComponents, isAdvanced);
+    super.appendHoverText(stack, context, display, tooltipComponentsBuilder, isAdvanced);
   }
 }

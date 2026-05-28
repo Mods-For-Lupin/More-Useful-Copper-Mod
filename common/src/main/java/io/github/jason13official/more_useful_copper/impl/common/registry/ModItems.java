@@ -21,18 +21,15 @@ import io.github.jason13official.more_useful_copper.platform.Services;
 import java.util.function.BiConsumer;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.AnimalArmorItem;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.Properties;
-import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
-import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.equipment.ArmorType;
 
 public class ModItems {
 
@@ -98,7 +95,7 @@ public class ModItems {
     consumer.accept(COPPER_STATUE_SPIDER, MoreUsefulCopper.identifier("copper_statue_spider"));
     consumer.accept(COPPER_STATUE_ZOMBIE, MoreUsefulCopper.identifier("copper_statue_zombie"));
 
-    SPARKSTONE_TORCH = new StandingAndWallBlockItem(ModBlocks.SPARKSTONE_TORCH, ModBlocks.SPARKSTONE_WALL_TORCH, new Properties(), Direction.DOWN);
+    SPARKSTONE_TORCH = new StandingAndWallBlockItem(ModBlocks.SPARKSTONE_TORCH, ModBlocks.SPARKSTONE_WALL_TORCH, Direction.DOWN, new Properties());
     SPARKSTONE_RELAY = new BlockItem(ModBlocks.SPARKSTONE_RELAY, new Properties());
     consumer.accept(SPARKSTONE_TORCH, MoreUsefulCopper.identifier("sparkstone_torch"));
     consumer.accept(SPARKSTONE_RELAY, MoreUsefulCopper.identifier("sparkstone_relay"));
@@ -142,21 +139,21 @@ public class ModItems {
     consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_REDSTONE_DUST, new Properties()), MoreUsefulCopper.identifier("waxed_oxidized_copper_redstone_dust"));
 
     // Torch items use StandingAndWallBlockItem so one item places both floor and wall variants
-    consumer.accept(new StandingAndWallBlockItem(ModBlocks.COPPER_REDSTONE_TORCH, ModBlocks.COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN),
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.COPPER_REDSTONE_TORCH, ModBlocks.COPPER_WALL_REDSTONE_TORCH, Direction.DOWN, new Properties()),
         MoreUsefulCopper.identifier("copper_redstone_torch"));
-    consumer.accept(new StandingAndWallBlockItem(ModBlocks.EXPOSED_COPPER_REDSTONE_TORCH, ModBlocks.EXPOSED_COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN),
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.EXPOSED_COPPER_REDSTONE_TORCH, ModBlocks.EXPOSED_COPPER_WALL_REDSTONE_TORCH, Direction.DOWN, new Properties()),
         MoreUsefulCopper.identifier("exposed_copper_redstone_torch"));
-    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WEATHERED_COPPER_REDSTONE_TORCH, ModBlocks.WEATHERED_COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN),
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WEATHERED_COPPER_REDSTONE_TORCH, ModBlocks.WEATHERED_COPPER_WALL_REDSTONE_TORCH, Direction.DOWN, new Properties()),
         MoreUsefulCopper.identifier("weathered_copper_redstone_torch"));
-    consumer.accept(new StandingAndWallBlockItem(ModBlocks.OXIDIZED_COPPER_REDSTONE_TORCH, ModBlocks.OXIDIZED_COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN),
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.OXIDIZED_COPPER_REDSTONE_TORCH, ModBlocks.OXIDIZED_COPPER_WALL_REDSTONE_TORCH, Direction.DOWN, new Properties()),
         MoreUsefulCopper.identifier("oxidized_copper_redstone_torch"));
-    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WAXED_COPPER_REDSTONE_TORCH, ModBlocks.WAXED_COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN),
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WAXED_COPPER_REDSTONE_TORCH, ModBlocks.WAXED_COPPER_WALL_REDSTONE_TORCH, Direction.DOWN, new Properties()),
         MoreUsefulCopper.identifier("waxed_copper_redstone_torch"));
-    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WAXED_EXPOSED_COPPER_REDSTONE_TORCH, ModBlocks.WAXED_EXPOSED_COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN),
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WAXED_EXPOSED_COPPER_REDSTONE_TORCH, ModBlocks.WAXED_EXPOSED_COPPER_WALL_REDSTONE_TORCH, Direction.DOWN, new Properties()),
         MoreUsefulCopper.identifier("waxed_exposed_copper_redstone_torch"));
-    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WAXED_WEATHERED_COPPER_REDSTONE_TORCH, ModBlocks.WAXED_WEATHERED_COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN),
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WAXED_WEATHERED_COPPER_REDSTONE_TORCH, ModBlocks.WAXED_WEATHERED_COPPER_WALL_REDSTONE_TORCH, Direction.DOWN, new Properties()),
         MoreUsefulCopper.identifier("waxed_weathered_copper_redstone_torch"));
-    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_REDSTONE_TORCH, ModBlocks.WAXED_OXIDIZED_COPPER_WALL_REDSTONE_TORCH, new Properties(), Direction.DOWN),
+    consumer.accept(new StandingAndWallBlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_REDSTONE_TORCH, ModBlocks.WAXED_OXIDIZED_COPPER_WALL_REDSTONE_TORCH, Direction.DOWN, new Properties()),
         MoreUsefulCopper.identifier("waxed_oxidized_copper_redstone_torch"));
 
     consumer.accept(new BlockItem(ModBlocks.COPPER_REPEATER, new Properties()), MoreUsefulCopper.identifier("copper_repeater"));
@@ -174,20 +171,20 @@ public class ModItems {
     COPPER_NUGGET = new Item(new Properties());
     COPPER_SHEARS = new ShearsItem((new Properties()).durability(238));
 
-    COPPER_PICKAXE = new LightningPickaxeItem(ModTiers.COPPER, new Properties().attributes(PickaxeItem.createAttributes(ModTiers.COPPER, 1.0F, -2.8F)));
-    COPPER_AXE = new LightningAxeItem(ModTiers.COPPER, new Properties().attributes(AxeItem.createAttributes(ModTiers.COPPER, 6.0F, -3.0F)));
-    COPPER_HOE = new LightningHoeItem(ModTiers.COPPER, new Properties().attributes(HoeItem.createAttributes(ModTiers.COPPER, 0.0F, -3.0F)));
-    COPPER_SHOVEL = new LightningShovelItem(ModTiers.COPPER, new Properties().attributes(ShovelItem.createAttributes(ModTiers.COPPER, 1.5F, -3.0F)));
-    COPPER_SWORD = new LightningSwordItem(ModTiers.COPPER, new Properties().attributes(SwordItem.createAttributes(ModTiers.COPPER, 3, -2.4F)));
+    COPPER_PICKAXE = new LightningPickaxeItem(new Properties().pickaxe(ModTiers.COPPER, 1.0F, -2.8F));
+    COPPER_AXE = new LightningAxeItem(ModTiers.COPPER, 6.0F, -3.0F, new Properties());
+    COPPER_HOE = new LightningHoeItem(ModTiers.COPPER, 0.0F, -3.0F, new Properties());
+    COPPER_SHOVEL = new LightningShovelItem(ModTiers.COPPER, 1.5F, -3.0F, new Properties());
+    COPPER_SWORD = new LightningSwordItem(new Properties().sword(ModTiers.COPPER, 3.0F, -2.4F));
 
-    COPPER_HELMET = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.HELMET, new Properties().durability(ArmorItem.Type.HELMET.getDurability(7)));
-    COPPER_CHESTPLATE = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.CHESTPLATE, new Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(7)));
-    COPPER_LEGGINGS = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, new Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(7)));
-    COPPER_BOOTS = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.BOOTS, new Properties().durability(ArmorItem.Type.BOOTS.getDurability(7)));
+    COPPER_HELMET = new LightningArmorItem(new Properties().humanoidArmor(ModArmorMaterials.COPPER, ArmorType.HELMET));
+    COPPER_CHESTPLATE = new LightningArmorItem(new Properties().humanoidArmor(ModArmorMaterials.COPPER, ArmorType.CHESTPLATE));
+    COPPER_LEGGINGS = new LightningArmorItem(new Properties().humanoidArmor(ModArmorMaterials.COPPER, ArmorType.LEGGINGS));
+    COPPER_BOOTS = new LightningArmorItem(new Properties().humanoidArmor(ModArmorMaterials.COPPER, ArmorType.BOOTS));
 
     COPPER_CHAIN = new BlockItem(ModBlocks.COPPER_CHAIN, new Properties());
     COPPER_GOLEM_SPAWN_EGG = Services.PLATFORM.createSpawnEggItem(() -> ModEntities.COPPER_GOLEM, 0x8A4129, 0xFC9982, new Properties());
-    COPPER_HORSE_ARMOR = new AnimalArmorItem(ModArmorMaterials.COPPER, AnimalArmorItem.BodyType.EQUESTRIAN, false, (new Properties()).stacksTo(1));
+    COPPER_HORSE_ARMOR = new Item(new Properties().horseArmor(ModArmorMaterials.COPPER));
 
     COPPER_PRESSURE_PLATE = new BlockItem(ModBlocks.COPPER_PRESSURE_PLATE, new Properties());
 

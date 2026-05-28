@@ -9,40 +9,40 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 
-public class LightningSwordItem extends SwordItem {
+public class LightningSwordItem extends Item {
 
-  public LightningSwordItem(Tier tier, Properties properties) {
-    super(tier, properties);
+  public LightningSwordItem(Properties properties) {
+    super(properties);
   }
 
   @Override
   public boolean isFoil(ItemStack stack) {
     CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-    return (data != null && data.contains("charged")) || super.isFoil(stack);
+    return (data != null && data.copyTag().contains("charged")) || super.isFoil(stack);
   }
 
   @Override
-  public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+  public void hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
     Level level = target.level();
-    LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level);
-    if (bolt != null && level instanceof ServerLevel serverLevel) {
-      bolt.moveTo(target.position());
-      serverLevel.addFreshEntity(bolt);
+    if (level instanceof ServerLevel serverLevel) {
+      LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(serverLevel, net.minecraft.world.entity.EntitySpawnReason.EVENT);
+      if (bolt != null) {
+        bolt.setPos(target.position());
+        serverLevel.addFreshEntity(bolt);
+      }
     }
-    return super.hurtEnemy(stack, target, attacker);
+    super.hurtEnemy(stack, target, attacker);
   }
 
   @Override
-  public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+  public void appendHoverText(ItemStack stack, Item.TooltipContext context, net.minecraft.world.item.component.TooltipDisplay display, java.util.function.Consumer<Component> tooltipComponentsBuilder, TooltipFlag isAdvanced) {
     if (isFoil(stack)) {
-      tooltipComponents.add(Component.literal("The residual lightning charge attracts more lightning..."));
+      tooltipComponentsBuilder.accept(Component.literal("The residual lightning charge attracts more lightning..."));
     }
-    super.appendHoverText(stack, context, tooltipComponents, isAdvanced);
+    super.appendHoverText(stack, context, display, tooltipComponentsBuilder, isAdvanced);
   }
 }

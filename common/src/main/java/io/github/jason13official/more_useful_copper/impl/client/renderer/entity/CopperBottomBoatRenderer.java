@@ -1,91 +1,79 @@
 package io.github.jason13official.more_useful_copper.impl.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Axis;
 import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
 import io.github.jason13official.more_useful_copper.impl.client.model.CopperBottomBoatModel;
+import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.state.CopperBottomBoatRenderState;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperBottomBoat;
-import net.minecraft.client.model.ListModel;
-import net.minecraft.client.model.WaterPatchModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
+import net.minecraft.client.renderer.entity.state.BoatRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.joml.Quaternionf;
 
-public class CopperBottomBoatRenderer extends EntityRenderer<CopperBottomBoat> {
+public class CopperBottomBoatRenderer extends EntityRenderer<CopperBottomBoat, CopperBottomBoatRenderState> {
 
-  //  private final Map<CopperBottomBoat.Type, Pair<Identifier, ListModel<CopperBottomBoat>>> boatResources;
-  private final Pair<Identifier, ListModel<CopperBottomBoat>> rlModelPair;
+  private static final Identifier COPPER_TEXTURE = MoreUsefulCopper.identifier("textures/entity/boat/copper_bottom_boat.png");
+  private static final Identifier EXPOSED_TEXTURE = MoreUsefulCopper.identifier("textures/entity/boat/copper_bottom_boat1.png");
+  private static final Identifier WEATHERED_TEXTURE = MoreUsefulCopper.identifier("textures/entity/boat/copper_bottom_boat2.png");
+  private static final Identifier OXIDIZED_TEXTURE = MoreUsefulCopper.identifier("textures/entity/boat/copper_bottom_boat3.png");
+
+  private final EntityModel<BoatRenderState> model;
 
   public CopperBottomBoatRenderer(Context context) {
     super(context);
     this.shadowRadius = 0.8F;
-//    this.boatResources = Stream.of(Type.values())
-//        .collect(ImmutableMap.toImmutableMap((type) -> type, (type) -> Pair.of(MoreUsefulCopper.identifier(getTextureLocation()), this.createBoatModel(context))));
-    this.rlModelPair = Pair.of(MoreUsefulCopper.identifier(getTextureLocation()), this.createBoatModel(context));
+    this.model = new CopperBottomBoatModel(context.bakeLayer(CopperBottomBoatModel.LAYER_LOCATION));
   }
 
-  private static String getTextureLocation() {
-    return "textures/entity/boat/copper_bottom_boat.png";
+  @Override
+  public CopperBottomBoatRenderState createRenderState() {
+    return new CopperBottomBoatRenderState();
   }
 
-  private ListModel<CopperBottomBoat> createBoatModel(Context context) {
-    ModelLayerLocation modellayerlocation = CopperBottomBoatModel.LAYER_LOCATION;
-    ModelPart modelpart = context.bakeLayer(modellayerlocation);
-    return new CopperBottomBoatModel(modelpart);
+  @Override
+  public void extractRenderState(CopperBottomBoat entity, CopperBottomBoatRenderState state, float partialTicks) {
+    super.extractRenderState(entity, state, partialTicks);
+    state.yRot = entity.getYRot(partialTicks);
+    state.hurtTime = entity.getHurtTime() - partialTicks;
+    state.hurtDir = entity.getHurtDir();
+    state.damageTime = Math.max(entity.getDamage() - partialTicks, 0.0F);
+    state.bubbleAngle = entity.getBubbleAngle(partialTicks);
+    state.isUnderWater = entity.isUnderWater();
+    state.rowingTimeLeft = entity.getRowingTime(0, partialTicks);
+    state.rowingTimeRight = entity.getRowingTime(1, partialTicks);
+    state.oxidizationLevel = entity.getOxidizationLevel();
   }
 
-  public void render(CopperBottomBoat boat, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+  @Override
+  public void submit(CopperBottomBoatRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState camera) {
+    Identifier texture = switch (state.oxidizationLevel) {
+      case 1 -> EXPOSED_TEXTURE;
+      case 2 -> WEATHERED_TEXTURE;
+      case 3 -> OXIDIZED_TEXTURE;
+      default -> COPPER_TEXTURE;
+    };
+
     poseStack.pushPose();
     poseStack.translate(0.0F, 0.375F, 0.0F);
-    poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - entityYaw));
-    float f = (float) boat.getHurtTime() - partialTicks;
-    float f1 = boat.getDamage() - partialTicks;
-    if (f1 < 0.0F) {
-      f1 = 0.0F;
+    poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - state.yRot));
+    float hurt = state.hurtTime;
+    if (hurt > 0.0F) {
+      poseStack.mulPose(Axis.XP.rotationDegrees(Mth.sin(hurt) * hurt * state.damageTime / 10.0F * state.hurtDir));
     }
-
-    if (f > 0.0F) {
-      poseStack.mulPose(Axis.XP.rotationDegrees(Mth.sin(f) * f * f1 / 10.0F * (float) boat.getHurtDir()));
+    if (!state.isUnderWater && !Mth.equal(state.bubbleAngle, 0.0F)) {
+      poseStack.mulPose(new Quaternionf().setAngleAxis(state.bubbleAngle * (float) (Math.PI / 180.0), 1.0F, 0.0F, 1.0F));
     }
-
-    float f2 = boat.getBubbleAngle(partialTicks);
-    if (!Mth.equal(f2, 0.0F)) {
-      poseStack.mulPose((new Quaternionf()).setAngleAxis(boat.getBubbleAngle(partialTicks) * ((float) Math.PI / 180F), 1.0F, 0.0F, 1.0F));
-    }
-
-    Identifier resourcelocation = this.getTextureLocation(boat);
-    ListModel<CopperBottomBoat> listmodel = this.rlModelPair.getSecond();
     poseStack.scale(-1.0F, -1.0F, 1.0F);
     poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
-    listmodel.setupAnim(boat, partialTicks, 0.0F, -0.1F, 0.0F, 0.0F);
-    VertexConsumer vertexconsumer = buffer.getBuffer(listmodel.renderType(resourcelocation));
-    listmodel.renderToBuffer(poseStack, vertexconsumer, packedLight, OverlayTexture.NO_OVERLAY, -1);
-    if (!boat.isUnderWater()) {
-      VertexConsumer vertexconsumer1 = buffer.getBuffer(RenderType.waterMask());
-      if (listmodel instanceof WaterPatchModel waterpatchmodel) {
-        waterpatchmodel.waterPatch().render(poseStack, vertexconsumer1, packedLight, OverlayTexture.NO_OVERLAY);
-      }
-    }
-
+    submitNodeCollector.submitModel(this.model, state, poseStack, texture, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
     poseStack.popPose();
-    super.render(boat, entityYaw, partialTicks, poseStack, buffer, packedLight);
-  }
-
-  public Identifier getTextureLocation(CopperBottomBoat entity) {
-
-    int oxi = entity.getOxidizationLevel();
-    String oxiSuffix = oxi == 0 ? "" : String.valueOf(oxi);
-
-    return MoreUsefulCopper.identifier("textures/entity/boat/copper_bottom_boat" + oxiSuffix + ".png");
+    super.submit(state, poseStack, submitNodeCollector, camera);
   }
 }
-

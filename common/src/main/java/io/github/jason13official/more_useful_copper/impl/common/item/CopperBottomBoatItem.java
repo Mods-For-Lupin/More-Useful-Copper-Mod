@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.player.Player;
@@ -27,11 +27,11 @@ public class CopperBottomBoatItem extends Item {
     super(properties);
   }
 
-  public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+  public InteractionResult use(Level level, Player player, InteractionHand hand) {
     ItemStack itemstack = player.getItemInHand(hand);
     HitResult hitresult = getPlayerPOVHitResult(level, player, Fluid.ANY);
     if (hitresult.getType() == Type.MISS) {
-      return InteractionResultHolder.pass(itemstack);
+      return InteractionResult.PASS;
     } else {
       Vec3 vec3 = player.getViewVector(1.0F);
       double d0 = 5.0F;
@@ -42,7 +42,7 @@ public class CopperBottomBoatItem extends Item {
         for (Entity entity : list) {
           AABB aabb = entity.getBoundingBox().inflate(entity.getPickRadius());
           if (aabb.contains(vec31)) {
-            return InteractionResultHolder.pass(itemstack);
+            return InteractionResult.PASS;
           }
         }
       }
@@ -51,9 +51,9 @@ public class CopperBottomBoatItem extends Item {
         CopperBottomBoat copperBoat = new CopperBottomBoat(level, hitresult.getLocation().x, hitresult.getLocation().y, hitresult.getLocation().z);
         copperBoat.setYRot(player.getYRot());
         if (!level.noCollision(copperBoat, copperBoat.getBoundingBox())) {
-          return InteractionResultHolder.fail(itemstack);
+          return InteractionResult.FAIL;
         } else {
-          if (!level.isClientSide) {
+          if (!level.isClientSide()) {
             level.addFreshEntity(copperBoat);
             level.gameEvent(player, GameEvent.ENTITY_PLACE, hitresult.getLocation());
             if (!player.getAbilities().instabuild) {
@@ -62,10 +62,10 @@ public class CopperBottomBoatItem extends Item {
           }
 
           player.awardStat(Stats.ITEM_USED.get(this));
-          return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
+          return InteractionResult.SUCCESS;
         }
       } else {
-        return InteractionResultHolder.pass(itemstack);
+        return InteractionResult.PASS;
       }
     }
   }

@@ -100,13 +100,10 @@ public class CommonLightningBoltMixinLogic {
     struck.stream().filter(entity -> entity instanceof LivingEntity).forEach(entity -> {
       LivingEntity living = (LivingEntity) entity;
 
-      living.getArmorSlots().forEach(stack -> {
-
-        Item armorItem = stack.getItem();
-
-        if (!(armorItem instanceof LightningArmorItem lightningArmor)) {
-          return;
-        }
+      for (EquipmentSlot slot : EquipmentSlot.VALUES) {
+        if (!slot.isArmor()) continue;
+        ItemStack stack = living.getItemBySlot(slot);
+        if (!(stack.getItem() instanceof LightningArmorItem)) continue;
 
         stack.update(DataComponents.CUSTOM_DATA, CustomData.EMPTY, existing -> {
           CompoundTag tag = existing.copyTag();
@@ -114,8 +111,8 @@ public class CommonLightningBoltMixinLogic {
           return CustomData.of(tag);
         });
 
-        living.setItemSlot(lightningArmor.getType().getSlot(), stack);
-      });
+        living.setItemSlot(slot, stack);
+      }
 
       if (isValid(living.getMainHandItem())) {
         ItemStack stack = living.getMainHandItem();

@@ -2,10 +2,10 @@ package io.github.jason13official.more_useful_copper.impl.common.block.entity;
 
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTiles;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class CopperComparatorBlockEntity extends BlockEntity {
 
@@ -16,15 +16,15 @@ public class CopperComparatorBlockEntity extends BlockEntity {
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-    super.saveAdditional(tag, registries);
-    tag.putInt("OutputSignal", this.output);
+  protected void saveAdditional(ValueOutput output) {
+    super.saveAdditional(output);
+    output.putInt("OutputSignal", this.output);
   }
 
   @Override
-  protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-    super.loadAdditional(tag, registries);
-    this.output = tag.getInt("OutputSignal");
+  protected void loadAdditional(ValueInput input) {
+    super.loadAdditional(input);
+    this.output = input.getIntOr("OutputSignal", 0);
   }
 
   public int getOutputSignal() {

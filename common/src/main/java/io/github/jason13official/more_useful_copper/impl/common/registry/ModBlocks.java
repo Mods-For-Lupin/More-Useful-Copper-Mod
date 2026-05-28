@@ -176,15 +176,15 @@ public class ModBlocks {
     consumer.accept(WAXED_WEATHERED_COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("waxed_weathered_copper_pressure_plate"));
     consumer.accept(WAXED_OXIDIZED_COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("waxed_oxidized_copper_pressure_plate"));
 
-    GARDEN_STAKE = new GardenStakeBlock(Properties.of().randomTicks().noOcclusion().noCollission().lightLevel(s -> s.getValue(GardenStakeBlock.LIT) ? 7 : 2));
+    GARDEN_STAKE = new GardenStakeBlock(Properties.of().randomTicks().noOcclusion().noCollision().lightLevel(s -> s.getValue(GardenStakeBlock.LIT) ? 7 : 2));
     consumer.accept(GARDEN_STAKE, MoreUsefulCopper.identifier("garden_stake"));
 
     SPARKSTONE_TORCH = new SparkstoneTorchBlock(
-        Properties.of().noCollission().instabreak()
+        Properties.of().noCollision().instabreak()
             .lightLevel(s -> s.getValue(SparkstoneTorchBlock.LIT) ? 10 : 0)
             .sound(SoundType.COPPER).pushReaction(PushReaction.DESTROY));
     SPARKSTONE_WALL_TORCH = new SparkstoneWallTorchBlock(
-        Properties.of().noCollission().instabreak()
+        Properties.of().noCollision().instabreak()
             .lightLevel(s -> s.getValue(SparkstoneWallTorchBlock.LIT) ? 10 : 0)
             .sound(SoundType.COPPER).pushReaction(PushReaction.DESTROY));
     SPARKSTONE_RELAY = new SparkstoneRelayBlock(
@@ -333,11 +333,11 @@ public class ModBlocks {
   }
 
   private static CopperButtonBlock weatheringCopperButton(WeatherState weatherState, int ticksToStayPressed) {
-    return new CopperButtonBlock(Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY), weatherState, BlockSetType.STONE, ticksToStayPressed, true);
+    return new CopperButtonBlock(Properties.of().noCollision().strength(0.5F).pushReaction(PushReaction.DESTROY), weatherState, BlockSetType.STONE, ticksToStayPressed, true);
   }
 
   private static WaxedButtonBlock waxedCopperButton(int ticksToStayPressed) {
-    return new WaxedButtonBlock(Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY), BlockSetType.STONE, ticksToStayPressed, true);
+    return new WaxedButtonBlock(Properties.of().noCollision().strength(0.5F).pushReaction(PushReaction.DESTROY), BlockSetType.STONE, ticksToStayPressed, true);
   }
 
   private static CopperComparatorBlock weatheringCopperComparator(WeatherState weatherState) {
@@ -350,42 +350,42 @@ public class ModBlocks {
 
   private static CopperRedstoneDustBlock weatheringCopperRedstoneDust(WeatherState weatherState) {
     return new CopperRedstoneDustBlock(
-        Properties.of().noCollission().instabreak().pushReaction(PushReaction.DESTROY), weatherState);
+        Properties.of().noCollision().instabreak().pushReaction(PushReaction.DESTROY), weatherState);
   }
 
   private static WaxedRedstoneDustBlock waxedCopperRedstoneDust(WeatherState weatherState) {
     return new WaxedRedstoneDustBlock(
-        Properties.of().noCollission().instabreak().pushReaction(PushReaction.DESTROY), weatherState);
+        Properties.of().noCollision().instabreak().pushReaction(PushReaction.DESTROY), weatherState);
   }
 
   private static CopperLeverBlock weatheringCopperLever(WeatherState weatherState) {
-    return new CopperLeverBlock(Properties.of().noCollission().strength(0.5F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), weatherState);
+    return new CopperLeverBlock(Properties.of().noCollision().strength(0.5F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY), weatherState);
   }
 
   private static WaxedLeverBlock waxedCopperLever() {
-    return new WaxedLeverBlock(Properties.of().noCollission().strength(0.5F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY));
+    return new WaxedLeverBlock(Properties.of().noCollision().strength(0.5F).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY));
   }
 
   private static CopperRedstoneTorchBlock copperRedstoneTorch(WeatherState weatherState) {
     return new CopperRedstoneTorchBlock(
-        Properties.of().noCollission().instabreak().lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 7 : 0).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY),
+        Properties.of().noCollision().instabreak().lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 7 : 0).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY),
         weatherState);
   }
 
   private static WaxedRedstoneTorchBlock waxedCopperRedstoneTorch() {
     return new WaxedRedstoneTorchBlock(
-        Properties.of().noCollission().instabreak().lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 7 : 0).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY));
+        Properties.of().noCollision().instabreak().lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 7 : 0).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY));
   }
 
   private static CopperWallRedstoneTorchBlock copperWallRedstoneTorch(WeatherState weatherState) {
     return new CopperWallRedstoneTorchBlock(
-        Properties.of().noCollission().instabreak().lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 7 : 0).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY),
+        Properties.of().noCollision().instabreak().lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 7 : 0).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY),
         weatherState);
   }
 
   private static WaxedWallRedstoneTorchBlock waxedCopperWallRedstoneTorch() {
     return new WaxedWallRedstoneTorchBlock(
-        Properties.of().noCollission().instabreak().lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 7 : 0).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY));
+        Properties.of().noCollision().instabreak().lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 7 : 0).sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY));
   }
 
   private static CopperRepeaterBlock copperRepeater(WeatherState weatherState) {
@@ -397,11 +397,11 @@ public class ModBlocks {
   }
 
   private static CopperChainBlock copperChain(WeatherState weatherState) {
-    return new CopperChainBlock(Properties.ofFullCopy(Blocks.CHAIN), weatherState);
+    return new CopperChainBlock(Properties.ofFullCopy(Blocks.IRON_CHAIN), weatherState);
   }
 
   private static WaxedChainBlock waxedCopperChain() {
-    return new WaxedChainBlock(Properties.ofFullCopy(Blocks.CHAIN));
+    return new WaxedChainBlock(Properties.ofFullCopy(Blocks.IRON_CHAIN));
   }
 
   private static CopperPressurePlateBlock copperPressurePlate(WeatherState weatherState) {
