@@ -50,7 +50,7 @@ public class MoreUsefulCopperNeoForge {
     });
 
     // on to client init
-    if (FMLLoader.getDist() == Dist.CLIENT) {
+    if (dist == Dist.CLIENT) {
       new MoreUsefulCopperClientNeoForge(EVENT_BUS);
     }
   }

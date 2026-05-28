@@ -70,7 +70,7 @@ public interface IPlatformHelper {
   /// @return a new [BlockEntityType]
   <T extends BlockEntity> BlockEntityType<T> tileBuilder(BiFunction<BlockPos, BlockState, T> constructor, Block... validBlocks);
 
-  SpawnEggItem createSpawnEggItem(Supplier<EntityType<? extends Mob>> entityTypeSupplier, int backgroundColor, int highlightColor, Properties properties);
+  SpawnEggItem createSpawnEggItem(Supplier<EntityType<? extends Mob>> entityTypeSupplier, Properties properties);
 
   WeightedPressurePlateBlock createWeightedPressurePlateBlock(int maxWeight, BlockBehaviour.Properties properties, BlockSetType type);
 

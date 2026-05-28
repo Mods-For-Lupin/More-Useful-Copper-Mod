@@ -183,7 +183,7 @@ public class ModItems {
     COPPER_BOOTS = new LightningArmorItem(new Properties().humanoidArmor(ModArmorMaterials.COPPER, ArmorType.BOOTS));
 
     COPPER_CHAIN = new BlockItem(ModBlocks.COPPER_CHAIN, new Properties());
-    COPPER_GOLEM_SPAWN_EGG = Services.PLATFORM.createSpawnEggItem(() -> ModEntities.COPPER_GOLEM, 0x8A4129, 0xFC9982, new Properties());
+    COPPER_GOLEM_SPAWN_EGG = Services.PLATFORM.createSpawnEggItem(() -> ModEntities.COPPER_GOLEM, new Properties());
     COPPER_HORSE_ARMOR = new Item(new Properties().horseArmor(ModArmorMaterials.COPPER));
 
     COPPER_PRESSURE_PLATE = new BlockItem(ModBlocks.COPPER_PRESSURE_PLATE, new Properties());

@@ -2,19 +2,16 @@ package io.github.jason13official.more_useful_copper.platform;
 
 import io.github.jason13official.more_useful_copper.platform.services.IPlatformHelper;
 import java.nio.file.Path;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTab.Builder;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item.Properties;
-import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.WeightedPressurePlateBlock;
@@ -25,8 +22,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
-import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 
 public class NeoForgePlatformHelper implements IPlatformHelper {
 
@@ -45,19 +42,19 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
   @Override
   public boolean isDevelopmentEnvironment() {
 
-    return !FMLLoader.isProduction();
+    return !FMLEnvironment.isProduction();
   }
 
   @Override
   public Path getGameDirectory() {
 
-    return FMLLoader.getGamePath();
+    return FMLLoader.getCurrent().getGameDir();
   }
 
   @Override
   public boolean isClient() {
 
-    return FMLLoader.getDist() == Dist.CLIENT;
+    return FMLEnvironment.getDist() == Dist.CLIENT;
   }
 
   @Override
@@ -67,29 +64,14 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
   }
 
   @Override
-  public <T extends BlockEntity> BlockEntityType.Builder<T> tileBuilder(BiFunction<BlockPos, BlockState, T> constructor, Block... validBlocks) {
+  public <T extends BlockEntity> BlockEntityType<T> tileBuilder(BiFunction<BlockPos, BlockState, T> constructor, Block... validBlocks) {
 
-    return BlockEntityType.Builder.of(constructor::apply, validBlocks);
+    return new BlockEntityType<>(constructor::apply, Set.of(validBlocks));
   }
 
   @Override
-  public PickaxeItem createPickaxeItem(Tier tier, Properties properties) {
-    return new PickaxeItem(tier, properties);
-  }
-
-  @Override
-  public AxeItem createAxeItem(Tier tier, Properties properties) {
-    return new AxeItem(tier, properties);
-  }
-
-  @Override
-  public HoeItem createHoeItem(Tier tier, Properties properties) {
-    return new HoeItem(tier, properties);
-  }
-
-  @Override
-  public SpawnEggItem createSpawnEggItem(Supplier<EntityType<? extends Mob>> entityTypeSupplier, int backgroundColor, int highlightColor, Properties properties) {
-    return new DeferredSpawnEggItem(entityTypeSupplier, backgroundColor, highlightColor, properties);
+  public SpawnEggItem createSpawnEggItem(Supplier<EntityType<? extends Mob>> entityTypeSupplier, Properties properties) {
+    return new SpawnEggItem(properties.spawnEgg(entityTypeSupplier.get()));
   }
 
   @Override

@@ -1,6 +1,5 @@
 package io.github.jason13official.more_useful_copper;
 
-import io.github.jason13official.more_useful_copper.api.client.rendering.BuiltinItemRendererRegistry;
 import io.github.jason13official.more_useful_copper.impl.client.model.CopperBottomBoatModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.CopperGolemModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.CreeperStatueModel;
@@ -8,24 +7,18 @@ import io.github.jason13official.more_useful_copper.impl.client.model.SkeletonSt
 import io.github.jason13official.more_useful_copper.impl.client.model.SpiderStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.ZombieStatueModel;
 import io.github.jason13official.more_useful_copper.impl.client.model.geom.ModModelLayers;
-import io.github.jason13official.more_useful_copper.impl.client.renderer.CopperStatueItemRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.blockentity.CopperBellRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperBottomBoatRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperGolemRenderer;
 import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.CopperStatueRenderer;
 import io.github.jason13official.more_useful_copper.impl.common.block.CopperRedstoneDustBlock;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue.Type;
-import io.github.jason13official.more_useful_copper.impl.common.item.MoistureCompassItem;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModBlocks;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
-import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTiles;
+import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -37,9 +30,7 @@ public class MoreUsefulCopperClientNeoForge {
   public MoreUsefulCopperClientNeoForge(final IEventBus modEventBus) {
 
     modEventBus.addListener((Consumer<FMLClientSetupEvent>) event -> {
-      MoreUsefulCopperClient.init(); // anything touching game objects must happen after registration
-      registerItemRenderers();
-      registerItemProperties();
+      MoreUsefulCopperClient.init();
     });
 
     modEventBus.addListener(this::registerBlockColorHandlers);
@@ -48,19 +39,6 @@ public class MoreUsefulCopperClientNeoForge {
     modEventBus.addListener(this::registerEntityRenderers);
 
     modEventBus.addListener(this::registerEntityModels);
-  }
-
-  private void registerItemProperties() {
-    ItemProperties.register(ModItems.MOISTURE_COMPASS, Identifier.withDefaultNamespace("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) -> {
-      return !MoistureCompassItem.isMoistureCompass(itemStack) ? CompassItem.getSpawnPosition(clientLevel) : MoistureCompassItem.getMoisturePosition(itemStack);
-    }));
-  }
-
-  private void registerItemRenderers() {
-    BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_CREEPER, CopperStatueItemRenderer.INSTANCE::renderByItem);
-    BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SKELETON, CopperStatueItemRenderer.INSTANCE::renderByItem);
-    BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_SPIDER, CopperStatueItemRenderer.INSTANCE::renderByItem);
-    BuiltinItemRendererRegistry.INSTANCE.register(ModItems.COPPER_STATUE_ZOMBIE, CopperStatueItemRenderer.INSTANCE::renderByItem);
   }
 
   private void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
@@ -88,14 +66,14 @@ public class MoreUsefulCopperClientNeoForge {
     }
   }
 
-  private void registerBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
-    event.register((state, level, pos, tint) -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.UNAFFECTED), ModBlocks.COPPER_REDSTONE_DUST,
-        ModBlocks.WAXED_COPPER_REDSTONE_DUST);
-    event.register((state, level, pos, tint) -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.EXPOSED), ModBlocks.EXPOSED_COPPER_REDSTONE_DUST,
-        ModBlocks.WAXED_EXPOSED_COPPER_REDSTONE_DUST);
-    event.register((state, level, pos, tint) -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.WEATHERED),
+  private void registerBlockColorHandlers(RegisterColorHandlersEvent.BlockTintSources event) {
+    event.register(List.of(state -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.UNAFFECTED)),
+        ModBlocks.COPPER_REDSTONE_DUST, ModBlocks.WAXED_COPPER_REDSTONE_DUST);
+    event.register(List.of(state -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.EXPOSED)),
+        ModBlocks.EXPOSED_COPPER_REDSTONE_DUST, ModBlocks.WAXED_EXPOSED_COPPER_REDSTONE_DUST);
+    event.register(List.of(state -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.WEATHERED)),
         ModBlocks.WEATHERED_COPPER_REDSTONE_DUST, ModBlocks.WAXED_WEATHERED_COPPER_REDSTONE_DUST);
-    event.register((state, level, pos, tint) -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.OXIDIZED), ModBlocks.OXIDIZED_COPPER_REDSTONE_DUST,
-        ModBlocks.WAXED_OXIDIZED_COPPER_REDSTONE_DUST);
+    event.register(List.of(state -> CopperRedstoneDustBlock.getColorForPower(state.getValue(CopperRedstoneDustBlock.POWER), WeatherState.OXIDIZED)),
+        ModBlocks.OXIDIZED_COPPER_REDSTONE_DUST, ModBlocks.WAXED_OXIDIZED_COPPER_REDSTONE_DUST);
   }
 }

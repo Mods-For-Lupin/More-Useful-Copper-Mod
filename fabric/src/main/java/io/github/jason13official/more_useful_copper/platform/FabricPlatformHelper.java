@@ -5,18 +5,15 @@ import java.nio.file.Path;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import net.fabricmc.api.EnvType;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.CreativeModeTab.Builder;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item.Properties;
-import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.SpawnEggItem;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.WeightedPressurePlateBlock;
@@ -67,33 +64,18 @@ public class FabricPlatformHelper implements IPlatformHelper {
   @Override
   public Builder tabBuilder() {
 
-    return FabricItemGroup.builder();
+    return FabricCreativeModeTab.builder();
   }
 
   @Override
-  public <T extends BlockEntity> BlockEntityType.Builder<T> tileBuilder(BiFunction<BlockPos, BlockState, T> constructor, Block... validBlocks) {
+  public <T extends BlockEntity> BlockEntityType<T> tileBuilder(BiFunction<BlockPos, BlockState, T> constructor, Block... validBlocks) {
 
-    return BlockEntityType.Builder.of(constructor::apply, validBlocks);
+    return FabricBlockEntityTypeBuilder.create(constructor::apply, validBlocks).build();
   }
 
   @Override
-  public PickaxeItem createPickaxeItem(Tier tier, Properties properties) {
-    return new PickaxeItem(tier, properties);
-  }
-
-  @Override
-  public AxeItem createAxeItem(Tier tier, Properties properties) {
-    return new AxeItem(tier, properties);
-  }
-
-  @Override
-  public HoeItem createHoeItem(Tier tier, Properties properties) {
-    return new HoeItem(tier, properties);
-  }
-
-  @Override
-  public SpawnEggItem createSpawnEggItem(Supplier<EntityType<? extends Mob>> entityTypeSupplier, int backgroundColor, int highlightColor, Properties properties) {
-    return new SpawnEggItem(entityTypeSupplier.get(), backgroundColor, highlightColor, properties);
+  public SpawnEggItem createSpawnEggItem(Supplier<EntityType<? extends Mob>> entityTypeSupplier, Properties properties) {
+    return new SpawnEggItem(properties.spawnEgg(entityTypeSupplier.get()));
   }
 
   @Override
