@@ -6,12 +6,8 @@
     "S"
   ],
   "key": {
-    "F": {
-      "item": "minecraft:flint"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
+    "F": "minecraft:flint",
+    "S": "minecraft:stick"
   },
   "result": {
     "id": "more_useful_copper:wax_scraper"

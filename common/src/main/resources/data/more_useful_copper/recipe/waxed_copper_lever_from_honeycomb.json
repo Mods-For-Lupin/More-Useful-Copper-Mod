@@ -3,12 +3,8 @@
   "category": "redstone",
   "group": "waxed_copper_lever",
   "ingredients": [
-    {
-      "item": "more_useful_copper:copper_lever"
-    },
-    {
-      "item": "minecraft:honeycomb"
-    }
+    "more_useful_copper:copper_lever",
+    "minecraft:honeycomb"
   ],
   "result": {
     "id": "more_useful_copper:waxed_copper_lever"

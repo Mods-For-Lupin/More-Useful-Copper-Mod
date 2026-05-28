@@ -7,12 +7,8 @@
     "I"
   ],
   "key": {
-    "I": {
-      "item": "minecraft:copper_ingot"
-    },
-    "n": {
-      "item": "more_useful_copper:copper_nugget"
-    }
+    "I": "minecraft:copper_ingot",
+    "n": "more_useful_copper:copper_nugget"
   },
   "result": {
     "id": "more_useful_copper:copper_chain"

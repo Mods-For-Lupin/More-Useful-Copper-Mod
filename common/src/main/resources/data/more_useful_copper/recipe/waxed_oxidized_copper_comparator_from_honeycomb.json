@@ -3,12 +3,8 @@
   "category": "redstone",
   "group": "waxed_copper_comparator",
   "ingredients": [
-    {
-      "item": "more_useful_copper:oxidized_copper_comparator"
-    },
-    {
-      "item": "minecraft:honeycomb"
-    }
+    "more_useful_copper:oxidized_copper_comparator",
+    "minecraft:honeycomb"
   ],
   "result": {
     "id": "more_useful_copper:waxed_oxidized_copper_comparator"

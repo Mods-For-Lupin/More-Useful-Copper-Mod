@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": {
-      "item": "minecraft:water_bucket"
-    },
-    "X": {
-      "item": "minecraft:glass_pane"
-    },
-    "C": {
-      "item": "minecraft:compass"
-    }
+    "#": "minecraft:water_bucket",
+    "X": "minecraft:glass_pane",
+    "C": "minecraft:compass"
   },
   "pattern": [
     " # ",

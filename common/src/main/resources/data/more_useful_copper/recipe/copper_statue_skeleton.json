@@ -7,12 +7,8 @@
     "IGI"
   ],
   "key": {
-    "I": {
-      "item": "minecraft:copper_ingot"
-    },
-    "G": {
-      "item": "minecraft:bone"
-    }
+    "I": "minecraft:copper_ingot",
+    "G": "minecraft:bone"
   },
   "result": {
     "id": "more_useful_copper:copper_statue_skeleton"

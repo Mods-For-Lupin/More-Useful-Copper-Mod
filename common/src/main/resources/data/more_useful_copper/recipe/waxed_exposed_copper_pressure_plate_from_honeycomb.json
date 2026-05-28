@@ -3,12 +3,8 @@
   "category": "redstone",
   "group": "waxed_copper_pressure_plate",
   "ingredients": [
-    {
-      "item": "more_useful_copper:exposed_copper_pressure_plate"
-    },
-    {
-      "item": "minecraft:honeycomb"
-    }
+    "more_useful_copper:exposed_copper_pressure_plate",
+    "minecraft:honeycomb"
   ],
   "result": {
     "id": "more_useful_copper:waxed_exposed_copper_pressure_plate"
