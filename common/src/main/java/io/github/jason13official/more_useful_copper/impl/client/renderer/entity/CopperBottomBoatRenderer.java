@@ -16,14 +16,14 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import org.joml.Quaternionf;
 
 public class CopperBottomBoatRenderer extends EntityRenderer<CopperBottomBoat> {
 
-  //  private final Map<CopperBottomBoat.Type, Pair<ResourceLocation, ListModel<CopperBottomBoat>>> boatResources;
-  private final Pair<ResourceLocation, ListModel<CopperBottomBoat>> rlModelPair;
+  //  private final Map<CopperBottomBoat.Type, Pair<Identifier, ListModel<CopperBottomBoat>>> boatResources;
+  private final Pair<Identifier, ListModel<CopperBottomBoat>> rlModelPair;
 
   public CopperBottomBoatRenderer(Context context) {
     super(context);
@@ -62,7 +62,7 @@ public class CopperBottomBoatRenderer extends EntityRenderer<CopperBottomBoat> {
       poseStack.mulPose((new Quaternionf()).setAngleAxis(boat.getBubbleAngle(partialTicks) * ((float) Math.PI / 180F), 1.0F, 0.0F, 1.0F));
     }
 
-    ResourceLocation resourcelocation = this.getTextureLocation(boat);
+    Identifier resourcelocation = this.getTextureLocation(boat);
     ListModel<CopperBottomBoat> listmodel = this.rlModelPair.getSecond();
     poseStack.scale(-1.0F, -1.0F, 1.0F);
     poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
@@ -80,7 +80,7 @@ public class CopperBottomBoatRenderer extends EntityRenderer<CopperBottomBoat> {
     super.render(boat, entityYaw, partialTicks, poseStack, buffer, packedLight);
   }
 
-  public ResourceLocation getTextureLocation(CopperBottomBoat entity) {
+  public Identifier getTextureLocation(CopperBottomBoat entity) {
 
     int oxi = entity.getOxidizationLevel();
     String oxiSuffix = oxi == 0 ? "" : String.valueOf(oxi);

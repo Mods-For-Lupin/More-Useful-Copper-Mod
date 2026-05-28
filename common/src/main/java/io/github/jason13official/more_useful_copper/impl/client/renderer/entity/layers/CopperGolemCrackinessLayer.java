@@ -8,15 +8,15 @@ import java.util.Map;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Crackiness;
 
 public class CopperGolemCrackinessLayer extends RenderLayer<CopperGolem, CopperGolemModel<CopperGolem>> {
 
-  private static final Map<Crackiness.Level, ResourceLocation> resourceLocations = ImmutableMap.of(
-    Crackiness.Level.LOW, ResourceLocation.withDefaultNamespace("textures/entity/iron_golem/iron_golem_crackiness_low.png"),
-    Crackiness.Level.MEDIUM, ResourceLocation.withDefaultNamespace("textures/entity/iron_golem/iron_golem_crackiness_medium.png"),
-    Crackiness.Level.HIGH, ResourceLocation.withDefaultNamespace("textures/entity/iron_golem/iron_golem_crackiness_high.png")
+  private static final Map<Crackiness.Level, Identifier> resourceLocations = ImmutableMap.of(
+    Crackiness.Level.LOW, Identifier.withDefaultNamespace("textures/entity/iron_golem/iron_golem_crackiness_low.png"),
+    Crackiness.Level.MEDIUM, Identifier.withDefaultNamespace("textures/entity/iron_golem/iron_golem_crackiness_medium.png"),
+    Crackiness.Level.HIGH, Identifier.withDefaultNamespace("textures/entity/iron_golem/iron_golem_crackiness_high.png")
   );
 
   public CopperGolemCrackinessLayer(RenderLayerParent<CopperGolem, CopperGolemModel<CopperGolem>> renderer) {
@@ -29,7 +29,7 @@ public class CopperGolemCrackinessLayer extends RenderLayer<CopperGolem, CopperG
     if (!livingEntity.isInvisible()) {
       Crackiness.Level crackiness = livingEntity.getCrackiness();
       if (crackiness != Crackiness.Level.NONE) {
-        ResourceLocation resourcelocation = resourceLocations.get(crackiness);
+        Identifier resourcelocation = resourceLocations.get(crackiness);
         renderColoredCutoutModel(this.getParentModel(), resourcelocation, poseStack, buffer, packedLight, livingEntity, -1);
       }
     }

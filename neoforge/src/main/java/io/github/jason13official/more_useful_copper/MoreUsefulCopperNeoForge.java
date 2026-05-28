@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -56,7 +56,7 @@ public class MoreUsefulCopperNeoForge {
   }
 
   /// Mimicking Botania's registration
-  public <T> void bind(ResourceKey<Registry<T>> registryKey, Consumer<BiConsumer<T, ResourceLocation>> source) {
+  public <T> void bind(ResourceKey<Registry<T>> registryKey, Consumer<BiConsumer<T, Identifier>> source) {
 
 //    source.accept((t, rl) -> Registry.register(registry, rl, t));
     EVENT_BUS.addListener((Consumer<RegisterEvent>) event -> {

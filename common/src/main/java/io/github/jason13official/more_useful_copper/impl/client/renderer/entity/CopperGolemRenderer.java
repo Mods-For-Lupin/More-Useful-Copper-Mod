@@ -8,11 +8,11 @@ import io.github.jason13official.more_useful_copper.impl.client.renderer.entity.
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperGolem;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class CopperGolemRenderer extends MobRenderer<CopperGolem, CopperGolemModel<CopperGolem>> {
 
-  private static final ResourceLocation TEXTURE_LOCATION = MoreUsefulCopper.identifier("textures/entity/copper_golem/copper_golem.png");
+  private static final Identifier TEXTURE_LOCATION = MoreUsefulCopper.identifier("textures/entity/copper_golem/copper_golem.png");
 
   public CopperGolemRenderer(EntityRendererProvider.Context context) {
     super(context, new CopperGolemModel<>(context.bakeLayer(CopperGolemModel.LAYER_LOCATION)), 0.7F);
@@ -21,7 +21,7 @@ public class CopperGolemRenderer extends MobRenderer<CopperGolem, CopperGolemMod
   }
 
   @Override
-  public ResourceLocation getTextureLocation(CopperGolem entity) {
+  public Identifier getTextureLocation(CopperGolem entity) {
     return TEXTURE_LOCATION;
   }
 

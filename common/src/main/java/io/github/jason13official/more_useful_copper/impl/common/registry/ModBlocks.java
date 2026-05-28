@@ -25,7 +25,7 @@ import io.github.jason13official.more_useful_copper.impl.common.block.sparkstone
 import io.github.jason13official.more_useful_copper.impl.common.block.sparkstone.SparkstoneTorchBlock;
 import io.github.jason13official.more_useful_copper.impl.common.block.sparkstone.SparkstoneWallTorchBlock;
 import java.util.function.BiConsumer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -136,7 +136,7 @@ public class ModBlocks {
   public static SparkstoneWallTorchBlock SPARKSTONE_WALL_TORCH;
   public static SparkstoneRelayBlock SPARKSTONE_RELAY;
 
-  public static void register(BiConsumer<Block, ResourceLocation> consumer) {
+  public static void register(BiConsumer<Block, Identifier> consumer) {
 
     COPPER_CHAIN = copperChain(WeatherState.UNAFFECTED);
     EXPOSED_COPPER_CHAIN = copperChain(WeatherState.EXPOSED);

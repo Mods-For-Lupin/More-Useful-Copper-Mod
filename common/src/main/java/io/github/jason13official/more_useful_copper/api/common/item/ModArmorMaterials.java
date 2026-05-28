@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ArmorItem;
@@ -48,9 +48,9 @@ public class ModArmorMaterials {
     }
     return Registry.registerForHolder(
       BuiltInRegistries.ARMOR_MATERIAL,
-      ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, name),
+      Identifier.fromNamespaceAndPath(Constants.MOD_ID, name),
       new ArmorMaterial(fullMap, enchantmentValue, equipSound, repairIngredient,
-        List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, name))),
+        List.of(new ArmorMaterial.Layer(Identifier.fromNamespaceAndPath(Constants.MOD_ID, name))),
         toughness, knockbackResistance)
     );
   }

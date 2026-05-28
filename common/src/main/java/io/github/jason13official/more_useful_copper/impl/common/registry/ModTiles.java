@@ -5,7 +5,7 @@ import io.github.jason13official.more_useful_copper.impl.common.block.entity.Cop
 import io.github.jason13official.more_useful_copper.impl.common.block.entity.CopperComparatorBlockEntity;
 import io.github.jason13official.more_useful_copper.platform.Services;
 import java.util.function.BiConsumer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class ModTiles {
@@ -13,7 +13,7 @@ public class ModTiles {
   public static BlockEntityType<CopperComparatorBlockEntity> COPPER_COMPARATOR;
   public static BlockEntityType<CopperBellBlockEntity> COPPER_BELL;
 
-  public static void register(BiConsumer<BlockEntityType<?>, ResourceLocation> consumer) {
+  public static void register(BiConsumer<BlockEntityType<?>, Identifier> consumer) {
     COPPER_COMPARATOR = Services.PLATFORM.tileBuilder(
         CopperComparatorBlockEntity::new,
         ModBlocks.COPPER_COMPARATOR,

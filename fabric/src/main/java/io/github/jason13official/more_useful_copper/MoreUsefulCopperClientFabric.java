@@ -30,7 +30,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CompassItem;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 
@@ -101,7 +101,7 @@ public class MoreUsefulCopperClientFabric implements ClientModInitializer {
   }
 
   private void registerItemProperties() {
-    ItemProperties.register(ModItems.MOISTURE_COMPASS, ResourceLocation.withDefaultNamespace("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) ->
+    ItemProperties.register(ModItems.MOISTURE_COMPASS, Identifier.withDefaultNamespace("angle"), new CompassItemPropertyFunction((clientLevel, itemStack, entity) ->
         !MoistureCompassItem.isMoistureCompass(itemStack) ? CompassItem.getSpawnPosition(clientLevel) : MoistureCompassItem.getMoisturePosition(itemStack)
     ));
   }

@@ -18,16 +18,16 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 public class CopperBellRenderer implements BlockEntityRenderer<CopperBellBlockEntity> {
 
   public static final Material BELL_RESOURCE_LOCATION = new Material(TextureAtlas.LOCATION_BLOCKS, MoreUsefulCopper.identifier("entity/bell/bell_body"));
-  public static final ResourceLocation COPPER_BELL_TEXTURE = MoreUsefulCopper.identifier("textures/entity/bell/bell_body.png");
-  public static final ResourceLocation EXPOSED_COPPER_BELL_TEXTURE = MoreUsefulCopper.identifier("textures/entity/bell/bell_body1.png");
-  public static final ResourceLocation WEATHERED_COPPER_BELL_TEXTURE = MoreUsefulCopper.identifier("textures/entity/bell/bell_body2.png");
-  public static final ResourceLocation OXIDIZED_COPPER_BELL_TEXTURE = MoreUsefulCopper.identifier("textures/entity/bell/bell_body3.png");
+  public static final Identifier COPPER_BELL_TEXTURE = MoreUsefulCopper.identifier("textures/entity/bell/bell_body.png");
+  public static final Identifier EXPOSED_COPPER_BELL_TEXTURE = MoreUsefulCopper.identifier("textures/entity/bell/bell_body1.png");
+  public static final Identifier WEATHERED_COPPER_BELL_TEXTURE = MoreUsefulCopper.identifier("textures/entity/bell/bell_body2.png");
+  public static final Identifier OXIDIZED_COPPER_BELL_TEXTURE = MoreUsefulCopper.identifier("textures/entity/bell/bell_body3.png");
   private static final String BELL_BODY = "bell_body";
   private final ModelPart bellBody;
 
@@ -67,7 +67,7 @@ public class CopperBellRenderer implements BlockEntityRenderer<CopperBellBlockEn
     // VertexConsumer vertexconsumer = BELL_RESOURCE_LOCATION.buffer(buffer, RenderType::entitySolid);
 
     // SHOULD be synced via block state updating oxidization property
-    ResourceLocation texture = switch (blockEntity.oxidization) {
+    Identifier texture = switch (blockEntity.oxidization) {
 
       case 1 -> EXPOSED_COPPER_BELL_TEXTURE;
       case 2 -> WEATHERED_COPPER_BELL_TEXTURE;

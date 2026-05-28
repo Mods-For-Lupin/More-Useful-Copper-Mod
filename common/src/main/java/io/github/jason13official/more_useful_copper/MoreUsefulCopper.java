@@ -4,7 +4,7 @@ import io.github.jason13official.more_useful_copper.api.common.block.IOxidizable
 import io.github.jason13official.more_useful_copper.api.common.block.WaxableRegistry;
 import io.github.jason13official.more_useful_copper.impl.common.tags.ModBlockTags;
 import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class MoreUsefulCopper {
 
@@ -16,8 +16,8 @@ public class MoreUsefulCopper {
     ModItemTags.init();
   }
 
-  public static ResourceLocation identifier(String path) {
+  public static Identifier identifier(String path) {
 
-    return ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, path);
+    return Identifier.fromNamespaceAndPath(Constants.MOD_ID, path);
   }
 }

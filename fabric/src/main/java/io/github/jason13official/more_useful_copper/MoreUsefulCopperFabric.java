@@ -13,7 +13,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 
 public class MoreUsefulCopperFabric implements ModInitializer {
@@ -40,7 +40,7 @@ public class MoreUsefulCopperFabric implements ModInitializer {
   }
 
   /// Mimicking Botania's registration
-  public <T> void bind(Registry<T> registry, Consumer<BiConsumer<T, ResourceLocation>> source) {
+  public <T> void bind(Registry<T> registry, Consumer<BiConsumer<T, Identifier>> source) {
 
     source.accept((t, rl) -> Registry.register(registry, rl, t));
   }

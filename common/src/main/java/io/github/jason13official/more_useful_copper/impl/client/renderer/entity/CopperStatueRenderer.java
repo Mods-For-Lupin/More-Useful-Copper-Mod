@@ -21,12 +21,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import oshi.util.tuples.Pair;
 
 public class CopperStatueRenderer extends EntityRenderer<CopperStatue> {
 
-  private final Map<Type, Pair<ResourceLocation, EntityModel<CopperStatue>>> statueResources;
+  private final Map<Type, Pair<Identifier, EntityModel<CopperStatue>>> statueResources;
 
 //  public CopperStatueRenderer(Context context, CopperStatueModel model, float shadowRadius) {
 //    super(context, model, shadowRadius);
@@ -37,7 +37,7 @@ public class CopperStatueRenderer extends EntityRenderer<CopperStatue> {
 
     this.shadowRadius = 0.0f;
     this.statueResources = Stream.of(Type.values()).collect(ImmutableMap.toImmutableMap(type -> type,
-        type -> new Pair<ResourceLocation, EntityModel<CopperStatue>>(MoreUsefulCopper.identifier(getTextureLocation(type)), this.createStatueModel(context, type))));
+        type -> new Pair<Identifier, EntityModel<CopperStatue>>(MoreUsefulCopper.identifier(getTextureLocation(type)), this.createStatueModel(context, type))));
   }
 
   private static String getTextureLocation(Type type) {
@@ -58,7 +58,7 @@ public class CopperStatueRenderer extends EntityRenderer<CopperStatue> {
   }
 
   @Override
-  public ResourceLocation getTextureLocation(CopperStatue statue) {
+  public Identifier getTextureLocation(CopperStatue statue) {
     return this.statueResources.get(statue.getVariant()).getA();
   }
 
@@ -79,8 +79,8 @@ public class CopperStatueRenderer extends EntityRenderer<CopperStatue> {
     // LivingEntityRenderer: get the model out of the ground
     poseStack.translate(0.0F, -1.501F, 0.0F);
 
-    Pair<ResourceLocation, EntityModel<CopperStatue>> pair = this.statueResources.get(entity.getVariant());
-    ResourceLocation resourceLocation = pair.getA();
+    Pair<Identifier, EntityModel<CopperStatue>> pair = this.statueResources.get(entity.getVariant());
+    Identifier resourceLocation = pair.getA();
     EntityModel<CopperStatue> model = pair.getB();
 
     VertexConsumer vertexConsumer = buffer.getBuffer(model.renderType(resourceLocation));

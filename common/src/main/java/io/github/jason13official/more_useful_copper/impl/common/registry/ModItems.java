@@ -20,7 +20,7 @@ import io.github.jason13official.more_useful_copper.impl.common.item.tool.Lightn
 import io.github.jason13official.more_useful_copper.platform.Services;
 import java.util.function.BiConsumer;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.AnimalArmorItem;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.AxeItem;
@@ -69,7 +69,7 @@ public class ModItems {
 
   public static Item COPPER_PRESSURE_PLATE;
 
-  public static void register(BiConsumer<Item, ResourceLocation> consumer) {
+  public static void register(BiConsumer<Item, Identifier> consumer) {
 
     registerLegacyItems(consumer);
 
@@ -169,7 +169,7 @@ public class ModItems {
     consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_REPEATER, new Properties()), MoreUsefulCopper.identifier("waxed_oxidized_copper_repeater"));
   }
 
-  private static void registerLegacyItems(BiConsumer<Item, ResourceLocation> consumer) {
+  private static void registerLegacyItems(BiConsumer<Item, Identifier> consumer) {
 
     COPPER_NUGGET = new Item(new Properties());
     COPPER_SHEARS = new ShearsItem((new Properties()).durability(238));

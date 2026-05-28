@@ -6,7 +6,7 @@ import io.github.jason13official.more_useful_copper.impl.common.entity.CopperGol
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue;
 import io.github.jason13official.more_useful_copper.impl.common.entity.ThrownLightningBottle;
 import java.util.function.BiConsumer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 
@@ -20,7 +20,7 @@ public class ModEntities {
 
   public static EntityType<CopperGolem> COPPER_GOLEM;
 
-  public static void register(BiConsumer<EntityType<?>, ResourceLocation> consumer) {
+  public static void register(BiConsumer<EntityType<?>, Identifier> consumer) {
 
     COPPER_STATUE = EntityType.Builder.<CopperStatue>of(CopperStatue::new, MobCategory.MISC).sized(0.5F, 1.975F).clientTrackingRange(10).build(MoreUsefulCopper.identifier("copper_statue").toString());
     consumer.accept(COPPER_STATUE, MoreUsefulCopper.identifier("copper_statue"));

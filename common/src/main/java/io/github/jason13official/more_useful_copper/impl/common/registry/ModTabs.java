@@ -5,7 +5,7 @@ import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
 import io.github.jason13official.more_useful_copper.platform.Services;
 import java.util.function.BiConsumer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTab.Output;
 import net.minecraft.world.item.ItemStack;
@@ -15,7 +15,7 @@ public class ModTabs {
 
   public static CreativeModeTab MORE_USEFUL_COPPER;
 
-  public static void register(BiConsumer<CreativeModeTab, ResourceLocation> consumer) {
+  public static void register(BiConsumer<CreativeModeTab, Identifier> consumer) {
 
     MORE_USEFUL_COPPER = Services.PLATFORM.tabBuilder()
         .icon(() -> new ItemStack(Items.COPPER_BLOCK))
