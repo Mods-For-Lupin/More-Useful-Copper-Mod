@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
@@ -81,7 +82,7 @@ public class CopperStatueRenderer extends EntityRenderer<CopperStatue, CopperSta
 
     EntityModel<EntityRenderState> model = this.models.get(state.variant);
     if (model != null && state.texture != null) {
-      submitNodeCollector.submitModel(model, state, poseStack, state.texture, state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null);
+      submitNodeCollector.submitModel(model, state, poseStack, RenderTypes.entityCutout(state.texture), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, null);
     }
 
     poseStack.popPose();
