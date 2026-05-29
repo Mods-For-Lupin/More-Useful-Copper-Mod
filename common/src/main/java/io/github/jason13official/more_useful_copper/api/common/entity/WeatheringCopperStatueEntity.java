@@ -94,7 +94,7 @@ public abstract class WeatheringCopperStatueEntity extends AbstractStatueEntity 
     }
   }
 
-  /// Handles wax application (honeycomb), wax removal ([ModItemTags.WAX_SCRAPER]), and manual oxidation ([ModItemTags.MANUAL_OXIDIZER]).
+  /// Handles wax application (honeycomb), wax removal (ModItemTags.WAX_SCRAPER), and manual oxidation (ModItemTags.MANUAL_OXIDIZER).
   @Override
   public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
     ItemStack stack = player.getItemInHand(hand);

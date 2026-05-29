@@ -1,6 +1,7 @@
 package io.github.jason13official.more_useful_copper.impl.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.mojang.serialization.MapCodec;
 import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
 import io.github.jason13official.more_useful_copper.impl.client.model.CreeperStatueModel;
@@ -52,8 +53,13 @@ public class CopperStatueSpecialRenderer implements NoDataSpecialModelRenderer {
     poseStack.scale(scale, scale, scale);
     poseStack.scale(-1.0F, -1.0F, 1.0F);
     poseStack.translate(0.0F, -1.501F, 0.0F);
+    extracted(poseStack);
     collector.submitModel(model, DUMMY_STATE, poseStack, renderType, light, OverlayTexture.NO_OVERLAY, outlineColor, null);
     poseStack.popPose();
+  }
+
+  private static void extracted(PoseStack poseStack) {
+    poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
   }
 
   @Override
@@ -62,10 +68,10 @@ public class CopperStatueSpecialRenderer implements NoDataSpecialModelRenderer {
   }
 
   public enum Unbaked implements NoDataSpecialModelRenderer.Unbaked {
-    CREEPER (CopperStatue.Type.CREEPER,  "copper_statue_creeper",  0.31F),
-    SKELETON(CopperStatue.Type.SKELETON, "copper_statue_skeleton", 0.25F),
-    SPIDER  (CopperStatue.Type.SPIDER,   "copper_statue_spider",   0.40F),
-    ZOMBIE  (CopperStatue.Type.ZOMBIE,   "copper_statue_zombie",   0.25F);
+    CREEPER (CopperStatue.Type.CREEPER,  "copper_statue_creeper",  0.31F + 0.2f),
+    SKELETON(CopperStatue.Type.SKELETON, "copper_statue_skeleton", 0.25F + 0.2f),
+    SPIDER  (CopperStatue.Type.SPIDER,   "copper_statue_spider",   0.40F + 0.2f),
+    ZOMBIE  (CopperStatue.Type.ZOMBIE,   "copper_statue_zombie",   0.25F + 0.2f);
 
     public final MapCodec<Unbaked> MAP_CODEC = MapCodec.unit(this);
     public final String id;
