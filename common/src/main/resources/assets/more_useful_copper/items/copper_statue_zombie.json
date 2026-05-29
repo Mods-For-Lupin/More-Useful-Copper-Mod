@@ -1,6 +1,9 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "more_useful_copper:item/copper_statue_zombie"
+    "type": "minecraft:special",
+    "base": "minecraft:item/generated",
+    "model": {
+      "type": "more_useful_copper:copper_statue_zombie"
+    }
   }
 }

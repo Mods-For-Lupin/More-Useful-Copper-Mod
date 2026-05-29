@@ -13,7 +13,9 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.special.SpecialModelRenderers;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 
 public class MoreUsefulCopperClientFabric implements ClientModInitializer {
@@ -22,6 +24,7 @@ public class MoreUsefulCopperClientFabric implements ClientModInitializer {
   public void onInitializeClient() {
 
     MoreUsefulCopperClient.init();
+    MoreUsefulCopperClient.registerSpecialModelRenderers(SpecialModelRenderers.ID_MAPPER::put);
 
     this.registerEntityRenderers();
 
@@ -46,9 +49,9 @@ public class MoreUsefulCopperClientFabric implements ClientModInitializer {
   }
 
   private void registerEntityRenderers() {
-    EntityRendererRegistry.register(ModEntities.COPPER_STATUE, CopperStatueRenderer::new);
-    EntityRendererRegistry.register(ModEntities.LIGHTNING_BOTTLE, ThrownItemRenderer::new);
-    EntityRendererRegistry.register(ModEntities.COPPER_GOLEM, CopperGolemRenderer::new);
-    EntityRendererRegistry.register(ModEntities.COPPER_BOTTOM_BOAT, CopperBottomBoatRenderer::new);
+    EntityRenderers.register(ModEntities.COPPER_STATUE, CopperStatueRenderer::new);
+    EntityRenderers.register(ModEntities.LIGHTNING_BOTTLE, ThrownItemRenderer::new);
+    EntityRenderers.register(ModEntities.COPPER_GOLEM, CopperGolemRenderer::new);
+    EntityRenderers.register(ModEntities.COPPER_BOTTOM_BOAT, CopperBottomBoatRenderer::new);
   }
 }

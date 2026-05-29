@@ -24,6 +24,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 
 public class MoreUsefulCopperClientNeoForge {
 
@@ -32,6 +33,10 @@ public class MoreUsefulCopperClientNeoForge {
     modEventBus.addListener((Consumer<FMLClientSetupEvent>) event -> {
       MoreUsefulCopperClient.init();
     });
+
+    MoreUsefulCopperClient.registerSpecialModelRenderers((id, unbaked) ->
+        modEventBus.addListener((RegisterSpecialModelRendererEvent e) -> e.register(id, unbaked))
+    );
 
     modEventBus.addListener(this::registerBlockColorHandlers);
 
