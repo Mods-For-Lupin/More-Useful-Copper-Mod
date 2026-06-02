@@ -20,15 +20,15 @@ public class ModEntities {
 
   public static EntityType<ThrownLightningBottle> LIGHTNING_BOTTLE;
 
-  public static EntityType<CopperGolem> COPPER_GOLEM;
+  // public static EntityType<CopperGolem> COPPER_GOLEM;
 
   public static void register(BiConsumer<EntityType<?>, Identifier> consumer) {
 
     COPPER_STATUE = EntityType.Builder.<CopperStatue>of(CopperStatue::new, MobCategory.MISC).sized(0.5F, 1.975F).clientTrackingRange(10).build(ResourceKey.create(Registries.ENTITY_TYPE, MoreUsefulCopper.identifier("copper_statue")));
     consumer.accept(COPPER_STATUE, MoreUsefulCopper.identifier("copper_statue"));
 
-    COPPER_GOLEM = EntityType.Builder.of(CopperGolem::new, MobCategory.MISC).sized(1.4F, 2.7F).clientTrackingRange(10).build(ResourceKey.create(Registries.ENTITY_TYPE, MoreUsefulCopper.identifier("copper_golem")));
-    consumer.accept(COPPER_GOLEM, MoreUsefulCopper.identifier("copper_golem"));
+//    COPPER_GOLEM = EntityType.Builder.of(CopperGolem::new, MobCategory.MISC).sized(1.4F, 2.7F).clientTrackingRange(10).build(ResourceKey.create(Registries.ENTITY_TYPE, MoreUsefulCopper.identifier("copper_golem")));
+//    consumer.accept(COPPER_GOLEM, MoreUsefulCopper.identifier("copper_golem"));
 
     COPPER_BOTTOM_BOAT = EntityType.Builder.<CopperBottomBoat>of(CopperBottomBoat::new, MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10)
         .build(ResourceKey.create(Registries.ENTITY_TYPE, MoreUsefulCopper.identifier("copper_bottom_boat")));

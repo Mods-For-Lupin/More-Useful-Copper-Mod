@@ -122,15 +122,15 @@ public class ModBlocks {
   public static Block WAXED_WEATHERED_COPPER_PRESSURE_PLATE;
   public static Block WAXED_OXIDIZED_COPPER_PRESSURE_PLATE;
 
-  public static CopperChainBlock COPPER_CHAIN;
-  public static CopperChainBlock EXPOSED_COPPER_CHAIN;
-  public static CopperChainBlock WEATHERED_COPPER_CHAIN;
-  public static CopperChainBlock OXIDIZED_COPPER_CHAIN;
+  // public static CopperChainBlock COPPER_CHAIN;
+  // public static CopperChainBlock EXPOSED_COPPER_CHAIN;
+  // public static CopperChainBlock WEATHERED_COPPER_CHAIN;
+  // public static CopperChainBlock OXIDIZED_COPPER_CHAIN;
 
-  public static Block WAXED_COPPER_CHAIN;
-  public static Block WAXED_EXPOSED_COPPER_CHAIN;
-  public static Block WAXED_WEATHERED_COPPER_CHAIN;
-  public static Block WAXED_OXIDIZED_COPPER_CHAIN;
+  // public static Block WAXED_COPPER_CHAIN;
+  // public static Block WAXED_EXPOSED_COPPER_CHAIN;
+  // public static Block WAXED_WEATHERED_COPPER_CHAIN;
+  // public static Block WAXED_OXIDIZED_COPPER_CHAIN;
 
   public static Block GARDEN_STAKE;
 
@@ -140,24 +140,24 @@ public class ModBlocks {
 
   public static void register(BiConsumer<Block, Identifier> consumer) {
 
-    COPPER_CHAIN = copperChain(WeatherState.UNAFFECTED, MoreUsefulCopper.identifier("copper_chain"));
-    EXPOSED_COPPER_CHAIN = copperChain(WeatherState.EXPOSED, MoreUsefulCopper.identifier("exposed_copper_chain"));
-    WEATHERED_COPPER_CHAIN = copperChain(WeatherState.WEATHERED, MoreUsefulCopper.identifier("weathered_copper_chain"));
-    OXIDIZED_COPPER_CHAIN = copperChain(WeatherState.OXIDIZED, MoreUsefulCopper.identifier("oxidized_copper_chain"));
+    // COPPER_CHAIN = copperChain(WeatherState.UNAFFECTED, MoreUsefulCopper.identifier("copper_chain"));
+    // EXPOSED_COPPER_CHAIN = copperChain(WeatherState.EXPOSED, MoreUsefulCopper.identifier("exposed_copper_chain"));
+    // WEATHERED_COPPER_CHAIN = copperChain(WeatherState.WEATHERED, MoreUsefulCopper.identifier("weathered_copper_chain"));
+    // OXIDIZED_COPPER_CHAIN = copperChain(WeatherState.OXIDIZED, MoreUsefulCopper.identifier("oxidized_copper_chain"));
 
-    WAXED_COPPER_CHAIN = waxedCopperChain(MoreUsefulCopper.identifier("waxed_copper_chain"));
-    WAXED_EXPOSED_COPPER_CHAIN = waxedCopperChain(MoreUsefulCopper.identifier("waxed_exposed_copper_chain"));
-    WAXED_WEATHERED_COPPER_CHAIN = waxedCopperChain(MoreUsefulCopper.identifier("waxed_weathered_copper_chain"));
-    WAXED_OXIDIZED_COPPER_CHAIN = waxedCopperChain(MoreUsefulCopper.identifier("waxed_oxidized_copper_chain"));
+    // WAXED_COPPER_CHAIN = waxedCopperChain(MoreUsefulCopper.identifier("waxed_copper_chain"));
+    // WAXED_EXPOSED_COPPER_CHAIN = waxedCopperChain(MoreUsefulCopper.identifier("waxed_exposed_copper_chain"));
+    // WAXED_WEATHERED_COPPER_CHAIN = waxedCopperChain(MoreUsefulCopper.identifier("waxed_weathered_copper_chain"));
+    // WAXED_OXIDIZED_COPPER_CHAIN = waxedCopperChain(MoreUsefulCopper.identifier("waxed_oxidized_copper_chain"));
 
-    consumer.accept(COPPER_CHAIN, MoreUsefulCopper.identifier("copper_chain"));
-    consumer.accept(EXPOSED_COPPER_CHAIN, MoreUsefulCopper.identifier("exposed_copper_chain"));
-    consumer.accept(WEATHERED_COPPER_CHAIN, MoreUsefulCopper.identifier("weathered_copper_chain"));
-    consumer.accept(OXIDIZED_COPPER_CHAIN, MoreUsefulCopper.identifier("oxidized_copper_chain"));
-    consumer.accept(WAXED_COPPER_CHAIN, MoreUsefulCopper.identifier("waxed_copper_chain"));
-    consumer.accept(WAXED_EXPOSED_COPPER_CHAIN, MoreUsefulCopper.identifier("waxed_exposed_copper_chain"));
-    consumer.accept(WAXED_WEATHERED_COPPER_CHAIN, MoreUsefulCopper.identifier("waxed_weathered_copper_chain"));
-    consumer.accept(WAXED_OXIDIZED_COPPER_CHAIN, MoreUsefulCopper.identifier("waxed_oxidized_copper_chain"));
+    // consumer.accept(COPPER_CHAIN, MoreUsefulCopper.identifier("copper_chain"));
+    // consumer.accept(EXPOSED_COPPER_CHAIN, MoreUsefulCopper.identifier("exposed_copper_chain"));
+    // consumer.accept(WEATHERED_COPPER_CHAIN, MoreUsefulCopper.identifier("weathered_copper_chain"));
+    // consumer.accept(OXIDIZED_COPPER_CHAIN, MoreUsefulCopper.identifier("oxidized_copper_chain"));
+    // consumer.accept(WAXED_COPPER_CHAIN, MoreUsefulCopper.identifier("waxed_copper_chain"));
+    // consumer.accept(WAXED_EXPOSED_COPPER_CHAIN, MoreUsefulCopper.identifier("waxed_exposed_copper_chain"));
+    // consumer.accept(WAXED_WEATHERED_COPPER_CHAIN, MoreUsefulCopper.identifier("waxed_weathered_copper_chain"));
+    // consumer.accept(WAXED_OXIDIZED_COPPER_CHAIN, MoreUsefulCopper.identifier("waxed_oxidized_copper_chain"));
 
     COPPER_PRESSURE_PLATE = copperPressurePlate(WeatherState.UNAFFECTED, MoreUsefulCopper.identifier("copper_pressure_plate"));
     EXPOSED_COPPER_PRESSURE_PLATE = copperPressurePlate(WeatherState.EXPOSED, MoreUsefulCopper.identifier("exposed_copper_pressure_plate"));

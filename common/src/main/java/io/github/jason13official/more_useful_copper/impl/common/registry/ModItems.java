@@ -48,23 +48,23 @@ public class ModItems {
   public static Item SPARKSTONE_TORCH;
   public static Item SPARKSTONE_RELAY;
 
-  public static Item COPPER_NUGGET;
+  // public static Item COPPER_NUGGET;
   public static Item COPPER_SHEARS;
 
-  public static Item COPPER_PICKAXE;
-  public static Item COPPER_AXE;
-  public static Item COPPER_HOE;
-  public static Item COPPER_SHOVEL;
-  public static Item COPPER_SWORD;
+  // public static Item COPPER_PICKAXE;
+  // public static Item COPPER_AXE;
+  // public static Item COPPER_HOE;
+  // public static Item COPPER_SHOVEL;
+  // public static Item COPPER_SWORD;
 
-  public static Item COPPER_HELMET;
-  public static Item COPPER_CHESTPLATE;
-  public static Item COPPER_LEGGINGS;
-  public static Item COPPER_BOOTS;
+  // public static Item COPPER_HELMET;
+  // public static Item COPPER_CHESTPLATE;
+  // public static Item COPPER_LEGGINGS;
+  // public static Item COPPER_BOOTS;
 
-  public static Item COPPER_CHAIN;
-  public static Item COPPER_GOLEM_SPAWN_EGG;
-  public static Item COPPER_HORSE_ARMOR;
+  // public static Item COPPER_CHAIN;
+  // public static Item COPPER_GOLEM_SPAWN_EGG;
+  // public static Item COPPER_HORSE_ARMOR;
 
   public static Item COPPER_PRESSURE_PLATE;
 
@@ -170,40 +170,40 @@ public class ModItems {
 
   private static void registerLegacyItems(BiConsumer<Item, Identifier> consumer) {
 
-    COPPER_NUGGET = new Item(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_nugget"))));
+    // COPPER_NUGGET = new Item(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_nugget"))));
     COPPER_SHEARS = new ShearsItem((new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_shears")))).durability(238));
 
-    COPPER_PICKAXE = new LightningPickaxeItem(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_pickaxe"))).pickaxe(ModTiers.COPPER, 1.0F, -2.8F));
-    COPPER_AXE = new LightningAxeItem(ModTiers.COPPER, 6.0F, -3.0F, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_axe"))));
-    COPPER_HOE = new LightningHoeItem(ModTiers.COPPER, 0.0F, -3.0F, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_hoe"))));
-    COPPER_SHOVEL = new LightningShovelItem(ModTiers.COPPER, 1.5F, -3.0F, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_shovel"))));
-    COPPER_SWORD = new LightningSwordItem(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_sword"))).sword(ModTiers.COPPER, 3.0F, -2.4F));
-
-    COPPER_HELMET = new LightningArmorItem(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_helmet"))).humanoidArmor(ModArmorMaterials.COPPER, ArmorType.HELMET));
-    COPPER_CHESTPLATE = new LightningArmorItem(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_chestplate"))).humanoidArmor(ModArmorMaterials.COPPER, ArmorType.CHESTPLATE));
-    COPPER_LEGGINGS = new LightningArmorItem(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_leggings"))).humanoidArmor(ModArmorMaterials.COPPER, ArmorType.LEGGINGS));
-    COPPER_BOOTS = new LightningArmorItem(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_boots"))).humanoidArmor(ModArmorMaterials.COPPER, ArmorType.BOOTS));
-
-    COPPER_CHAIN = new BlockItem(ModBlocks.COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_chain"))));
-    COPPER_GOLEM_SPAWN_EGG = Services.PLATFORM.createSpawnEggItem(() -> ModEntities.COPPER_GOLEM, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_golem_spawn_egg"))));
-    COPPER_HORSE_ARMOR = new Item(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_horse_armor"))).horseArmor(ModArmorMaterials.COPPER));
+//    COPPER_PICKAXE = new LightningPickaxeItem(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_pickaxe"))).pickaxe(ModTiers.COPPER, 1.0F, -2.8F));
+//    COPPER_AXE = new LightningAxeItem(ModTiers.COPPER, 6.0F, -3.0F, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_axe"))));
+//    COPPER_HOE = new LightningHoeItem(ModTiers.COPPER, 0.0F, -3.0F, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_hoe"))));
+//    COPPER_SHOVEL = new LightningShovelItem(ModTiers.COPPER, 1.5F, -3.0F, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_shovel"))));
+//    COPPER_SWORD = new LightningSwordItem(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_sword"))).sword(ModTiers.COPPER, 3.0F, -2.4F));
+//
+//    COPPER_HELMET = new LightningArmorItem(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_helmet"))).humanoidArmor(ModArmorMaterials.COPPER, ArmorType.HELMET));
+//    COPPER_CHESTPLATE = new LightningArmorItem(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_chestplate"))).humanoidArmor(ModArmorMaterials.COPPER, ArmorType.CHESTPLATE));
+//    COPPER_LEGGINGS = new LightningArmorItem(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_leggings"))).humanoidArmor(ModArmorMaterials.COPPER, ArmorType.LEGGINGS));
+//    COPPER_BOOTS = new LightningArmorItem(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_boots"))).humanoidArmor(ModArmorMaterials.COPPER, ArmorType.BOOTS));
+//
+//    COPPER_CHAIN = new BlockItem(ModBlocks.COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_chain"))));
+//    COPPER_GOLEM_SPAWN_EGG = Services.PLATFORM.createSpawnEggItem(() -> ModEntities.COPPER_GOLEM, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_golem_spawn_egg"))));
+//    COPPER_HORSE_ARMOR = new Item(new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_horse_armor"))).horseArmor(ModArmorMaterials.COPPER));
 
     COPPER_PRESSURE_PLATE = new BlockItem(ModBlocks.COPPER_PRESSURE_PLATE, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("copper_pressure_plate"))));
 
-    consumer.accept(COPPER_NUGGET, MoreUsefulCopper.identifier("copper_nugget"));
+//    consumer.accept(COPPER_NUGGET, MoreUsefulCopper.identifier("copper_nugget"));
     consumer.accept(COPPER_SHEARS, MoreUsefulCopper.identifier("copper_shears"));
-    consumer.accept(COPPER_PICKAXE, MoreUsefulCopper.identifier("copper_pickaxe"));
-    consumer.accept(COPPER_AXE, MoreUsefulCopper.identifier("copper_axe"));
-    consumer.accept(COPPER_HOE, MoreUsefulCopper.identifier("copper_hoe"));
-    consumer.accept(COPPER_SHOVEL, MoreUsefulCopper.identifier("copper_shovel"));
-    consumer.accept(COPPER_SWORD, MoreUsefulCopper.identifier("copper_sword"));
-    consumer.accept(COPPER_HELMET, MoreUsefulCopper.identifier("copper_helmet"));
-    consumer.accept(COPPER_CHESTPLATE, MoreUsefulCopper.identifier("copper_chestplate"));
-    consumer.accept(COPPER_LEGGINGS, MoreUsefulCopper.identifier("copper_leggings"));
-    consumer.accept(COPPER_BOOTS, MoreUsefulCopper.identifier("copper_boots"));
-    consumer.accept(COPPER_CHAIN, MoreUsefulCopper.identifier("copper_chain"));
-    consumer.accept(COPPER_GOLEM_SPAWN_EGG, MoreUsefulCopper.identifier("copper_golem_spawn_egg"));
-    consumer.accept(COPPER_HORSE_ARMOR, MoreUsefulCopper.identifier("copper_horse_armor"));
+//    consumer.accept(COPPER_PICKAXE, MoreUsefulCopper.identifier("copper_pickaxe"));
+//    consumer.accept(COPPER_AXE, MoreUsefulCopper.identifier("copper_axe"));
+//    consumer.accept(COPPER_HOE, MoreUsefulCopper.identifier("copper_hoe"));
+//    consumer.accept(COPPER_SHOVEL, MoreUsefulCopper.identifier("copper_shovel"));
+//    consumer.accept(COPPER_SWORD, MoreUsefulCopper.identifier("copper_sword"));
+//    consumer.accept(COPPER_HELMET, MoreUsefulCopper.identifier("copper_helmet"));
+//    consumer.accept(COPPER_CHESTPLATE, MoreUsefulCopper.identifier("copper_chestplate"));
+//    consumer.accept(COPPER_LEGGINGS, MoreUsefulCopper.identifier("copper_leggings"));
+//    consumer.accept(COPPER_BOOTS, MoreUsefulCopper.identifier("copper_boots"));
+//    consumer.accept(COPPER_CHAIN, MoreUsefulCopper.identifier("copper_chain"));
+//    consumer.accept(COPPER_GOLEM_SPAWN_EGG, MoreUsefulCopper.identifier("copper_golem_spawn_egg"));
+//    consumer.accept(COPPER_HORSE_ARMOR, MoreUsefulCopper.identifier("copper_horse_armor"));
     consumer.accept(COPPER_PRESSURE_PLATE, MoreUsefulCopper.identifier("copper_pressure_plate"));
     consumer.accept(new BlockItem(ModBlocks.EXPOSED_COPPER_PRESSURE_PLATE, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("exposed_copper_pressure_plate")))), MoreUsefulCopper.identifier("exposed_copper_pressure_plate"));
     consumer.accept(new BlockItem(ModBlocks.WEATHERED_COPPER_PRESSURE_PLATE, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("weathered_copper_pressure_plate")))), MoreUsefulCopper.identifier("weathered_copper_pressure_plate"));
@@ -212,12 +212,12 @@ public class ModItems {
     consumer.accept(new BlockItem(ModBlocks.WAXED_EXPOSED_COPPER_PRESSURE_PLATE, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("waxed_exposed_copper_pressure_plate")))), MoreUsefulCopper.identifier("waxed_exposed_copper_pressure_plate"));
     consumer.accept(new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_PRESSURE_PLATE, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("waxed_weathered_copper_pressure_plate")))), MoreUsefulCopper.identifier("waxed_weathered_copper_pressure_plate"));
     consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_PRESSURE_PLATE, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("waxed_oxidized_copper_pressure_plate")))), MoreUsefulCopper.identifier("waxed_oxidized_copper_pressure_plate"));
-    consumer.accept(new BlockItem(ModBlocks.EXPOSED_COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("exposed_copper_chain")))), MoreUsefulCopper.identifier("exposed_copper_chain"));
-    consumer.accept(new BlockItem(ModBlocks.WEATHERED_COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("weathered_copper_chain")))), MoreUsefulCopper.identifier("weathered_copper_chain"));
-    consumer.accept(new BlockItem(ModBlocks.OXIDIZED_COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("oxidized_copper_chain")))), MoreUsefulCopper.identifier("oxidized_copper_chain"));
-    consumer.accept(new BlockItem(ModBlocks.WAXED_COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("waxed_copper_chain")))), MoreUsefulCopper.identifier("waxed_copper_chain"));
-    consumer.accept(new BlockItem(ModBlocks.WAXED_EXPOSED_COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("waxed_exposed_copper_chain")))), MoreUsefulCopper.identifier("waxed_exposed_copper_chain"));
-    consumer.accept(new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("waxed_weathered_copper_chain")))), MoreUsefulCopper.identifier("waxed_weathered_copper_chain"));
-    consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("waxed_oxidized_copper_chain")))), MoreUsefulCopper.identifier("waxed_oxidized_copper_chain"));
+//    consumer.accept(new BlockItem(ModBlocks.EXPOSED_COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("exposed_copper_chain")))), MoreUsefulCopper.identifier("exposed_copper_chain"));
+//    consumer.accept(new BlockItem(ModBlocks.WEATHERED_COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("weathered_copper_chain")))), MoreUsefulCopper.identifier("weathered_copper_chain"));
+//    consumer.accept(new BlockItem(ModBlocks.OXIDIZED_COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("oxidized_copper_chain")))), MoreUsefulCopper.identifier("oxidized_copper_chain"));
+//    consumer.accept(new BlockItem(ModBlocks.WAXED_COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("waxed_copper_chain")))), MoreUsefulCopper.identifier("waxed_copper_chain"));
+//    consumer.accept(new BlockItem(ModBlocks.WAXED_EXPOSED_COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("waxed_exposed_copper_chain")))), MoreUsefulCopper.identifier("waxed_exposed_copper_chain"));
+//    consumer.accept(new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("waxed_weathered_copper_chain")))), MoreUsefulCopper.identifier("waxed_weathered_copper_chain"));
+//    consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_CHAIN, new Properties().setId(ResourceKey.create(Registries.ITEM, MoreUsefulCopper.identifier("waxed_oxidized_copper_chain")))), MoreUsefulCopper.identifier("waxed_oxidized_copper_chain"));
   }
 }

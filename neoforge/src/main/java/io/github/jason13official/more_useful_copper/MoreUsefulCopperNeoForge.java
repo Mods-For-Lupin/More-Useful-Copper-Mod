@@ -46,7 +46,7 @@ public class MoreUsefulCopperNeoForge {
 
     EVENT_BUS.addListener((Consumer<EntityAttributeCreationEvent>) event -> {
       event.put(ModEntities.COPPER_STATUE, LivingEntity.createLivingAttributes().build());
-      event.put(ModEntities.COPPER_GOLEM, CopperGolem.createAttributes().build());
+      // event.put(ModEntities.COPPER_GOLEM, CopperGolem.createAttributes().build());
     });
 
     // on to client init

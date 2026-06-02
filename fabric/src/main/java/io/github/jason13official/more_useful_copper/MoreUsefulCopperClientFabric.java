@@ -51,7 +51,7 @@ public class MoreUsefulCopperClientFabric implements ClientModInitializer {
   private void registerEntityRenderers() {
     EntityRenderers.register(ModEntities.COPPER_STATUE, CopperStatueRenderer::new);
     EntityRenderers.register(ModEntities.LIGHTNING_BOTTLE, ThrownItemRenderer::new);
-    EntityRenderers.register(ModEntities.COPPER_GOLEM, CopperGolemRenderer::new);
+    // EntityRenderers.register(ModEntities.COPPER_GOLEM, CopperGolemRenderer::new);
     EntityRenderers.register(ModEntities.COPPER_BOTTOM_BOAT, CopperBottomBoatRenderer::new);
   }
 }

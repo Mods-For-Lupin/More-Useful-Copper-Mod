@@ -27,18 +27,18 @@ public class CommonCarvedPumpkinBlockMixinLogic {
 
   public static void injectedTrySpawnGolem(Level level, BlockPos pos, CallbackInfo ci) {
 
-    // BlockPattern.BlockPatternMatch blocksInPattern = getOrCreateGolemPattern(null).find(level, pos);
-    BlockPattern.BlockPatternMatch blocksInPattern = PATTERN.apply(null).find(level, pos);
-
-    if (blocksInPattern == null) {
-      return;
-    }
-
-    CopperGolem golem = ModEntities.COPPER_GOLEM.create(level, EntitySpawnReason.MOB_SUMMONED);
-
-    if (golem != null) {
-      clearBlocksInPatternAndSpawnEntity(level, blocksInPattern, golem, blocksInPattern.getBlock(1, 2, 0).getPos());
-    }
+//    // BlockPattern.BlockPatternMatch blocksInPattern = getOrCreateGolemPattern(null).find(level, pos);
+//    BlockPattern.BlockPatternMatch blocksInPattern = PATTERN.apply(null).find(level, pos);
+//
+//    if (blocksInPattern == null) {
+//      return;
+//    }
+//
+//    CopperGolem golem = ModEntities.COPPER_GOLEM.create(level, EntitySpawnReason.MOB_SUMMONED);
+//
+//    if (golem != null) {
+//      clearBlocksInPatternAndSpawnEntity(level, blocksInPattern, golem, blocksInPattern.getBlock(1, 2, 0).getPos());
+//    }
   }
 
   private static BlockPattern getOrCreateGolemPattern(BlockPattern pattern) {

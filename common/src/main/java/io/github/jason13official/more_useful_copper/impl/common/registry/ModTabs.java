@@ -44,29 +44,28 @@ public class ModTabs {
 
     output.accept(ModBlocks.COPPER_BELL);
 
-    output.accept(ModItems.COPPER_NUGGET);
+//    output.accept(ModItems.COPPER_NUGGET);
     output.accept(ModItems.COPPER_SHEARS);
-    output.accept(ModItems.COPPER_PICKAXE);
-    output.accept(ModItems.COPPER_AXE);
-    output.accept(ModItems.COPPER_HOE);
-    output.accept(ModItems.COPPER_SHOVEL);
-    output.accept(ModItems.COPPER_SWORD);
-    output.accept(ModItems.COPPER_HELMET);
-    output.accept(ModItems.COPPER_CHESTPLATE);
-    output.accept(ModItems.COPPER_LEGGINGS);
-    output.accept(ModItems.COPPER_BOOTS);
-    output.accept(ModItems.COPPER_CHAIN);
-    output.accept(ModBlocks.EXPOSED_COPPER_CHAIN);
-    output.accept(ModBlocks.WEATHERED_COPPER_CHAIN);
-    output.accept(ModBlocks.OXIDIZED_COPPER_CHAIN);
-    output.accept(ModBlocks.WAXED_COPPER_CHAIN);
-    output.accept(ModBlocks.WAXED_EXPOSED_COPPER_CHAIN);
-    output.accept(ModBlocks.WAXED_WEATHERED_COPPER_CHAIN);
-    output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_CHAIN);
-    output.accept(ModItems.COPPER_HORSE_ARMOR);
+//    output.accept(ModItems.COPPER_PICKAXE);
+//    output.accept(ModItems.COPPER_AXE);
+//    output.accept(ModItems.COPPER_HOE);
+//    output.accept(ModItems.COPPER_SHOVEL);
+//    output.accept(ModItems.COPPER_SWORD);
+//    output.accept(ModItems.COPPER_HELMET);
+//    output.accept(ModItems.COPPER_CHESTPLATE);
+//    output.accept(ModItems.COPPER_LEGGINGS);
+//    output.accept(ModItems.COPPER_BOOTS);
+//    output.accept(ModItems.COPPER_CHAIN);
+//    output.accept(ModBlocks.EXPOSED_COPPER_CHAIN);
+//    output.accept(ModBlocks.WEATHERED_COPPER_CHAIN);
+//    output.accept(ModBlocks.OXIDIZED_COPPER_CHAIN);
+//    output.accept(ModBlocks.WAXED_COPPER_CHAIN);
+//    output.accept(ModBlocks.WAXED_EXPOSED_COPPER_CHAIN);
+//    output.accept(ModBlocks.WAXED_WEATHERED_COPPER_CHAIN);
+//    output.accept(ModBlocks.WAXED_OXIDIZED_COPPER_CHAIN);
+//    output.accept(ModItems.COPPER_HORSE_ARMOR);
 
-    // TODO create entity
-    output.accept(ModItems.COPPER_GOLEM_SPAWN_EGG);
+//    output.accept(ModItems.COPPER_GOLEM_SPAWN_EGG);
 
     output.accept(ModItems.COPPER_PRESSURE_PLATE);
     output.accept(ModBlocks.EXPOSED_COPPER_PRESSURE_PLATE);

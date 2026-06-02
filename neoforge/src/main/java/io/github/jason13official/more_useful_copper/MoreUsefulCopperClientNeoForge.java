@@ -49,7 +49,7 @@ public class MoreUsefulCopperClientNeoForge {
   private void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
     event.registerEntityRenderer(ModEntities.COPPER_STATUE, CopperStatueRenderer::new);
     event.registerEntityRenderer(ModEntities.COPPER_BOTTOM_BOAT, CopperBottomBoatRenderer::new);
-    event.registerEntityRenderer(ModEntities.COPPER_GOLEM, CopperGolemRenderer::new);
+    // event.registerEntityRenderer(ModEntities.COPPER_GOLEM, CopperGolemRenderer::new);
     event.registerEntityRenderer(ModEntities.LIGHTNING_BOTTLE, ThrownItemRenderer::new);
   }
 

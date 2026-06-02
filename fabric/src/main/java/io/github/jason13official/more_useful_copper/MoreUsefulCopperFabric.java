@@ -34,7 +34,7 @@ public class MoreUsefulCopperFabric implements ModInitializer {
     FabricModLootTableModifiers.register();
 
     FabricDefaultAttributeRegistry.register(ModEntities.COPPER_STATUE, LivingEntity.createLivingAttributes());
-    FabricDefaultAttributeRegistry.register(ModEntities.COPPER_GOLEM, CopperGolem.createAttributes());
+    // FabricDefaultAttributeRegistry.register(ModEntities.COPPER_GOLEM, CopperGolem.createAttributes());
 
     // on to client init
   }
