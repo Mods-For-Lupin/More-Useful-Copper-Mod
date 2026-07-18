@@ -10,6 +10,8 @@ import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class CopperStatue extends WeatheringCopperStatueEntity {
 
@@ -35,6 +37,20 @@ public class CopperStatue extends WeatheringCopperStatueEntity {
 
   public void setVariant(Type variant) {
     this.entityData.set(DATA_ID_TYPE, variant.ordinal());
+  }
+
+  @Override
+  protected void addAdditionalSaveData(ValueOutput output) {
+    super.addAdditionalSaveData(output);
+
+    output.putInt("copperStatueTypeOrdinal", this.getVariant().ordinal());
+  }
+
+  @Override
+  protected void readAdditionalSaveData(ValueInput input) {
+    super.readAdditionalSaveData(input);
+
+    this.setVariant(Type.byId(input.getIntOr("copperStatueTypeOrdinal", 0)));
   }
 
   public enum Type implements StringRepresentable {
