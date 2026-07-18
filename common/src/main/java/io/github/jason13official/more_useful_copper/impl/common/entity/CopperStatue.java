@@ -3,6 +3,7 @@ package io.github.jason13official.more_useful_copper.impl.common.entity;
 import io.github.jason13official.more_useful_copper.api.common.entity.AbstractStatueEntity;
 import io.github.jason13official.more_useful_copper.api.common.entity.WeatheringCopperStatueEntity;
 import java.util.function.IntFunction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -35,6 +36,20 @@ public class CopperStatue extends WeatheringCopperStatueEntity {
 
   public void setVariant(Type variant) {
     this.entityData.set(DATA_ID_TYPE, variant.ordinal());
+  }
+
+  @Override
+  public void addAdditionalSaveData(CompoundTag compound) {
+    super.addAdditionalSaveData(compound);
+
+    compound.putInt("copperStatueTypeOrdinal", this.getVariant().ordinal());
+  }
+
+  @Override
+  public void readAdditionalSaveData(CompoundTag compound) {
+    super.readAdditionalSaveData(compound);
+
+    this.setVariant(Type.byId(compound.getInt("copperStatueTypeOrdinal")));
   }
 
   public enum Type implements StringRepresentable {
