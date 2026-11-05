@@ -4,6 +4,7 @@ import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.Tier;
@@ -15,6 +16,11 @@ public class LightningShovelItem extends ShovelItem {
 
   public LightningShovelItem(Tier tier, float attackDamageModifier, float attackSpeedModifier, Properties properties) {
     super(tier, attackDamageModifier, attackSpeedModifier, properties);
+  }
+
+  @Override
+  public boolean isEnabled(FeatureFlagSet enabledFeatures) {
+    return ModConfig.isVanillaBackportItemEnabled() && super.isEnabled(enabledFeatures);
   }
 
   @Override

@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
@@ -16,6 +17,11 @@ public class LightningAxeItem extends AxeItem {
 
   public LightningAxeItem(Tier tier, float attackDamageModifier, float attackSpeedModifier, Properties properties) {
     super(tier, attackDamageModifier, attackSpeedModifier, properties);
+  }
+
+  @Override
+  public boolean isEnabled(FeatureFlagSet enabledFeatures) {
+    return ModConfig.isVanillaBackportItemEnabled() && super.isEnabled(enabledFeatures);
   }
 
   @Override

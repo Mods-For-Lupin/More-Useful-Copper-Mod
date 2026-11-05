@@ -3,6 +3,7 @@ package io.github.jason13official.more_useful_copper.impl.common.registry;
 import io.github.jason13official.more_useful_copper.MoreUsefulCopper;
 import io.github.jason13official.more_useful_copper.api.common.item.ModArmorMaterials;
 import io.github.jason13official.more_useful_copper.api.common.item.ModTiers;
+import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperStatue;
 import io.github.jason13official.more_useful_copper.impl.common.item.CopperBottomBoatItem;
 import io.github.jason13official.more_useful_copper.impl.common.item.CopperStatueItem;
@@ -22,6 +23,7 @@ import java.util.function.BiConsumer;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.HorseArmorItem;
@@ -31,6 +33,7 @@ import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.level.block.Block;
 
 public class ModItems {
 
@@ -169,7 +172,12 @@ public class ModItems {
 
   private static void registerLegacyItems(BiConsumer<Item, ResourceLocation> consumer) {
 
-    COPPER_NUGGET = new Item(new Properties());
+    COPPER_NUGGET = new Item(new Properties()) {
+      @Override
+      public boolean isEnabled(FeatureFlagSet enabledFeatures) {
+        return ModConfig.isVanillaBackportItemEnabled() && super.isEnabled(enabledFeatures);
+      }
+    };
     COPPER_SHEARS = new ShearsItem((new Item.Properties()).durability(238));
 
     COPPER_PICKAXE = new LightningPickaxeItem(ModTiers.COPPER, 1, -2.8F, new Item.Properties().stacksTo(1));
@@ -183,9 +191,14 @@ public class ModItems {
     COPPER_LEGGINGS = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, new Item.Properties().stacksTo(1));
     COPPER_BOOTS = new LightningArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.BOOTS, new Item.Properties().stacksTo(1));
 
-    COPPER_CHAIN = new BlockItem(ModBlocks.COPPER_CHAIN, new Properties());
+    COPPER_CHAIN = compatBlockItem(ModBlocks.COPPER_CHAIN, new Properties());
     COPPER_GOLEM_SPAWN_EGG = Services.PLATFORM.createSpawnEggItem(() -> ModEntities.COPPER_GOLEM, 0x8A4129, 0xFC9982, new Item.Properties());
-    COPPER_HORSE_ARMOR = new HorseArmorItem(5, "copper", (new Item.Properties()).stacksTo(1));
+    COPPER_HORSE_ARMOR = new HorseArmorItem(5, "copper", (new Item.Properties()).stacksTo(1)) {
+      @Override
+      public boolean isEnabled(FeatureFlagSet enabledFeatures) {
+        return ModConfig.isVanillaBackportItemEnabled() && super.isEnabled(enabledFeatures);
+      }
+    };
 
     COPPER_PRESSURE_PLATE = new BlockItem(ModBlocks.COPPER_PRESSURE_PLATE, new Properties());
 
@@ -211,12 +224,21 @@ public class ModItems {
     consumer.accept(new BlockItem(ModBlocks.WAXED_EXPOSED_COPPER_PRESSURE_PLATE, new Properties()), MoreUsefulCopper.identifier("waxed_exposed_copper_pressure_plate"));
     consumer.accept(new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_PRESSURE_PLATE, new Properties()), MoreUsefulCopper.identifier("waxed_weathered_copper_pressure_plate"));
     consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_PRESSURE_PLATE, new Properties()), MoreUsefulCopper.identifier("waxed_oxidized_copper_pressure_plate"));
-    consumer.accept(new BlockItem(ModBlocks.EXPOSED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("exposed_copper_chain"));
-    consumer.accept(new BlockItem(ModBlocks.WEATHERED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("weathered_copper_chain"));
-    consumer.accept(new BlockItem(ModBlocks.OXIDIZED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("oxidized_copper_chain"));
-    consumer.accept(new BlockItem(ModBlocks.WAXED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("waxed_copper_chain"));
-    consumer.accept(new BlockItem(ModBlocks.WAXED_EXPOSED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("waxed_exposed_copper_chain"));
-    consumer.accept(new BlockItem(ModBlocks.WAXED_WEATHERED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("waxed_weathered_copper_chain"));
-    consumer.accept(new BlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("waxed_oxidized_copper_chain"));
+    consumer.accept(compatBlockItem(ModBlocks.EXPOSED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("exposed_copper_chain"));
+    consumer.accept(compatBlockItem(ModBlocks.WEATHERED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("weathered_copper_chain"));
+    consumer.accept(compatBlockItem(ModBlocks.OXIDIZED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("oxidized_copper_chain"));
+    consumer.accept(compatBlockItem(ModBlocks.WAXED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("waxed_copper_chain"));
+    consumer.accept(compatBlockItem(ModBlocks.WAXED_EXPOSED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("waxed_exposed_copper_chain"));
+    consumer.accept(compatBlockItem(ModBlocks.WAXED_WEATHERED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("waxed_weathered_copper_chain"));
+    consumer.accept(compatBlockItem(ModBlocks.WAXED_OXIDIZED_COPPER_CHAIN, new Properties()), MoreUsefulCopper.identifier("waxed_oxidized_copper_chain"));
+  }
+
+  private static BlockItem compatBlockItem(Block block, Properties properties) {
+    return new BlockItem(block, properties) {
+      @Override
+      public boolean isEnabled(FeatureFlagSet enabledFeatures) {
+        return ModConfig.isVanillaBackportItemEnabled() && super.isEnabled(enabledFeatures);
+      }
+    };
   }
 }

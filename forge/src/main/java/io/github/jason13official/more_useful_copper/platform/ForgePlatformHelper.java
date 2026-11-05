@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper.platform;
 
+import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import io.github.jason13official.more_useful_copper.platform.services.IPlatformHelper;
 import java.nio.file.Path;
 import java.util.function.BiFunction;
@@ -7,6 +8,7 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTab.Builder;
@@ -91,7 +93,12 @@ public class ForgePlatformHelper implements IPlatformHelper {
 
   @Override
   public SpawnEggItem createSpawnEggItem(Supplier<EntityType<? extends Mob>> entityTypeSupplier, int backgroundColor, int highlightColor, Properties properties) {
-    return new ForgeSpawnEggItem(entityTypeSupplier, backgroundColor, highlightColor, properties);
+    return new ForgeSpawnEggItem(entityTypeSupplier, backgroundColor, highlightColor, properties) {
+      @Override
+      public boolean isEnabled(FeatureFlagSet enabledFeatures) {
+        return ModConfig.isVanillaBackportItemEnabled() && super.isEnabled(enabledFeatures);
+      }
+    };
   }
 
   @Override

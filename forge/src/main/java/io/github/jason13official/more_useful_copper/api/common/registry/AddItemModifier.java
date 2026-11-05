@@ -38,6 +38,10 @@ public class AddItemModifier extends LootModifier {
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 
+        if (!this.item.isEnabled(context.getLevel().enabledFeatures())) {
+            return generatedLoot;
+        }
+
         for (LootItemCondition condition : this.conditions) {
             if(!condition.test(context)) {
                 return generatedLoot;
