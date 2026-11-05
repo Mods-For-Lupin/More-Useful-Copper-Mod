@@ -1,12 +1,6 @@
 plugins {
     id 'multiloader-loader'
     id 'fabric-loom'
-    id 'com.github.johnrengelman.shadow'
-}
-
-configurations {
-    shade
-    implementation.extendsFrom shade
 }
 
 dependencies {
@@ -20,19 +14,9 @@ dependencies {
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
     implementation project(":common")
 
-    shade 'com.electronwill.night-config:toml:3.6.0'
-}
-
-shadowJar {
-    configurations = [project.configurations.shade]
-    relocate 'com.electronwill.nightconfig', 'io.github.jason13official.more_useful_copper.shadow.nightconfig'
-    archiveClassifier.set('dev-shadow')
-}
-
-remapJar {
-    dependsOn shadowJar
-    inputFile.set(shadowJar.archiveFile)
-    archiveClassifier.set('')
+  implementation 'com.electronwill.night-config:toml:3.6.0'
+  include 'com.electronwill.night-config:core:3.6.0'
+  include 'com.electronwill.night-config:toml:3.6.0'
 }
 
 loom {
