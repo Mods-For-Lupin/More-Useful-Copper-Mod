@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper;
 
+import io.github.jason13official.more_useful_copper.api.common.item.ModTiers;
 import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperGolem;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ForgeModLootTableModifiers;
@@ -9,6 +10,7 @@ import io.github.jason13official.more_useful_copper.impl.common.registry.ModItem
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTabs;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModTiles;
 import io.github.jason13official.more_useful_copper.platform.Services;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import net.minecraft.core.Registry;
@@ -19,8 +21,10 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Tiers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.TierSortingRegistry;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -47,6 +51,10 @@ public class MoreUsefulCopperForge {
 
     // after all RegisterEvents have fired, blocks/game object fields are guaranteed to be populated
     EVENT_BUS.addListener((Consumer<FMLCommonSetupEvent>) event -> MoreUsefulCopper.init());
+
+    EVENT_BUS.addListener((Consumer<FMLCommonSetupEvent>) event -> event.enqueueWork(
+        () -> TierSortingRegistry.registerTier(ModTiers.COPPER, MoreUsefulCopper.identifier("copper"),
+            List.<Object>of(Tiers.STONE), List.<Object>of(Tiers.IRON))));
 
     // forge-specific, registers loot modifier types used in data files under `loot_modifiers`
     ForgeModLootTableModifiers.register(EVENT_BUS);
