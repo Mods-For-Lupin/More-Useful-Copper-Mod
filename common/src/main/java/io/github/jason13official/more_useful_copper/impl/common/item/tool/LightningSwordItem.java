@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper.impl.common.item.tool;
 
+import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import java.util.List;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -7,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -19,6 +21,11 @@ public class LightningSwordItem extends SwordItem {
 
   public LightningSwordItem(Tier tier, Properties properties) {
     super(tier, properties);
+  }
+
+  @Override
+  public boolean isEnabled(FeatureFlagSet enabledFeatures) {
+    return ModConfig.isVanillaBackportItemEnabled() && super.isEnabled(enabledFeatures);
   }
 
   @Override

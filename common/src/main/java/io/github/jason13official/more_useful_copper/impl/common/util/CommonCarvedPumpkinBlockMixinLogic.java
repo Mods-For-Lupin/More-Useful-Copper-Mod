@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper.impl.common.util;
 
+import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import io.github.jason13official.more_useful_copper.impl.common.entity.CopperGolem;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModEntities;
 import java.util.function.Function;
@@ -25,6 +26,10 @@ public class CommonCarvedPumpkinBlockMixinLogic {
   private static final Function<BlockPattern, BlockPattern> PATTERN = CommonCarvedPumpkinBlockMixinLogic::getOrCreateGolemPattern;
 
   public static void injectedTrySpawnGolem(Level level, BlockPos pos, CallbackInfo ci) {
+
+    if (!ModConfig.isVanillaBackportItemEnabled()) {
+      return;
+    }
 
     // BlockPattern.BlockPatternMatch blocksInPattern = getOrCreateGolemPattern(null).find(level, pos);
     BlockPattern.BlockPatternMatch blocksInPattern = PATTERN.apply(null).find(level, pos);

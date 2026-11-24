@@ -1,14 +1,16 @@
 package io.github.jason13official.more_useful_copper.impl.common.item;
 
+import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
 import java.util.concurrent.atomic.AtomicBoolean;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
@@ -19,6 +21,11 @@ public class LightningArmorItem extends ArmorItem {
 
   public LightningArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
     super(material, type, properties);
+  }
+
+  @Override
+  public boolean isEnabled(FeatureFlagSet enabledFeatures) {
+    return ModConfig.isVanillaBackportItemEnabled() && super.isEnabled(enabledFeatures);
   }
 
   @Override

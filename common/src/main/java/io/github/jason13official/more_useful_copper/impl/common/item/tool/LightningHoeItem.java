@@ -1,5 +1,6 @@
 package io.github.jason13official.more_useful_copper.impl.common.item.tool;
 
+import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import io.github.jason13official.more_useful_copper.impl.common.registry.ModItems;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -9,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,6 +23,11 @@ public class LightningHoeItem extends HoeItem {
 
   public LightningHoeItem(Tier tier, Properties properties) {
     super(tier, properties);
+  }
+
+  @Override
+  public boolean isEnabled(FeatureFlagSet enabledFeatures) {
+    return ModConfig.isVanillaBackportItemEnabled() && super.isEnabled(enabledFeatures);
   }
 
   @Override

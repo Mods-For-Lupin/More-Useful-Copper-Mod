@@ -2,6 +2,7 @@ package io.github.jason13official.more_useful_copper.impl.common.block;
 
 import io.github.jason13official.more_useful_copper.api.common.block.IOxidizableBlock;
 import io.github.jason13official.more_useful_copper.api.common.block.WaxableRegistry;
+import io.github.jason13official.more_useful_copper.impl.common.ModConfig;
 import io.github.jason13official.more_useful_copper.impl.common.tags.ModItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -10,6 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChainBlock;
@@ -57,5 +59,10 @@ public class CopperChainBlock extends ChainBlock implements IOxidizableBlock {
   @Override
   public WeatherState getAge() {
     return this.weatherState;
+  }
+
+  @Override
+  public boolean isEnabled(FeatureFlagSet enabledFeatures) {
+    return ModConfig.isVanillaBackportItemEnabled() && super.isEnabled(enabledFeatures);
   }
 }
