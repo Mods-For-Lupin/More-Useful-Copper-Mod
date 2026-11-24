@@ -38,11 +38,15 @@ public class LightningHoeItem extends HoeItem {
 
   @Override
   public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-    if (level.getRandom().nextFloat() >= 0.5f && player.getHealth() < player.getMaxHealth()) {
-      BlockPos pos = player.blockPosition().above();
-      level.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX(), pos.getY(), pos.getZ(), 0, 0.2, 0);
-      player.heal(2.0f);
-      player.getCooldowns().addCooldown(ModItems.COPPER_HOE, 40);
+    ItemStack stack = player.getItemInHand(usedHand);
+    if (ModConfig.get().lightningEffectsEnabled && isFoil(stack)) {
+      if (level.getRandom().nextFloat() >= 0.5f && player.getHealth() < player.getMaxHealth()) {
+        BlockPos pos = player.blockPosition().above();
+        level.addParticle(ParticleTypes.HAPPY_VILLAGER, pos.getX(), pos.getY(), pos.getZ(), 0, 0.2, 0);
+        player.heal(2.0f);
+        player.getCooldowns().addCooldown(ModItems.COPPER_HOE, 40);
+      }
+      CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.remove("charged"));
     }
     return super.use(level, player, usedHand);
   }

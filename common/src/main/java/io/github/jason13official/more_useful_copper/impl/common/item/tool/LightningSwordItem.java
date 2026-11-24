@@ -36,11 +36,14 @@ public class LightningSwordItem extends SwordItem {
 
   @Override
   public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-    Level level = target.level();
-    LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level);
-    if (bolt != null && level instanceof ServerLevel serverLevel) {
-      bolt.moveTo(target.position());
-      serverLevel.addFreshEntity(bolt);
+    if (ModConfig.get().lightningEffectsEnabled && isFoil(stack)) {
+      Level level = target.level();
+      LightningBolt bolt = EntityType.LIGHTNING_BOLT.create(level);
+      if (bolt != null && level instanceof ServerLevel serverLevel) {
+        bolt.moveTo(target.position());
+        serverLevel.addFreshEntity(bolt);
+      }
+      CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.remove("charged"));
     }
     return super.hurtEnemy(stack, target, attacker);
   }

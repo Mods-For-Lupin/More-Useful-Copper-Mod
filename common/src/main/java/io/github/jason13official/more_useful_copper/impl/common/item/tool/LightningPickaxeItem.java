@@ -34,7 +34,10 @@ public class LightningPickaxeItem extends PickaxeItem {
 
   @Override
   public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-    target.addEffect(new MobEffectInstance(MobEffects.WITHER, 40, 0));
+    if (ModConfig.get().lightningEffectsEnabled && isFoil(stack)) {
+      target.addEffect(new MobEffectInstance(MobEffects.WITHER, 40, 0));
+      CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.remove("charged"));
+    }
     return super.hurtEnemy(stack, target, attacker);
   }
 

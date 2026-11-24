@@ -19,6 +19,8 @@ import net.minecraft.world.level.Level;
 
 public class LightningArmorItem extends ArmorItem {
 
+  private static final int EFFECT_DURATION = 200;
+
   public LightningArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
     super(material, type, properties);
   }
@@ -42,54 +44,44 @@ public class LightningArmorItem extends ArmorItem {
   @Override
   public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
 
+    if (!ModConfig.get().lightningEffectsEnabled) {
+      return;
+    }
+
     if (!isFoil(stack)) {
       return;
     }
 
-    if (entity instanceof LivingEntity living) {
-      helmet(level, living);
-      chestplate(level, living);
-      leggings(level, living);
-      boots(level, living);
-    }
-  }
-
-  private void helmet(Level level, LivingEntity living) {
-    if (!living.getItemBySlot(EquipmentSlot.HEAD).is(ModItems.COPPER_HELMET)) {
+    if (level.isClientSide()) {
       return;
     }
 
-    living.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 10, 0, false, false));
-  }
-
-  private void chestplate(Level level, LivingEntity living) {
-    if (!living.getItemBySlot(EquipmentSlot.CHEST).is(ModItems.COPPER_CHESTPLATE)) {
+    if (!(entity instanceof LivingEntity living)) {
       return;
     }
 
-    living.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 10, 0, false, false));
-  }
-
-  private void leggings(Level level, LivingEntity living) {
-    if (!living.getItemBySlot(EquipmentSlot.LEGS).is(ModItems.COPPER_LEGGINGS)) {
-      return;
+    switch (getType()) {
+      case HELMET ->
+          living.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, EFFECT_DURATION, 0, false, false));
+      case CHESTPLATE ->
+          living.addEffect(new MobEffectInstance(MobEffects.REGENERATION, EFFECT_DURATION, 0, false, false));
+      case LEGGINGS ->
+          living.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, EFFECT_DURATION, 1, false, false));
+      case BOOTS -> {
+        living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, EFFECT_DURATION, 0, false, false));
+        if (allArmor(living)) {
+          living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, EFFECT_DURATION, 1, false, false));
+          living.addEffect(new MobEffectInstance(MobEffects.JUMP, EFFECT_DURATION, 0, false, false));
+          living.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, EFFECT_DURATION, 1, false, false));
+        }
+      }
+      default -> {
+        return;
+      }
     }
 
-    living.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 10, 1, false, false));
-  }
-
-  private void boots(Level level, LivingEntity living) {
-    if (!living.getItemBySlot(EquipmentSlot.FEET).is(ModItems.COPPER_BOOTS)) {
-      return;
-    }
-
-    living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 10, 0, false, false));
-
-    if (allArmor(living)) {
-      living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 10, 1, false, false));
-      living.addEffect(new MobEffectInstance(MobEffects.JUMP, 10, 0, false, false));
-      living.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 10, 1, false, false));
-    }
+    CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.remove("charged"));
+    living.setItemSlot(getType().getSlot(), stack);
   }
 
   private boolean allArmor(LivingEntity living) {

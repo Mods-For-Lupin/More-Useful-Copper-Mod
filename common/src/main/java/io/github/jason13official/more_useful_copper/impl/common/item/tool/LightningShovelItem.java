@@ -32,7 +32,10 @@ public class LightningShovelItem extends ShovelItem {
 
   @Override
   public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-    attacker.igniteForSeconds(4.0F);
+    if (ModConfig.get().lightningEffectsEnabled && isFoil(stack)) {
+      attacker.igniteForSeconds(4.0F);
+      CustomData.update(DataComponents.CUSTOM_DATA, stack, tag -> tag.remove("charged"));
+    }
     return super.hurtEnemy(stack, target, attacker);
   }
 
