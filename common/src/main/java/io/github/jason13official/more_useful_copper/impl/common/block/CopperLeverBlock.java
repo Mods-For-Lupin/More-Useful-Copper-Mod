@@ -49,8 +49,12 @@ public class CopperLeverBlock extends LeverBlock implements IOxidizableBlock, Si
 
   @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
+    BlockState state = super.getStateForPlacement(context);
+    if (state == null) {
+      return null;
+    }
     FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
-    return super.getStateForPlacement(context).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+    return state.setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
   }
 
   @Override
